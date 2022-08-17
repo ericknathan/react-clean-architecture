@@ -1,7 +1,7 @@
 import { HttpResponse } from '.';
 
 export interface HttpPostClient<T, R> {
-  post(params: HttpPostClient.Params<T>): Promise<HttpPostClient.Result<R>>;
+  post(params: HttpPostClient.Params<T>): Promise<HttpPostClient.Response<R>>;
 }
 
 export namespace HttpPostClient {
@@ -9,5 +9,5 @@ export namespace HttpPostClient {
     url: string;
     body?: T;
   }
-  export type Result<R> = HttpResponse;
+  export type Response<R> = HttpResponse;
 }
