@@ -1,3 +1,5 @@
+import { HttpResponse } from './http-response';
+
 export interface HttpPostClient {
   post(params: HttpPostClient.Params): Promise<HttpPostClient.Result>;
 }
@@ -7,6 +9,5 @@ export namespace HttpPostClient {
     url: string;
     body?: object;
   }
-
-  export type Result = void;
+  export type Result = HttpResponse;
 }
