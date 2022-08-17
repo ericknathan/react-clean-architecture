@@ -1,0 +1,13 @@
+@import "@/presentation/styles/colors.scss";
+body {
+  background-color: $background;
+}
+
+.loginWrapper {
+  display: flex;
+  justify-content: space-between;
+  
+  height: 100vh;
+  
+  @media (max-width: 720px) { flex-direction: column; }
+}

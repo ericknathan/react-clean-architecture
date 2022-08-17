@@ -1,6 +1,6 @@
 import React from 'react';
 
-import styles from './input-styles.module.scss';
+import styles from './input.module.scss';
 
 export function Input({ ...props }) {
   return (
