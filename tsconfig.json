@@ -13,10 +13,7 @@
     "rootDirs": ["src", "tests"],
     "baseUrl": "src",
     "allowJs": true,
-    "skipLibCheck": true,
-    "allowSyntheticDefaultImports": true,
     "strict": true,
-    "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "noEmit": true,
     "paths": {
@@ -25,5 +22,5 @@
       "@/mocks/*": ["../__mocks__/*"]
     }
   },
-  "include": ["src", "__tests__"]
+  "include": ["src", "__tests__", "__mocks__"]
 }
