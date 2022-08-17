@@ -1,0 +1,21 @@
+@import "@/presentation/styles/colors.scss";
+
+.input {
+  &[type="password"],
+  &[type="email"] {
+    height: 48px;
+
+    color: $black;
+
+    border: 1px solid $primaryLight;
+    border-radius: 4px;
+
+    line-height: 40px;
+
+    padding: 0 12px;
+
+    &:focus {
+      outline: $primaryLight solid 2px;
+    }
+  }
+}

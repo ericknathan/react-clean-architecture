@@ -1,0 +1,66 @@
+@import "@/presentation/styles/colors.scss";
+body {
+  background-color: $background;
+}
+
+.loginWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  height: 100vh;
+
+  .header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    border-top: 40px solid $primaryDark;
+    background-color: $primary;
+
+    padding: 40px;
+    gap: 16px;
+
+    h1 {
+      color: $white;
+    }
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    background-color: $white;
+
+    width: 480px;
+    max-width: 90vw;
+    padding: 40px;
+
+    border-radius: 12px;
+    align-self: center;
+
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+
+    h2 {
+      color: $primaryDark;
+      text-align: center;
+      font-size: 20px;
+      margin-bottom: 12px;
+    }
+
+    .submitButton {
+      margin-top: 12px;
+    }
+
+    .createAccountButton {
+      text-align: end;
+      color: $primary;
+    }
+  }
+
+  .footer {
+    background-color: $primary;
+    height: 48px;
+  }
+}
