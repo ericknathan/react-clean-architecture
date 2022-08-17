@@ -1,13 +1,13 @@
 import { HttpPostClient, HttpStatusCode } from '@/data/protocols/http';
 
-export class HttpClient implements HttpPostClient {
+export class HttpClient<T, R> implements HttpPostClient<T, R> {
   url?: string;
-  body?: object;
-  response: HttpPostClient.Result = {
+  body?: T;
+  response: HttpPostClient.Result<R> = {
     statusCode: HttpStatusCode.OK,
   }
 
-  async post(params: HttpPostClient.Params): Promise<HttpPostClient.Result> {
+  async post(params: HttpPostClient.Params<T>): Promise<HttpPostClient.Result<R>> {
     this.url = params.url;
     this.body = params.body;
     return Promise.resolve(this.response);
