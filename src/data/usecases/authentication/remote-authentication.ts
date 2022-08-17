@@ -3,7 +3,7 @@ import { HttpPostClient, HttpStatusCode } from '@/data/protocols/http';
 import { InvalidCredentialsError, UnexpectedError } from '@/domain/errors';
 import { AccountModel } from '@/domain/models';
 
-export class RemoteAuthentication {
+export class RemoteAuthentication implements Authentication {
   constructor(
     private readonly url: string,
     private readonly httpPostClient: HttpPostClient<Authentication.Params, AccountModel>
@@ -16,10 +16,7 @@ export class RemoteAuthentication {
     });
 
     switch(httpResponse.statusCode) {
-      case HttpStatusCode.OK:
-        return {
-          accessToken: 'any_token',
-        };
+      case HttpStatusCode.OK: return httpResponse.body;
       case HttpStatusCode.UNAUTHORIZED: throw new InvalidCredentialsError();
       default: throw new UnexpectedError();
     }
