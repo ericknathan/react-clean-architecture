@@ -1,4 +1,4 @@
-import { HttpResponse } from './http-response';
+import { HttpResponse } from '.';
 
 export interface HttpPostClient<T, R> {
   post(params: HttpPostClient.Params<T>): Promise<HttpPostClient.Result<R>>;

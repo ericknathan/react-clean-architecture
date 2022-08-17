@@ -1,5 +1,5 @@
-import { Authentication } from '@/domain/usecases/authentication';
 import { HttpPostClient, HttpStatusCode } from '@/data/protocols/http';
+import { Authentication } from '@/domain/usecases';
 import { InvalidCredentialsError, UnexpectedError } from '@/domain/errors';
 import { AccountModel } from '@/domain/models';
 
