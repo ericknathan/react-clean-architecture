@@ -4,7 +4,7 @@ export class HttpClient implements HttpPostClient {
   url?: string;
   body?: object;
   response: HttpPostClient.Result = {
-    statusCode: HttpStatusCode.NO_CONTENT,
+    statusCode: HttpStatusCode.OK,
   }
 
   async post(params: HttpPostClient.Params): Promise<HttpPostClient.Result> {
