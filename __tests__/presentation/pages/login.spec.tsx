@@ -30,7 +30,6 @@ describe('Login Page', () => {
     const { queryByText, queryByTestId } = sut;
 
     const submitButton = queryByText('Entrar') as HTMLButtonElement;
-    expect(submitButton).toBeTruthy();
     expect(submitButton.disabled).toBeTruthy();
 
     const emailInput = queryByTestId('email-input') as HTMLInputElement;
@@ -82,5 +81,19 @@ describe('Login Page', () => {
 
     const passwordInputLabel = getByTestId('password-label') as HTMLLabelElement;
     expect(passwordInputLabel.textContent).toBe(validationStub.errorMessage);
+  });
+
+  it('should enable submit button if form is valid', async () => {
+    const { sut } = makeSut();
+    const { queryByText, getByTestId } = sut;
+
+    const emailInput = getByTestId('email-input') as HTMLInputElement;
+    fireEvent.input(emailInput, { target: { value: faker.internet.email() } });
+
+    const passwordInput = getByTestId('password-input') as HTMLInputElement;
+    fireEvent.input(passwordInput, { target: { value: faker.internet.password() } });
+
+    const submitButton = queryByText('Entrar') as HTMLButtonElement;
+    expect(submitButton.disabled).toBeFalsy();
   });
 });
