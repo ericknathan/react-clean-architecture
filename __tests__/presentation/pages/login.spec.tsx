@@ -13,6 +13,7 @@ type SutTypes = {
 
 const makeSut = (): SutTypes => {
   const validationSpy = new ValidationSpy();
+  validationSpy.errorMessage = faker.random.words();
   const sut = render(<Login validation={validationSpy}/>);
 
   return {
@@ -57,5 +58,15 @@ describe('Login Page', () => {
     fireEvent.input(passwordInput, { target: { value: password } });
     expect(validationSpy.fieldName).toBe('password');
         expect(validationSpy.fieldValue).toBe(password);
+  });
+  
+  it('should show email error if  Validation fails', async () => {
+    const { sut, validationSpy } = makeSut();
+    
+    const emailInput = sut.getByTestId('email-input') as HTMLInputElement;
+    fireEvent.input(emailInput, { target: { value: faker.internet.email() } });
+
+    const emailInputLabel = sut.getByTestId('email-label') as HTMLLabelElement;
+    expect(emailInputLabel.textContent).toBe(validationSpy.errorMessage)
   });
 });
