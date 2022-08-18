@@ -4,7 +4,6 @@ import {
   Routes,
   Route,
 } from 'react-router-dom';
-import '@/presentation/styles/global.scss';
 
 import { Login } from '@/presentation/pages';
 
