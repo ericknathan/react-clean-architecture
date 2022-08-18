@@ -16,8 +16,8 @@ export function LoginForm() {
   return (
     <form className={styles.form} action="submit">
       <h2>Realizar login</h2>
-      <Input type="email" name="email" placeholder="Digite seu e-mail" />
-      <Input type="password" name="password" placeholder="Digite sua senha" />
+      <Input data-testid="email-input" type="email" name="email" placeholder="Digite seu e-mail" required />
+      <Input data-testid="password-input" type="password" name="password" placeholder="Digite sua senha" required />
       <Button className={styles.submitButton} disabled>
         {formStates.isLoading ? <Spinner /> : 'Entrar'}
       </Button>
