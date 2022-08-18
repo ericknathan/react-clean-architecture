@@ -18,7 +18,7 @@ export function LoginForm() {
       <h2>Realizar login</h2>
       <Input type="email" name="email" placeholder="Digite seu e-mail" />
       <Input type="password" name="password" placeholder="Digite sua senha" />
-      <Button className={styles.submitButton}>
+      <Button className={styles.submitButton} disabled>
         {formStates.isLoading ? <Spinner /> : 'Entrar'}
       </Button>
       <a href="#" className={styles.createAccountButton}>Não possui um cadastro? Criar conta</a>

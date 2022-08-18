@@ -24,4 +24,9 @@
   &:hover {
     opacity: .9;
   }
+
+  &:disabled {
+    background-color: $disabled;
+    cursor: not-allowed;
+  }
 }
