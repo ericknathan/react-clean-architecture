@@ -5,22 +5,19 @@ import { Validation } from '@/presentation/protocols';
 import { faker } from '@faker-js/faker';
 import { Authentication } from 'domain/usecases';
 
-type ValidationInput = Authentication.Params;
-
 type SutTypes = {
   sut: RenderResult;
-  validationSpy: Validation<ValidationInput>;
+  validationSpy: Validation;
 }
 
-class ValidationSpy implements Validation<ValidationInput> {
+class ValidationSpy implements Validation {
   errorMessage = '';
-  input: ValidationInput = {
-    email: '',
-    password: ''
-  };
+  fieldName = '';
+  fieldValue = '';
 
-  validate(input: ValidationInput): string {
-    this.input = input;
+  validate({ fieldName, fieldValue }: Validation.Params): Validation.Result {
+    this.fieldName = fieldName;
+    this.fieldValue = fieldValue;
     return this.errorMessage;
   }
   
@@ -60,7 +57,8 @@ describe('Login Page', () => {
 
     const emailInput = sut.getByTestId('email-input') as HTMLInputElement;
     fireEvent.input(emailInput, { target: { value: email } });
-    expect(validationSpy.input.email).toEqual(email);
+    expect(validationSpy.fieldName).toBe('email');
+        expect(validationSpy.fieldValue).toBe(email);
   });
 
   it('should call validation with correct password', async () => {
@@ -69,6 +67,7 @@ describe('Login Page', () => {
 
     const passwordInput = sut.getByTestId('password-input') as HTMLInputElement;
     fireEvent.input(passwordInput, { target: { value: password } });
-    expect(validationSpy.input.password).toEqual(password);
+    expect(validationSpy.fieldName).toBe('password');
+        expect(validationSpy.fieldValue).toBe(password);
   });
 });

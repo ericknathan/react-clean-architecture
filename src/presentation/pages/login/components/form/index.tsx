@@ -24,9 +24,12 @@ export function LoginForm({ validation }: LoginProps) {
   }
 
   useEffect(() => {
-    const { email, password } = formStates;
-    validation?.validate({ email, password });
-  }, [formStates.email, formStates.password]);
+    validation?.validate({ fieldName: 'email', fieldValue: formStates.email });
+  }, [formStates.email]);
+
+  useEffect(() => {
+    validation?.validate({ fieldName: 'password', fieldValue: formStates.password });
+  }, [formStates.password]);
   
   return (
     <form className={styles.form} action="submit">

@@ -1,6 +1,14 @@
-export interface Validation<InputObject = object> {
-  errorMessage: string;
-  input: InputObject;
-  
-  validate (input: InputObject): string;
+export interface Validation extends Validation.Properties {
+  validate (params: Validation.Params): Validation.Result;
+}
+
+export namespace Validation {
+  export type Params = {
+    fieldName: string,
+    fieldValue: string
+  }
+  export type Result = string;
+  export type Properties = Params & {
+    errorMessage: string;
+  }
 }
