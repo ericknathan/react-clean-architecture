@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Router } from '@/presentation/pages/router';
+import { Router } from '@/presentation/pages';
 
 ReactDOM.render(
   <Router />,

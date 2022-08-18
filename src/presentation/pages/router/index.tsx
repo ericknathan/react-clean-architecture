@@ -6,7 +6,7 @@ import {
 } from 'react-router-dom';
 import '@/presentation/styles/global.scss';
 
-import { Login } from '@/presentation/pages/login';
+import { Login } from '@/presentation/pages';
 
 export function Router() {
   return (

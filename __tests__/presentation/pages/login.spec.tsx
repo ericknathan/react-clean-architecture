@@ -1,8 +1,9 @@
 import React from 'react';
 import { cleanup, fireEvent, render, RenderResult } from '@testing-library/react';
-import { Login } from '@/presentation/pages/login';
-import { Validation } from '@/presentation/protocols';
 import { faker } from '@faker-js/faker';
+
+import { Login } from '@/presentation/pages';
+import { Validation } from '@/presentation/protocols';
 import { ValidationSpy } from '@/mocks/presentation';
 
 type SutTypes = {
