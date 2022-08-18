@@ -6,19 +6,23 @@ import { Login } from '@/presentation/pages';
 import { Validation } from '@/presentation/protocols';
 import { ValidationStub } from '@/mocks/presentation';
 
+const DEFAULT_LABEL_VALUE = '';
+
 type SutTypes = {
   sut: RenderResult;
-  validationStub: Validation;
 }
 
-const makeSut = (): SutTypes => {
+type SutParams = {
+  validationError: string;
+}
+
+const makeSut = (params?: SutParams): SutTypes => {
   const validationStub = new ValidationStub();
-  validationStub.errorMessage = faker.random.words();
+  validationStub.errorMessage = params?.validationError || DEFAULT_LABEL_VALUE;
   const sut = render(<Login validation={validationStub}/>);
 
   return {
-    sut,
-    validationStub
+    sut
   }
 }
 
@@ -34,53 +38,30 @@ describe('Login Page', () => {
 
     const emailInput = queryByTestId('email-input') as HTMLInputElement;
     expect(emailInput.required).toBeTruthy();
+    expect(emailInput.title).toBe(DEFAULT_LABEL_VALUE);
 
     const passwordInput = queryByTestId('password-input') as HTMLInputElement;
     expect(passwordInput.required).toBeTruthy();
+    expect(passwordInput.title).toBe(DEFAULT_LABEL_VALUE);
   });
 
-  it('should call validation with correct email', async () => {
-    const email = faker.internet.email();
-    const { sut, validationStub } = makeSut();
-    const { getByTestId } = sut;
-
-    const emailInput = getByTestId('email-input') as HTMLInputElement;
-    fireEvent.input(emailInput, { target: { value: email } });
-    expect(validationStub.fieldName).toBe('email');
-        expect(validationStub.fieldValue).toBe(email);
-  });
-
-  it('should call validation with correct password', async () => {
-    const password = faker.internet.password();
-    const { sut, validationStub } = makeSut();
-    const { getByTestId } = sut;
-
-    const passwordInput = getByTestId('password-input') as HTMLInputElement;
-    fireEvent.input(passwordInput, { target: { value: password } });
-    expect(validationStub.fieldName).toBe('password');
-        expect(validationStub.fieldValue).toBe(password);
-  });
-  
   it('should show email error if Validation fails', async () => {
-    const { sut, validationStub } = makeSut();
+    const validationError = faker.random.words();
+    const { sut } = makeSut({ validationError });
     const { getByTestId } = sut;
     
     const emailInput = getByTestId('email-input') as HTMLInputElement;
     fireEvent.input(emailInput, { target: { value: faker.internet.email() } });
-
-    const emailInputLabel = getByTestId('email-label') as HTMLLabelElement;
-    expect(emailInputLabel.textContent).toBe(validationStub.errorMessage)
+    expect(emailInput.title).toBe(validationError)
   });
   
   it('should show password error if Validation fails', async () => {
-    const { sut, validationStub } = makeSut();
+    const { sut } = makeSut();
     const { getByTestId } = sut;
     
     const passwordInput = getByTestId('password-input') as HTMLInputElement;
     fireEvent.input(passwordInput, { target: { value: faker.internet.password() } });
-
-    const passwordInputLabel = getByTestId('password-label') as HTMLLabelElement;
-    expect(passwordInputLabel.textContent).toBe(validationStub.errorMessage);
+    expect(passwordInput.title).toBe(DEFAULT_LABEL_VALUE);
   });
 
   it('should enable submit button if form is valid', async () => {
