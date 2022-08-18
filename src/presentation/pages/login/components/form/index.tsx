@@ -1,23 +1,37 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Button, Input, Spinner } from '@/presentation/components';
 
 import styles from './login-form.module.scss';
+import { LoginProps } from '../..';
 
 type StateProps = {
   isLoading: boolean;
+  email: string;
+  password: string;
 }
 
-export function LoginForm() {
+export function LoginForm({ validation }: LoginProps) {
   const [formStates, setFormStates] = useState<StateProps>({
-    isLoading: false
+    isLoading: false,
+    email: '',
+    password: ''
   });
+
+  function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const { name, value } = event.target;
+    setFormStates({ ...formStates, [name]: value });
+  }
+
+  useEffect(() => {
+    validation?.validate({ email: formStates.email });
+  }, [formStates.email]);
   
   return (
     <form className={styles.form} action="submit">
       <h2>Realizar login</h2>
-      <Input data-testid="email-input" type="email" name="email" placeholder="Digite seu e-mail" required />
-      <Input data-testid="password-input" type="password" name="password" placeholder="Digite sua senha" required />
+      <Input data-testid="email-input" type="email" name="email" placeholder="Digite seu e-mail" required onChange={handleInputChange}/>
+      <Input data-testid="password-input" type="password" name="password" placeholder="Digite sua senha" required onChange={handleInputChange}/>
       <Button className={styles.submitButton} disabled>
         {formStates.isLoading ? <Spinner /> : 'Entrar'}
       </Button>
