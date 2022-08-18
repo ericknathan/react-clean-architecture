@@ -3,9 +3,10 @@ import { render } from '@testing-library/react';
 import { Login } from '@/presentation/pages/login';
 
 describe('Login Page', () => {
-  it('should not render spinner on start', async () => {
+  it('should start with initial state', async () => {
     const { queryByText } = render(<Login />);
-    const buttonText = queryByText('Entrar');
-    expect(buttonText).toBeTruthy();
+    const submitButton = queryByText('Entrar') as HTMLButtonElement;
+    expect(submitButton).toBeTruthy();
+    expect(submitButton.disabled).toBe(true);
   })
 })
