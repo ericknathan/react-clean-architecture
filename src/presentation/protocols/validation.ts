@@ -1,6 +1,6 @@
-export interface Validation {
+export interface Validation<InputObject = object> {
   errorMessage: string;
-  input: object;
+  input: InputObject;
   
-  validate (input: object): string;
+  validate (input: InputObject): string;
 }
