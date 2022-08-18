@@ -43,8 +43,9 @@ describe('Login Page', () => {
   it('should call validation with correct email', async () => {
     const email = faker.internet.email();
     const { sut, validationStub } = makeSut();
+    const { getByTestId } = sut;
 
-    const emailInput = sut.getByTestId('email-input') as HTMLInputElement;
+    const emailInput = getByTestId('email-input') as HTMLInputElement;
     fireEvent.input(emailInput, { target: { value: email } });
     expect(validationStub.fieldName).toBe('email');
         expect(validationStub.fieldValue).toBe(email);
@@ -53,8 +54,9 @@ describe('Login Page', () => {
   it('should call validation with correct password', async () => {
     const password = faker.internet.password();
     const { sut, validationStub } = makeSut();
+    const { getByTestId } = sut;
 
-    const passwordInput = sut.getByTestId('password-input') as HTMLInputElement;
+    const passwordInput = getByTestId('password-input') as HTMLInputElement;
     fireEvent.input(passwordInput, { target: { value: password } });
     expect(validationStub.fieldName).toBe('password');
         expect(validationStub.fieldValue).toBe(password);
@@ -62,21 +64,23 @@ describe('Login Page', () => {
   
   it('should show email error if Validation fails', async () => {
     const { sut, validationStub } = makeSut();
+    const { getByTestId } = sut;
     
-    const emailInput = sut.getByTestId('email-input') as HTMLInputElement;
+    const emailInput = getByTestId('email-input') as HTMLInputElement;
     fireEvent.input(emailInput, { target: { value: faker.internet.email() } });
 
-    const emailInputLabel = sut.getByTestId('email-label') as HTMLLabelElement;
+    const emailInputLabel = getByTestId('email-label') as HTMLLabelElement;
     expect(emailInputLabel.textContent).toBe(validationStub.errorMessage)
   });
   
   it('should show password error if Validation fails', async () => {
     const { sut, validationStub } = makeSut();
+    const { getByTestId } = sut;
     
-    const passwordInput = sut.getByTestId('password-input') as HTMLInputElement;
+    const passwordInput = getByTestId('password-input') as HTMLInputElement;
     fireEvent.input(passwordInput, { target: { value: faker.internet.password() } });
 
-    const passwordInputLabel = sut.getByTestId('password-label') as HTMLLabelElement;
-    expect(passwordInputLabel.textContent).toBe(validationStub.errorMessage)
+    const passwordInputLabel = getByTestId('password-label') as HTMLLabelElement;
+    expect(passwordInputLabel.textContent).toBe(validationStub.errorMessage);
   });
 });
