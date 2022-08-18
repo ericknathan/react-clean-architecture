@@ -1,9 +1,19 @@
-import React from 'react';
+import React, { InputHTMLAttributes } from 'react';
 
 import styles from './input.module.scss';
 
-export function Input({ ...props }) {
+type InputProps = InputHTMLAttributes<HTMLInputElement> & {
+  name: string;
+  error?: string;
+}
+
+export function Input({ name, error = '', ...props }: InputProps) {
   return (
-    <input {...props} autoComplete="off" className={`${styles.input} ${props.className}`} />
+    <div className={styles.inputWrapper}>
+      <input {...props} name={name} autoComplete="off" className={`${styles.input} ${error.trim() !== '' ? styles.inputError : ''} ${props.className}`} />
+      <label data-testid={`${name}-label`}>
+        {error}
+      </label>
+    </div>
   )
 }
