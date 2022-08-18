@@ -1,16 +1,15 @@
-import React from 'react';
+import React, { ButtonHTMLAttributes } from 'react';
 
 import styles from './button.module.scss';
 
-type ButtonProps = {
+type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   children: React.ReactNode;
   className?: string;
-  disabled?: boolean;
 }
 
-export function Button({ children, className, disabled, ...props }: ButtonProps) {
+export function Button({ children, className, ...props }: ButtonProps) {
   return (
-    <button disabled={disabled} {...props} className={`${styles.button} ${className || ''}`}>
+    <button {...props} className={`${styles.button} ${className || ''}`}>
       {children}
     </button>
   )

@@ -49,11 +49,11 @@ export function LoginForm({ validation }: LoginProps) {
   }, [formStates.password]);
   
   return (
-    <form className={styles.form} action="submit">
+    <form className={styles.form}>
       <h2>Realizar login</h2>
       <Input data-testid="email-input" type="email" name="email" placeholder="Digite seu e-mail" required onChange={handleInputChange} error={formStates.errors.email} />
       <Input data-testid="password-input" type="password" name="password" placeholder="Digite sua senha" required onChange={handleInputChange}  error={formStates.errors.password}/>
-      <Button className={styles.submitButton} disabled>
+      <Button className={styles.submitButton} disabled={formStates.email.trim() === '' || formStates.password.trim() === ''}>
         {formStates.isLoading ? <Spinner /> : 'Entrar'}
       </Button>
       <a href="#" className={styles.createAccountButton}>Não possui um cadastro? Criar conta</a>
