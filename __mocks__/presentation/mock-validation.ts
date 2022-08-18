@@ -1,6 +1,6 @@
 import { Validation } from "@/presentation/protocols";
 
-export class ValidationSpy implements Validation {
+export class ValidationStub implements Validation {
   errorMessage = '';
   fieldName = '';
   fieldValue = '';
