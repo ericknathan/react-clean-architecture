@@ -42,13 +42,14 @@ const makeSut = (params?: SutParams): SutTypes => {
   }
 }
 
-const simulateValidSubmit = (sut: RenderResult, email = faker.internet.email(), password = faker.internet.password()): void => {
+const simulateValidSubmit = async (sut: RenderResult, email = faker.internet.email(), password = faker.internet.password()): Promise<void> => {
   const { queryByTestId } = sut;
   populateEmailField(sut, email);
   populatePasswordField(sut, password);
 
-  const submitButton = queryByTestId('signin-button') as HTMLButtonElement;
-  fireEvent.click(submitButton);
+  const form = queryByTestId('form') as HTMLFormElement;
+  fireEvent.submit(form);
+  await waitFor(() => form);
 }
 
 const populateEmailField = (sut: RenderResult, email = faker.internet.email(), comparationOptions: ComparationOptions = {}): HTMLInputElement => {
@@ -70,6 +71,22 @@ const compareFieldValue = (field: HTMLInputElement, comparationOptions: Comparat
   expect(field[comparedField!!]).toBe(comparedValue);
 }
 
+const testElementExists = (sut: RenderResult, fieldName: string): void => {
+  const element = sut.queryByTestId(fieldName);
+  expect(element).toBeTruthy();
+}
+
+const testButtonIsDisabled = (sut: RenderResult, fieldName: string, expected = true): void => {
+  const button = sut.queryByTestId(fieldName) as HTMLButtonElement;
+  expect(button.disabled).toBe(expected);
+}
+
+const testInputIsValid = (sut: RenderResult, fieldName: string, value: string): void => {
+  const input = sut.queryByTestId(fieldName) as HTMLInputElement;
+  expect(input.required).toBeTruthy();
+  expect(input.title).toBe(value);
+}
+
 describe('Login Page', () => {
   afterEach(cleanup);
   beforeEach(() => {
@@ -79,18 +96,10 @@ describe('Login Page', () => {
 
   it('should start with initial state', () => {
     const { sut } = makeSut();
-    const { queryByText, queryByTestId } = sut;
 
-    const submitButton = queryByText('Entrar') as HTMLButtonElement;
-    expect(submitButton.disabled).toBeTruthy();
-
-    const emailInput = queryByTestId('email-input') as HTMLInputElement;
-    expect(emailInput.required).toBeTruthy();
-    expect(emailInput.title).toBe(DEFAULT_LABEL_VALUE);
-
-    const passwordInput = queryByTestId('password-input') as HTMLInputElement;
-    expect(passwordInput.required).toBeTruthy();
-    expect(passwordInput.title).toBe(DEFAULT_LABEL_VALUE);
+    testButtonIsDisabled(sut, 'signin-button');
+    testInputIsValid(sut, 'email-input', DEFAULT_LABEL_VALUE);
+    testInputIsValid(sut, 'password-input', DEFAULT_LABEL_VALUE);
   });
 
   it('should show email error if Validation fails', () => {
@@ -120,43 +129,37 @@ describe('Login Page', () => {
     populateEmailField(sut);
     populatePasswordField(sut);
 
-    const submitButton = sut.queryByText('Entrar') as HTMLButtonElement;
-    expect(submitButton.disabled).toBeFalsy();
+    testButtonIsDisabled(sut, 'signin-button', false);
   });
 
-  it('should show spinner on submit', () => {
+  it('should show spinner on submit', async () => {
     const { sut } = makeSut();
-    simulateValidSubmit(sut);
+    await simulateValidSubmit(sut);
 
-    const spinner = sut.queryByTestId('spinner');
-    expect(spinner).toBeTruthy();
+    testElementExists(sut, 'spinner');
   });
 
-  it('should call Authentication with correct values', () => {
+  it('should call Authentication with correct values', async () => {
     const { sut, authenticationStub } = makeSut();
     const email = faker.internet.email();
     const password = faker.internet.password();
-    simulateValidSubmit(sut, email, password);
+    await simulateValidSubmit(sut, email, password);
 
-    expect(authenticationStub.params).toEqual({
-      email,
-      password
-    });
+    expect(authenticationStub.params).toEqual({ email, password });
   });
   
-  it('should call Authentication only once', () => {
+  it('should call Authentication only once', async () => {
     const { sut, authenticationStub } = makeSut();
-    simulateValidSubmit(sut);
-    simulateValidSubmit(sut);
+    await simulateValidSubmit(sut);
+    await simulateValidSubmit(sut);
 
     expect(authenticationStub.callsCount).toBe(1);
   });
   
-  it('should not call Authentication if form is invalid', () => {
+  it('should not call Authentication if form is invalid', async () => {
     const validationError = faker.random.words();
     const { sut, authenticationStub } = makeSut({ validationError });
-    populateEmailField(sut);
-    fireEvent.submit(sut.queryByTestId('form') as HTMLFormElement);
+    await simulateValidSubmit(sut);
 
     expect(authenticationStub.callsCount).toBe(0);
   });
@@ -171,14 +174,12 @@ describe('Login Page', () => {
     populateEmailField(sut, faker.internet.email(), { comparedField: 'title', comparedValue: validationError });
     populatePasswordField(sut, faker.internet.password(), { comparedField: 'title', comparedValue: validationError });
 
-    const submitButton = sut.queryByText('Entrar') as HTMLButtonElement;
-    await waitFor(() => submitButton);
-    expect(submitButton.disabled).toBeTruthy();
+    testButtonIsDisabled(sut, 'signin-button', true);
   });
 
   it('should add accessToken to localStorage if Authentication succeeds', async () => {
     const { sut, authenticationStub } = makeSut();
-    simulateValidSubmit(sut);
+    await simulateValidSubmit(sut);
     await waitFor(() => expect(localStorage.setItem).toHaveBeenLastCalledWith('@4devs/accessToken', authenticationStub.account.accessToken));    
     expect(history.location.pathname).toBe('/');
     expect(history.index).toBe(0);
