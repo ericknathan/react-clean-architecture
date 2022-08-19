@@ -4,6 +4,7 @@ import { Button, Input, Spinner } from '@/presentation/components';
 
 import styles from './login-form.module.scss';
 import { LoginProps } from '../..';
+import { InvalidCredentialsError } from '@/domain/errors';
 
 type StateProps = {
   isLoading: boolean;
@@ -31,11 +32,25 @@ export function LoginForm({ validation, authentication }: LoginProps) {
   }
 
   async function handleSubmitLoginForm(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    if(formStates.isLoading || formStates.errors.email || formStates.errors.password) return;
-
-    setFormStates({ ...formStates, isLoading: true });
-    await authentication?.auth({ email: formStates.email, password: formStates.password });
+    try {
+      event.preventDefault();
+      if(formStates.isLoading || formStates.errors.email || formStates.errors.password) return;
+  
+      setFormStates({ ...formStates, isLoading: true });
+      await authentication?.auth({ email: formStates.email, password: formStates.password });
+    } catch (error) {
+      setFormStates({
+        ...formStates,
+        isLoading: true,
+        errors: {
+          ...formStates.errors,
+          email: error instanceof Error ? error.message : '',
+          password: error instanceof Error ? error.message : '',
+        }
+      });
+    } finally {
+      setTimeout(() => setFormStates((previousState) => ({ ...previousState, isLoading: false })), 500);
+    }
   }
 
   useEffect(() => {
