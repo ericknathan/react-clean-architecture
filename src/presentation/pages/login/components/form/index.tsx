@@ -4,8 +4,7 @@ import { Button, Input, Spinner } from '@/presentation/components';
 
 import styles from './login-form.module.scss';
 import { LoginProps } from '../..';
-import { InvalidCredentialsError } from '@/domain/errors';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 type StateProps = {
   isLoading: boolean;
@@ -17,6 +16,7 @@ type StateProps = {
 }
 
 export function LoginForm({ validation, authentication }: LoginProps) {
+  const navigate = useNavigate();
   const [formStates, setFormStates] = useState<StateProps>({
     isLoading: false,
     email: '',
@@ -40,7 +40,10 @@ export function LoginForm({ validation, authentication }: LoginProps) {
       setFormStates({ ...formStates, isLoading: true });
 
       const account = await authentication?.auth({ email: formStates.email, password: formStates.password });
-      if(account) localStorage.setItem('@4devs/accessToken', account.accessToken);
+      if(account) {
+        localStorage.setItem('@4devs/accessToken', account.accessToken);
+        navigate('/', { replace: true });
+      }
     } catch (error) {
       setFormStates({
         ...formStates,
