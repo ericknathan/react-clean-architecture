@@ -3,13 +3,25 @@ import { cleanup, fireEvent, render, RenderResult } from '@testing-library/react
 import { faker } from '@faker-js/faker';
 
 import { Login } from '@/presentation/pages';
-import { Validation } from '@/presentation/protocols';
 import { ValidationStub } from '@/mocks/presentation';
+import { Authentication } from '@/domain/usecases';
+import { mockAccountModel } from '@/mocks/domain';
 
 const DEFAULT_LABEL_VALUE = '';
 
+class AuthenticationSut implements Authentication {
+  params: Authentication.Params = { email: '', password: '' };
+  
+  async auth(params: Authentication.Params): Promise<Authentication.Result> {
+    this.params = params;
+    return Promise.resolve(mockAccountModel());
+  }
+
+}
+
 type SutTypes = {
   sut: RenderResult;
+  authenticationSut: AuthenticationSut;
 }
 
 type SutParams = {
@@ -19,10 +31,12 @@ type SutParams = {
 const makeSut = (params?: SutParams): SutTypes => {
   const validationStub = new ValidationStub();
   validationStub.errorMessage = params?.validationError || DEFAULT_LABEL_VALUE;
-  const sut = render(<Login validation={validationStub}/>);
+  const authenticationSut = new AuthenticationSut();
+  const sut = render(<Login validation={validationStub} authentication={authenticationSut} />);
 
   return {
-    sut
+    sut,
+    authenticationSut
   }
 }
 
@@ -92,5 +106,25 @@ describe('Login Page', () => {
     fireEvent.click(submitButton);
     const spinner = queryByTestId('spinner');
     expect(spinner).toBeTruthy();
+  });
+
+  it('should call Authentication with correct values', async () => {
+    const { sut, authenticationSut } = makeSut();
+    const { queryByText, queryByTestId } = sut;
+    const email = faker.internet.email();
+    const password = faker.internet.password();
+
+    const emailInput = queryByTestId('email-input') as HTMLInputElement;
+    fireEvent.input(emailInput, { target: { value: faker.internet.email() } });
+
+    const passwordInput = queryByTestId('password-input') as HTMLInputElement;
+    fireEvent.input(passwordInput, { target: { value: faker.internet.password() } });
+
+    const submitButton = queryByText('Entrar') as HTMLButtonElement;
+    fireEvent.click(submitButton);
+    expect(authenticationSut.params).toEqual({
+      email,
+      password
+    });
   });
 });
