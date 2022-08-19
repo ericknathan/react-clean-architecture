@@ -173,7 +173,7 @@ describe('Login Page', () => {
 
     const submitButton = sut.queryByText('Entrar') as HTMLButtonElement;
     await waitFor(() => submitButton);
-    expect(submitButton).toBeTruthy();
+    expect(submitButton.disabled).toBeTruthy();
   });
 
   it('should add accessToken to localStorage if Authentication succeeds', async () => {
