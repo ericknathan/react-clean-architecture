@@ -37,7 +37,9 @@ export function LoginForm({ validation, authentication }: LoginProps) {
       if(formStates.isLoading || formStates.errors.email || formStates.errors.password) return;
   
       setFormStates({ ...formStates, isLoading: true });
-      await authentication?.auth({ email: formStates.email, password: formStates.password });
+
+      const account = await authentication?.auth({ email: formStates.email, password: formStates.password });
+      if(account) localStorage.setItem('@4devs/accessToken', account.accessToken);
     } catch (error) {
       setFormStates({
         ...formStates,
