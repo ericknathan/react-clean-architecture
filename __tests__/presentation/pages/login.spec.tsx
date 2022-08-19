@@ -4,6 +4,7 @@ import { faker } from '@faker-js/faker';
 
 import { Login } from '@/presentation/pages';
 import { AuthenticationStub, ValidationStub } from '@/mocks/presentation';
+import { InvalidCredentialsError } from '@/domain/errors';
 
 const DEFAULT_LABEL_VALUE = '';
 
@@ -14,7 +15,7 @@ type ComparationOptions = {
 
 type SutTypes = {
   sut: RenderResult;
-  authenticationSut: AuthenticationStub;
+  authenticationStub: AuthenticationStub;
 }
 
 type SutParams = {
@@ -24,18 +25,17 @@ type SutParams = {
 const makeSut = (params?: SutParams): SutTypes => {
   const validationStub = new ValidationStub();
   validationStub.errorMessage = params?.validationError || DEFAULT_LABEL_VALUE;
-  const authenticationSut = new AuthenticationStub();
-  const sut = render(<Login validation={validationStub} authentication={authenticationSut} />);
+  const authenticationStub = new AuthenticationStub();
+  const sut = render(<Login validation={validationStub} authentication={authenticationStub} />);
 
   return {
     sut,
-    authenticationSut
+    authenticationStub
   }
 }
 
 const simulateValidSubmit = (sut: RenderResult, email = faker.internet.email(), password = faker.internet.password()): void => {
   const { queryByTestId } = sut;
-
   populateEmailField(sut, email);
   populatePasswordField(sut, password);
 
@@ -121,31 +121,45 @@ describe('Login Page', () => {
   });
 
   it('should call Authentication with correct values', () => {
-    const { sut, authenticationSut } = makeSut();
+    const { sut, authenticationStub } = makeSut();
     const email = faker.internet.email();
     const password = faker.internet.password();
     simulateValidSubmit(sut, email, password);
 
-    expect(authenticationSut.params).toEqual({
+    expect(authenticationStub.params).toEqual({
       email,
       password
     });
   });
   
   it('should call Authentication only once', () => {
-    const { sut, authenticationSut } = makeSut();
+    const { sut, authenticationStub } = makeSut();
     simulateValidSubmit(sut);
     simulateValidSubmit(sut);
 
-    expect(authenticationSut.callsCount).toBe(1);
+    expect(authenticationStub.callsCount).toBe(1);
   });
   
   it('should not call Authentication if form is invalid', () => {
     const validationError = faker.random.words();
-    const { sut, authenticationSut } = makeSut({ validationError });
+    const { sut, authenticationStub } = makeSut({ validationError });
     populateEmailField(sut);
     fireEvent.submit(sut.queryByTestId('form') as HTMLFormElement);
 
-    expect(authenticationSut.callsCount).toBe(0);
+    expect(authenticationStub.callsCount).toBe(0);
+  });
+  
+  it('should present error if Authentication fails', () => {
+    const error = new InvalidCredentialsError();
+    const validationError = error.message;
+    const { sut, authenticationStub } = makeSut({ validationError });
+    
+    jest.spyOn(authenticationStub, 'auth').mockRejectedValueOnce(error);
+
+    populateEmailField(sut, faker.internet.email(), { comparedField: 'title', comparedValue: error.message });
+    populatePasswordField(sut, faker.internet.password(), { comparedField: 'title', comparedValue: error.message });
+
+    const submitButton = sut.queryByText('Entrar') as HTMLButtonElement;
+    expect(submitButton).toBeTruthy();
   });
 });
