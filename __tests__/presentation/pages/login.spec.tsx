@@ -25,7 +25,7 @@ type SutParams = {
   validationError: string;
 }
 
-const history = createMemoryHistory()
+const history = createMemoryHistory({ initialEntries: ['/login'] });
 const makeSut = (params?: SutParams): SutTypes => {
   const validationStub = new ValidationStub();
   validationStub.errorMessage = params?.validationError || DEFAULT_LABEL_VALUE;
@@ -180,6 +180,8 @@ describe('Login Page', () => {
     const { sut, authenticationStub } = makeSut();
     simulateValidSubmit(sut);
     await waitFor(() => expect(localStorage.setItem).toHaveBeenLastCalledWith('@4devs/accessToken', authenticationStub.account.accessToken));    
+    expect(history.location.pathname).toBe('/');
+    expect(history.index).toBe(0);
   });
 
   it('should go to signup page on click on register button', () => {
