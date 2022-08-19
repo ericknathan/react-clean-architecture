@@ -1,6 +1,7 @@
 import React, { InputHTMLAttributes } from 'react';
-import { cleanup, fireEvent, render, RenderResult } from '@testing-library/react';
+import { cleanup, fireEvent, render, RenderResult, waitFor } from '@testing-library/react';
 import { faker } from '@faker-js/faker';
+import 'jest-localstorage-mock';
 
 import { Login } from '@/presentation/pages';
 import { AuthenticationStub, ValidationStub } from '@/mocks/presentation';
@@ -64,6 +65,10 @@ const compareFieldValue = (field: HTMLInputElement, comparationOptions: Comparat
 
 describe('Login Page', () => {
   afterEach(cleanup);
+  beforeEach(() => {
+    localStorage.clear();
+    jest.clearAllMocks();
+  })
 
   it('should start with initial state', () => {
     const { sut } = makeSut();
@@ -149,17 +154,24 @@ describe('Login Page', () => {
     expect(authenticationStub.callsCount).toBe(0);
   });
   
-  it('should present error if Authentication fails', () => {
+  it('should present error if Authentication fails', async () => {
     const error = new InvalidCredentialsError();
     const validationError = error.message;
     const { sut, authenticationStub } = makeSut({ validationError });
     
     jest.spyOn(authenticationStub, 'auth').mockRejectedValueOnce(error);
 
-    populateEmailField(sut, faker.internet.email(), { comparedField: 'title', comparedValue: error.message });
-    populatePasswordField(sut, faker.internet.password(), { comparedField: 'title', comparedValue: error.message });
+    populateEmailField(sut, faker.internet.email(), { comparedField: 'title', comparedValue: validationError });
+    populatePasswordField(sut, faker.internet.password(), { comparedField: 'title', comparedValue: validationError });
 
     const submitButton = sut.queryByText('Entrar') as HTMLButtonElement;
+    await waitFor(() => submitButton);
     expect(submitButton).toBeTruthy();
+  });
+
+  it('should add accessToken to localStorage if Authentication succeeds', async () => {
+    const { sut, authenticationStub } = makeSut();
+    simulateValidSubmit(sut);
+    await waitFor(() => expect(localStorage.setItem).toHaveBeenLastCalledWith('@4devs/accessToken', authenticationStub.account.accessToken));    
   });
 });

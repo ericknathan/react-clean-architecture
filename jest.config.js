@@ -13,5 +13,6 @@ module.exports = {
     '@/mocks/(.*)': '<rootDir>/__mocks__/$1',
     '@/(.*)': '<rootDir>/src/$1',
     '\\.scss$': 'identity-obj-proxy'
-  }
+  },
+  resetMocks: false,
 }
