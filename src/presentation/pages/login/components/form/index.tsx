@@ -71,14 +71,42 @@ export function LoginForm({ validation, authentication }: LoginProps) {
   }, [formStates.email, formStates.password]);
   
   return (
-    <form data-testid="form" className={styles.form} onSubmit={handleSubmitLoginForm}>
+    <form
+      data-testid="form"
+      className={styles.form}
+      onSubmit={handleSubmitLoginForm}
+    >
       <h2>Realizar login</h2>
-      <Input data-testid="email-input" type="email" name="email" placeholder="Digite seu e-mail" required onChange={handleInputChange} error={formStates.errors.email} />
-      <Input data-testid="password-input" type="password" name="password" placeholder="Digite sua senha" required onChange={handleInputChange}  error={formStates.errors.password}/>
-      <Button data-testid="signin-button"  className={styles.submitButton} disabled={formStates.email.trim() === '' || formStates.password.trim() === ''}>
+      <Input
+        data-testid="email-input"
+        type="email"
+        name="email"
+        placeholder="Digite seu e-mail"
+        required
+        onChange={handleInputChange}
+        error={formStates.errors.email} />
+      <Input
+        data-testid="password-input"
+        type="password"
+        name="password"
+        placeholder="Digite sua senha"
+        required
+        onChange={handleInputChange}
+        error={formStates.errors.password} />
+      <Button
+        data-testid="signin-button"
+        className={styles.submitButton}
+        disabled={formStates.email.trim() === '' || formStates.password.trim() === ''}
+      >
         {formStates.isLoading ? <Spinner /> : 'Entrar'}
       </Button>
-      <Link data-testid="signup-button" to="/signup" className={styles.createAccountButton}>Não possui um cadastro? Criar conta</Link>
+      <Link
+        data-testid="signup-button"
+        to="/signup"
+        className={styles.createAccountButton}
+      >
+        Não possui um cadastro? Criar conta
+      </Link>
     </form>
   )
 }
