@@ -1,4 +1,6 @@
-import React, { InputHTMLAttributes } from 'react';
+import React from 'react';
+import { Router } from 'react-router-dom';
+import { createMemoryHistory } from "history";
 import { cleanup, fireEvent, render, RenderResult, waitFor } from '@testing-library/react';
 import { faker } from '@faker-js/faker';
 import 'jest-localstorage-mock';
@@ -23,11 +25,16 @@ type SutParams = {
   validationError: string;
 }
 
+const history = createMemoryHistory()
 const makeSut = (params?: SutParams): SutTypes => {
   const validationStub = new ValidationStub();
   validationStub.errorMessage = params?.validationError || DEFAULT_LABEL_VALUE;
   const authenticationStub = new AuthenticationStub();
-  const sut = render(<Login validation={validationStub} authentication={authenticationStub} />);
+  const sut = render(
+    <Router location={history.location} navigator={history}>
+      <Login validation={validationStub} authentication={authenticationStub} />
+    </Router>
+  );
 
   return {
     sut,
@@ -40,7 +47,7 @@ const simulateValidSubmit = (sut: RenderResult, email = faker.internet.email(), 
   populateEmailField(sut, email);
   populatePasswordField(sut, password);
 
-  const submitButton = queryByTestId('submit-button') as HTMLButtonElement;
+  const submitButton = queryByTestId('signin-button') as HTMLButtonElement;
   fireEvent.click(submitButton);
 }
 
@@ -173,5 +180,13 @@ describe('Login Page', () => {
     const { sut, authenticationStub } = makeSut();
     simulateValidSubmit(sut);
     await waitFor(() => expect(localStorage.setItem).toHaveBeenLastCalledWith('@4devs/accessToken', authenticationStub.account.accessToken));    
+  });
+
+  it('should go to signup page on click on register button', () => {
+    const { sut } = makeSut();
+    const register = sut.getByTestId('signup-button');
+    fireEvent.click(register);
+    expect(history.location.pathname).toBe('/signup');
+    expect(history.index).toBe(1);
   });
 });
