@@ -14,7 +14,7 @@ type StateProps = {
   }
 }
 
-export function LoginForm({ validation }: LoginProps) {
+export function LoginForm({ validation, authentication }: LoginProps) {
   const [formStates, setFormStates] = useState<StateProps>({
     isLoading: false,
     email: '',
@@ -43,6 +43,7 @@ export function LoginForm({ validation }: LoginProps) {
   async function handleSubmitLoginForm(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setFormStates({ ...formStates, isLoading: true });
+    await authentication?.auth({ email: formStates.email, password: formStates.password });
   }
 
   useEffect(() => {
