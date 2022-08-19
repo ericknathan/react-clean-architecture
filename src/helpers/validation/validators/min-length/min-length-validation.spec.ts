@@ -8,6 +8,12 @@ describe('MinLengthValidation', () => {
   it('should return error if value length is invalid', () => {
     const sut = makeSut();
     const error = sut.validate('123');
-    expect(error).toEqual(new InvalidFieldError(sut.field, `O valor deve ter no mínimo ${sut.minLength} caracteres`))
-  })
-})
+    expect(error).toEqual(new InvalidFieldError(sut.field, `O valor deve ter no mínimo ${sut.minLength} caracteres`));
+  });
+
+  it('should return falsy if value length is valid', () => {
+    const sut = makeSut();
+    const error = sut.validate('12345');
+    expect(error).toBeFalsy();
+  });
+});
