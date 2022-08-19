@@ -3,25 +3,13 @@ import { cleanup, fireEvent, render, RenderResult } from '@testing-library/react
 import { faker } from '@faker-js/faker';
 
 import { Login } from '@/presentation/pages';
-import { ValidationStub } from '@/mocks/presentation';
-import { Authentication } from '@/domain/usecases';
-import { mockAccountModel } from '@/mocks/domain';
+import { AuthenticationStub, ValidationStub } from '@/mocks/presentation';
 
 const DEFAULT_LABEL_VALUE = '';
 
-class AuthenticationSut implements Authentication {
-  params: Authentication.Params = { email: '', password: '' };
-  
-  async auth(params: Authentication.Params): Promise<Authentication.Result> {
-    this.params = params;
-    return Promise.resolve(mockAccountModel());
-  }
-
-}
-
 type SutTypes = {
   sut: RenderResult;
-  authenticationSut: AuthenticationSut;
+  authenticationSut: AuthenticationStub;
 }
 
 type SutParams = {
@@ -31,7 +19,7 @@ type SutParams = {
 const makeSut = (params?: SutParams): SutTypes => {
   const validationStub = new ValidationStub();
   validationStub.errorMessage = params?.validationError || DEFAULT_LABEL_VALUE;
-  const authenticationSut = new AuthenticationSut();
+  const authenticationSut = new AuthenticationStub();
   const sut = render(<Login validation={validationStub} authentication={authenticationSut} />);
 
   return {
@@ -115,10 +103,10 @@ describe('Login Page', () => {
     const password = faker.internet.password();
 
     const emailInput = queryByTestId('email-input') as HTMLInputElement;
-    fireEvent.input(emailInput, { target: { value: faker.internet.email() } });
+    fireEvent.input(emailInput, { target: { value: email } });
 
     const passwordInput = queryByTestId('password-input') as HTMLInputElement;
-    fireEvent.input(passwordInput, { target: { value: faker.internet.password() } });
+    fireEvent.input(passwordInput, { target: { value: password } });
 
     const submitButton = queryByText('Entrar') as HTMLButtonElement;
     fireEvent.click(submitButton);
