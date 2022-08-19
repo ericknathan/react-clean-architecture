@@ -30,16 +30,6 @@ export function LoginForm({ validation, authentication }: LoginProps) {
     setFormStates({ ...formStates, [name]: value });
   }
 
-  function handleValidate(fieldName: string, fieldValue: string) {
-    setFormStates({
-      ...formStates,
-      errors: {
-        ...formStates.errors,
-        [fieldName]: validation?.validate({ fieldName, fieldValue }) || '',
-      }
-    })
-  }
-
   async function handleSubmitLoginForm(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setFormStates({ ...formStates, isLoading: true });
@@ -47,12 +37,15 @@ export function LoginForm({ validation, authentication }: LoginProps) {
   }
 
   useEffect(() => {
-    handleValidate('email', formStates.email);
-  }, [formStates.email]);
-
-  useEffect(() => {
-    handleValidate('password', formStates.password);
-  }, [formStates.password]);
+    setFormStates({
+      ...formStates,
+      errors: {
+        ...formStates.errors,
+        email: validation?.validate({ fieldName: 'email', fieldValue: formStates.email }) || '',
+        password: validation?.validate({ fieldName: 'password', fieldValue: formStates.password }) || '',
+      }
+    })
+  }, [formStates.email, formStates.password]);
   
   return (
     <form className={styles.form} onSubmit={handleSubmitLoginForm}>
