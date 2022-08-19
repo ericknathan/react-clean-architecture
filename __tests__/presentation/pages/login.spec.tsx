@@ -139,4 +139,13 @@ describe('Login Page', () => {
 
     expect(authenticationSut.callsCount).toBe(1);
   });
+  
+  it('should not call Authentication if form is invalid', () => {
+    const validationError = faker.random.words();
+    const { sut, authenticationSut } = makeSut({ validationError });
+    populateEmailField(sut);
+    fireEvent.submit(sut.queryByTestId('form') as HTMLFormElement);
+
+    expect(authenticationSut.callsCount).toBe(0);
+  });
 });
