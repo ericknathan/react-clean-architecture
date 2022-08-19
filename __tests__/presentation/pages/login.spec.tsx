@@ -34,12 +34,12 @@ const makeSut = (params?: SutParams): SutTypes => {
 }
 
 const simulateValidSubmit = (sut: RenderResult, email = faker.internet.email(), password = faker.internet.password()): void => {
-  const { queryByText } = sut;
+  const { queryByTestId } = sut;
 
   populateEmailField(sut, email);
   populatePasswordField(sut, password);
 
-  const submitButton = queryByText('Entrar') as HTMLButtonElement;
+  const submitButton = queryByTestId('submit-button') as HTMLButtonElement;
   fireEvent.click(submitButton);
 }
 
@@ -130,5 +130,13 @@ describe('Login Page', () => {
       email,
       password
     });
+  });
+  
+  it('should call Authentication only once', () => {
+    const { sut, authenticationSut } = makeSut();
+    simulateValidSubmit(sut);
+    simulateValidSubmit(sut);
+
+    expect(authenticationSut.callsCount).toBe(1);
   });
 });
