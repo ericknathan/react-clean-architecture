@@ -96,7 +96,7 @@ export function LoginForm({ validation, authentication }: LoginProps) {
       <Button
         data-testid="signin-button"
         className={styles.submitButton}
-        disabled={formStates.email.trim() === '' || formStates.password.trim() === ''}
+        disabled={formStates.email.trim() === '' || formStates.password.trim() === '' || formStates.errors.email !== '' || formStates.errors.password !== ''}
       >
         {formStates.isLoading ? <Spinner /> : 'Entrar'}
       </Button>
