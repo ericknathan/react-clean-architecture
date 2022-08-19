@@ -29,4 +29,8 @@
     background-color: $disabled;
     cursor: not-allowed;
   }
+
+  &:active:not(:disabled) {
+    transform: scale(.98);
+  }
 }
