@@ -48,30 +48,30 @@ describe('Login Page', () => {
   it('should show email error if Validation fails', async () => {
     const validationError = faker.random.words();
     const { sut } = makeSut({ validationError });
-    const { getByTestId } = sut;
+    const { queryByTestId } = sut;
     
-    const emailInput = getByTestId('email-input') as HTMLInputElement;
+    const emailInput = queryByTestId('email-input') as HTMLInputElement;
     fireEvent.input(emailInput, { target: { value: faker.internet.email() } });
     expect(emailInput.title).toBe(validationError)
   });
   
   it('should show password error if Validation fails', async () => {
     const { sut } = makeSut();
-    const { getByTestId } = sut;
+    const { queryByTestId } = sut;
     
-    const passwordInput = getByTestId('password-input') as HTMLInputElement;
+    const passwordInput = queryByTestId('password-input') as HTMLInputElement;
     fireEvent.input(passwordInput, { target: { value: faker.internet.password() } });
     expect(passwordInput.title).toBe(DEFAULT_LABEL_VALUE);
   });
 
   it('should enable submit button if form is valid', async () => {
     const { sut } = makeSut();
-    const { queryByText, getByTestId } = sut;
+    const { queryByText, queryByTestId } = sut;
 
-    const emailInput = getByTestId('email-input') as HTMLInputElement;
+    const emailInput = queryByTestId('email-input') as HTMLInputElement;
     fireEvent.input(emailInput, { target: { value: faker.internet.email() } });
 
-    const passwordInput = getByTestId('password-input') as HTMLInputElement;
+    const passwordInput = queryByTestId('password-input') as HTMLInputElement;
     fireEvent.input(passwordInput, { target: { value: faker.internet.password() } });
 
     const submitButton = queryByText('Entrar') as HTMLButtonElement;
