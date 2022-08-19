@@ -32,7 +32,7 @@ export function LoginForm({ validation, authentication }: LoginProps) {
 
   async function handleSubmitLoginForm(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if(formStates.isLoading) return;
+    if(formStates.isLoading || formStates.errors.email || formStates.errors.password) return;
 
     setFormStates({ ...formStates, isLoading: true });
     await authentication?.auth({ email: formStates.email, password: formStates.password });
@@ -50,7 +50,7 @@ export function LoginForm({ validation, authentication }: LoginProps) {
   }, [formStates.email, formStates.password]);
   
   return (
-    <form className={styles.form} onSubmit={handleSubmitLoginForm}>
+    <form data-testid="form" className={styles.form} onSubmit={handleSubmitLoginForm}>
       <h2>Realizar login</h2>
       <Input data-testid="email-input" type="email" name="email" placeholder="Digite seu e-mail" required onChange={handleInputChange} error={formStates.errors.email} />
       <Input data-testid="password-input" type="password" name="password" placeholder="Digite sua senha" required onChange={handleInputChange}  error={formStates.errors.password}/>
