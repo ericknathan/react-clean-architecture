@@ -2,7 +2,7 @@ import React from 'react';
 import { Router } from 'react-router-dom';
 import { createMemoryHistory } from "history";
 import { cleanup, fireEvent, render, RenderResult, waitFor } from '@testing-library/react';
-import { faker } from '@faker-js/faker';
+import { faker } from '@faker-js/faker/locale/pt_BR';
 import 'jest-localstorage-mock';
 
 import { Login } from '@/presentation/pages';
