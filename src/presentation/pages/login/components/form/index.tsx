@@ -64,8 +64,8 @@ export function LoginForm({ validation, authentication }: LoginProps) {
       ...formStates,
       errors: {
         ...formStates.errors,
-        email: validation?.validate({ fieldName: 'email', fieldValue: formStates.email }) || '',
-        password: validation?.validate({ fieldName: 'password', fieldValue: formStates.password }) || '',
+        email: formStates.email.trim().length > 0 ? validation.validate({ fieldName: 'email', fieldValue: formStates.email }) || '' : '',
+        password: formStates.password.trim().length > 0 ? validation.validate({ fieldName: 'password', fieldValue: formStates.password }) || '' : '',
       }
     })
   }, [formStates.email, formStates.password]);

@@ -5,8 +5,8 @@ import { Validation } from '@/presentation/protocols';
 import { Authentication } from '@/domain/usecases';
 
 export type LoginProps = {
-  validation?: Validation;
-  authentication?: Authentication;
+  validation: Validation;
+  authentication: Authentication;
 }
 
 export function Login({ validation, authentication }: LoginProps) {
