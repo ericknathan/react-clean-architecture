@@ -7,9 +7,9 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   className?: string;
 }
 
-export function Button({ children, className, ...props }: ButtonProps) {
+export function Button({ children, className = '', ...props }: ButtonProps) {
   return (
-    <button {...props} className={`${styles.button} ${className || ''}`}>
+    <button data-testid="button" {...props} className={`${styles.button} ${className}`}>
       {children}
     </button>
   )
