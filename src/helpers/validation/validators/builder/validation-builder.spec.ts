@@ -3,7 +3,8 @@ import { faker } from '@faker-js/faker/locale/pt_BR';
 import { 
   ValidationBuilder as sut,
   RequiredFieldValidation,
-  EmailValidation
+  EmailValidation,
+  MinLengthValidation,
 } from '@/helpers/validation/validators';
 
 describe('ValidationBuilder', () => {
@@ -17,5 +18,12 @@ describe('ValidationBuilder', () => {
     const fieldName = faker.database.column();
     const validations = sut.field(fieldName).email().build();
     expect(validations).toEqual([new EmailValidation()]);
+  });
+
+  it('should return MinLengthValidation', () => {
+    const fieldName = faker.database.column();
+    const minLength = 5;
+    const validations = sut.field(fieldName).min(minLength).build();
+    expect(validations).toEqual([new MinLengthValidation(fieldName, minLength)]);
   });
 });
