@@ -2,7 +2,11 @@ import { Validation } from '@/presentation/protocols';
 import { FieldValidation } from '@/helpers/validation/protocols';
 
 export class ValidationComposite implements Validation {
-  constructor(private readonly validators: FieldValidation[]) {}
+  private constructor(private readonly validators: FieldValidation[]) {}
+
+  static build(validators: FieldValidation[]): ValidationComposite {
+    return new ValidationComposite(validators);
+  }
 
   validate({ fieldName, fieldValue }: Validation.Params): Validation.Result {
     const validators = this.validators.filter(validator => validator.field === fieldName);

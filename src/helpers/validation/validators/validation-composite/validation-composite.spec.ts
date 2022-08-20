@@ -15,7 +15,7 @@ const makeSut = (
     new FieldValidationStub(fieldName),
     new FieldValidationStub(fieldName),
   ]): SutTypes => {
-  const sut = new ValidationComposite(fieldValidationStubs);
+  const sut = ValidationComposite.build(fieldValidationStubs);
 
   return {
     sut,
