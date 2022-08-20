@@ -7,5 +7,5 @@ describe('Button Component', () => {
     const { getByTestId } = render(<Button>example</Button>);
     const button = getByTestId('button');
     expect(button.className).not.toContain('undefined');
-  })
-})
+  });
+});
