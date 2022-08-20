@@ -9,10 +9,12 @@ type SutTypes = {
   fieldName: string;
 }
 
-const makeSut = (fieldName = faker.database.column(), fieldValidationStubs = [
-  new FieldValidationStub(fieldName),
-  new FieldValidationStub(fieldName),
-]): SutTypes => {
+const makeSut = (
+  fieldName = faker.database.column(),
+  fieldValidationStubs = [
+    new FieldValidationStub(fieldName),
+    new FieldValidationStub(fieldName),
+  ]): SutTypes => {
   const sut = new ValidationComposite(fieldValidationStubs);
 
   return {
@@ -33,5 +35,14 @@ describe('ValidationComposite', () => {
       fieldValue: faker.random.word(),
     });
     expect(error).toBe(fieldValidationStubs[0].error.message);
-  })
-})
+  });
+
+  it('should not return error if validation succeeds', () => {
+    const { sut, fieldName } = makeSut();
+    const error = sut.validate({
+      fieldName,
+      fieldValue: faker.random.word(),
+    });
+    expect(error).toBeFalsy();
+  });
+});
