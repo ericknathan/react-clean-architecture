@@ -9,7 +9,7 @@ export class AuthenticationStub implements Authentication {
   async auth(params: Authentication.Params): Promise<Authentication.Result> {
     this.params = params;
     this.callsCount++;
-    return Promise.resolve(this.account);
+    return this.account;
   }
 
 }

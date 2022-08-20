@@ -4,11 +4,16 @@
       "version": "detect"
     }
   },
+  "parser": "@typescript-eslint/parser",
   "extends": [
-    "standard-with-typescript",
-    "plugin:react/recommended"
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
   ],
-  "plugins": ["react"],
+  "plugins": [
+    "@typescript-eslint",
+    "react"
+  ],
   "parserOptions": {
     "project": "./tsconfig.json"
   },
@@ -19,6 +24,8 @@
     "@typescript-eslint/comma-spacing": "off",
     "@typescript-eslint/return-await": "off",
     "@typescript-eslint/no-namespace": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "@typescript-eslint/no-explicit-any": "off",
     "no-redeclare": "off",
     "import/export": "off",
     "react/jsx-uses-react": "error",

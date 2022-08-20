@@ -1,5 +1,5 @@
 import { HttpPostClient } from '@/data/protocols/http';
-import axios, { Axios, AxiosError } from 'axios';
+import axios, { AxiosError } from 'axios';
 
 export class AxiosHttpClient implements HttpPostClient<any, any> {
   async post (params: HttpPostClient.Params<any>): Promise<HttpPostClient.Response<any>> {
@@ -12,8 +12,8 @@ export class AxiosHttpClient implements HttpPostClient<any, any> {
     }
 
     return {
-      statusCode: httpResponse!!.status,
-      body: httpResponse!!.data
+      statusCode: httpResponse!.status,
+      body: httpResponse!.data
     }
   }
 }

@@ -10,6 +10,6 @@ export class HttpClient<T, R> implements HttpPostClient<T, R> {
   async post(params: HttpPostClient.Params<T>): Promise<HttpPostClient.Response<R>> {
     this.url = params.url;
     this.body = params.body;
-    return Promise.resolve(this.response);
+    return this.response;
   }
 }

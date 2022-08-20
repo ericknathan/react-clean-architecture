@@ -9,5 +9,5 @@ export namespace HttpPostClient {
     url: string;
     body?: T;
   }
-  export type Response<R> = HttpResponse;
+  export type Response<R> = HttpResponse<R>;
 }
