@@ -7,8 +7,8 @@ export namespace Validation {
     fieldName: string,
     fieldValue: string
   }
-  export type Result = string;
+  export type Result = string | void;
   export type Properties = {
-    errorMessage: string;
+    errorMessage?: string;
   }
 }
