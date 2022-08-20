@@ -3,7 +3,7 @@ export class InvalidFieldError extends Error {
     fieldName: string,
     message?: string
   ) {
-    super(`Campo ${fieldName} inválido. ${message || ''}`);
+    super(message || `Campo ${fieldName} inválido.`);
     this.name = 'InvalidFieldError';
   }
 }
