@@ -7,6 +7,7 @@ describe('ValidationComposite', () => {
   it('should return error if any validation fails', () => {
     const fieldName = faker.database.column();
     const validationStub = new FieldValidationStub(fieldName);
+    validationStub.error = new Error(faker.random.words());
     const validationStub2 = new FieldValidationStub(fieldName);
     validationStub2.error = new Error(faker.random.words());
     const sut = new ValidationComposite([
@@ -17,6 +18,6 @@ describe('ValidationComposite', () => {
       fieldName,
       fieldValue: faker.random.word(),
     });
-    expect(error).toBe(validationStub2.error.message);
+    expect(error).toBe(validationStub.error.message);
   })
 })
