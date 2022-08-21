@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 
 import { Logo } from '@/presentation/components';
 
-import styles from './login-navbar.module.scss';
+import styles from './signin-navbar.module.scss';
 
 function Navbar() {
   return (
@@ -13,4 +13,4 @@ function Navbar() {
   );
 }
 
-export const LoginNavbar = memo(Navbar);
+export const SignInNavbar = memo(Navbar);

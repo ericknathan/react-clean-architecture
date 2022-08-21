@@ -1,12 +1,12 @@
 import React from 'react';
 import { makeRemoteAuthentication, makeLocalSaveAccessToken } from '@/main/factories/usecases';
-import { Login } from '@/presentation/pages';
-import { makeLoginValidation } from '@/main/factories/pages';
+import { SignIn } from '@/presentation/pages';
+import { makeSignInValidation } from '@/main/factories/pages';
 
-export const makeLogin = () => (
-  <Login
+export const makeSignIn = () => (
+  <SignIn
     authentication={makeRemoteAuthentication()}
-    validation={makeLoginValidation()}
+    validation={makeSignInValidation()}
     saveAccessToken={makeLocalSaveAccessToken()}
   />
 );

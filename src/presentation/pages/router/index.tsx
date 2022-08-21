@@ -6,14 +6,14 @@ import {
 } from 'react-router-dom';
 
 type RouterProps = {
-  MakeLogin: React.FC;
+  makeSignIn: React.FC;
 }
 
-export function Router({ MakeLogin }: RouterProps) {
+export function Router({ makeSignIn: MakeSignIn }: RouterProps) {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/login" element={<MakeLogin />} />
+        <Route path="/signin" element={<MakeSignIn />} />
       </Routes>
     </BrowserRouter>
   );

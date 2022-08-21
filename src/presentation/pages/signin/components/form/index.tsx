@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 
 import { Button, Input, Spinner } from '@/presentation/components';
 
-import styles from './login-form.module.scss';
-import { LoginProps } from '../..';
+import styles from './signin-form.module.scss';
+import { SignInProps } from '../..';
 import { Link, useNavigate } from 'react-router-dom';
 
 type StateProps = {
@@ -15,7 +15,7 @@ type StateProps = {
   }
 }
 
-export function LoginForm({ validation, authentication, saveAccessToken }: LoginProps) {
+export function SignInForm({ validation, authentication, saveAccessToken }: SignInProps) {
   const navigate = useNavigate();
   const [formStates, setFormStates] = useState<StateProps>({
     isLoading: false,
@@ -32,7 +32,7 @@ export function LoginForm({ validation, authentication, saveAccessToken }: Login
     setFormStates({ ...formStates, [name]: value });
   }
 
-  async function handleSubmitLoginForm(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmitSignInForm(event: React.FormEvent<HTMLFormElement>) {
     try {
       event.preventDefault();
       if(formStates.isLoading || formStates.errors.email || formStates.errors.password) return;
@@ -74,9 +74,9 @@ export function LoginForm({ validation, authentication, saveAccessToken }: Login
     <form
       data-testid="form"
       className={styles.form}
-      onSubmit={handleSubmitLoginForm}
+      onSubmit={handleSubmitSignInForm}
     >
-      <h2>Realizar login</h2>
+      <h2>Realizar Login</h2>
       <Input
         data-testid="email-input"
         type="email"
