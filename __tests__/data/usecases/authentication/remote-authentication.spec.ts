@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker/locale/pt_BR';
 
 import { HttpClient } from '@/mocks/data';
 import { mockAuthentication, mockAccountModel } from '@/mocks/domain';
-import { RemoteAuthentication } from '@/data/usecases/authentication/remote-authentication';
+import { RemoteAuthentication } from '@/data/usecases';
 import { HttpStatusCode } from '@/data/protocols/http';
 import { InvalidCredentialsError, UnexpectedError } from '@/domain/errors';
 import { Authentication } from '@/domain/usecases';
