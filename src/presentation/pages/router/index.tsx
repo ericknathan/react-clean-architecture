@@ -4,6 +4,7 @@ import {
   Routes,
   Route,
 } from 'react-router-dom';
+import { SignUp } from '@/presentation/pages';
 
 type RouterProps = {
   makeSignIn: React.FC;
@@ -14,6 +15,7 @@ export function Router({ makeSignIn: MakeSignIn }: RouterProps) {
     <BrowserRouter>
       <Routes>
         <Route path="/signin" element={<MakeSignIn />} />
+        <Route path="/signup" element={<SignUp />} />
       </Routes>
     </BrowserRouter>
   );
