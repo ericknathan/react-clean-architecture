@@ -1,6 +1,6 @@
 import { SetStorage } from '@/data/protocols/cache';
 
-export class SetStorageStub<V = any> implements SetStorage {
+export class SetStorageMock<V = any> implements SetStorage {
   key!: string;
   value!: V;
 
