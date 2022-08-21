@@ -22,7 +22,7 @@ const makeSut = (
     fieldValidationStubs,
     fieldName
   };
-}
+};
 
 describe('ValidationComposite', () => {
   it('should return error if any validation fails', () => {

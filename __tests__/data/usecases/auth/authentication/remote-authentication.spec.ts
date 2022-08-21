@@ -20,8 +20,8 @@ const makeSut = (url: string = faker.internet.url()): SutTypes => {
   return {
     sut,
     httpPostClientSpy
-  }
-}
+  };
+};
 
 describe('RemoteAuthentication', () => {
   it('should call HttpClient with correct URL', async () => {
@@ -35,7 +35,7 @@ describe('RemoteAuthentication', () => {
     const { sut, httpPostClientSpy } = makeSut();
     const authenticationParams = mockAuthenticationParams();
     await sut.auth(authenticationParams);
-    expect(httpPostClientSpy.body).toEqual(authenticationParams)
+    expect(httpPostClientSpy.body).toEqual(authenticationParams);
   });
   
   it('should throw InvalidCredentialsError if HttpClient returns 401', async () => {
@@ -44,7 +44,7 @@ describe('RemoteAuthentication', () => {
       statusCode: HttpStatusCode.UNAUTHORIZED,
     };
     const promise = sut.auth(mockAuthenticationParams());
-    await expect(promise).rejects.toThrow(new InvalidCredentialsError())
+    await expect(promise).rejects.toThrow(new InvalidCredentialsError());
   });
   
   it('should throw UnexpectedError if HttpClient returns 400', async () => {
@@ -53,7 +53,7 @@ describe('RemoteAuthentication', () => {
       statusCode: HttpStatusCode.BAD_REQUEST,
     };
     const promise = sut.auth(mockAuthenticationParams());
-    await expect(promise).rejects.toThrow(new UnexpectedError())
+    await expect(promise).rejects.toThrow(new UnexpectedError());
   });
   
   it('should throw UnexpectedError if HttpClient returns 500', async () => {
@@ -62,7 +62,7 @@ describe('RemoteAuthentication', () => {
       statusCode: HttpStatusCode.SERVER_ERROR,
     };
     const promise = sut.auth(mockAuthenticationParams());
-    await expect(promise).rejects.toThrow(new UnexpectedError())
+    await expect(promise).rejects.toThrow(new UnexpectedError());
   });
   
   it('should throw UnexpectedError if HttpClient returns 404', async () => {
@@ -71,7 +71,7 @@ describe('RemoteAuthentication', () => {
       statusCode: HttpStatusCode.NOT_FOUND,
     };
     const promise = sut.auth(mockAuthenticationParams());
-    await expect(promise).rejects.toThrow(new UnexpectedError())
+    await expect(promise).rejects.toThrow(new UnexpectedError());
   });
   
   it('should return an AccountModel if HttpClient returns 200', async () => {

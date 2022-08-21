@@ -25,7 +25,7 @@ describe('LocalStorageAdapter', () => {
     const key = faker.database.column();
     const value = faker.random.word();
     
-    jest.spyOn(localStorage, 'setItem').mockImplementationOnce(() => { throw new Error() });
+    jest.spyOn(localStorage, 'setItem').mockImplementationOnce(() => { throw new Error(); });
     const promise = sut.set(key, value);
     await expect(promise).rejects.toThrow();
   });

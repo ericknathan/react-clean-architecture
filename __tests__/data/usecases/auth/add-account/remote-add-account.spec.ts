@@ -20,8 +20,8 @@ const makeSut = (url: string = faker.internet.url()): SutTypes => {
   return {
     sut,
     httpPostClientSpy
-  }
-}
+  };
+};
 
 
 describe('RemoteAddAccount', () => {
@@ -36,7 +36,7 @@ describe('RemoteAddAccount', () => {
     const { sut, httpPostClientSpy } = makeSut();
     const addAccountParams = mockAddAccountParams();
     await sut.add(addAccountParams);
-    expect(httpPostClientSpy.body).toEqual(addAccountParams)
+    expect(httpPostClientSpy.body).toEqual(addAccountParams);
   });
   
   it('should throw EmailInUseError if HttpClient returns 401', async () => {
@@ -45,7 +45,7 @@ describe('RemoteAddAccount', () => {
       statusCode: HttpStatusCode.FORBIDDEN,
     };
     const promise = sut.add(mockAddAccountParams());
-    await expect(promise).rejects.toThrow(new EmailInUseError())
+    await expect(promise).rejects.toThrow(new EmailInUseError());
   });
   
   it('should throw UnexpectedError if HttpClient returns 400', async () => {
@@ -54,7 +54,7 @@ describe('RemoteAddAccount', () => {
       statusCode: HttpStatusCode.BAD_REQUEST,
     };
     const promise = sut.add(mockAddAccountParams());
-    await expect(promise).rejects.toThrow(new UnexpectedError())
+    await expect(promise).rejects.toThrow(new UnexpectedError());
   });
 
   it('should throw UnexpectedError if HttpClient returns 500', async () => {
@@ -63,7 +63,7 @@ describe('RemoteAddAccount', () => {
       statusCode: HttpStatusCode.SERVER_ERROR,
     };
     const promise = sut.add(mockAddAccountParams());
-    await expect(promise).rejects.toThrow(new UnexpectedError())
+    await expect(promise).rejects.toThrow(new UnexpectedError());
   });
   
   it('should throw UnexpectedError if HttpClient returns 404', async () => {
@@ -72,7 +72,7 @@ describe('RemoteAddAccount', () => {
       statusCode: HttpStatusCode.NOT_FOUND,
     };
     const promise = sut.add(mockAddAccountParams());
-    await expect(promise).rejects.toThrow(new UnexpectedError())
+    await expect(promise).rejects.toThrow(new UnexpectedError());
   });
   
   it('should return an AccountModel if HttpClient returns 200', async () => {

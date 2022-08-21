@@ -10,11 +10,11 @@ describe('RequiredFieldValidation', () => {
     const sut = makeSut();
     const error = sut.validate('');
     expect(error).toEqual(new RequiredFieldError());
-  })
+  });
 
   it('should return false if field is not empty', () => {
     const sut = makeSut();
     const error = sut.validate(faker.random.word());
     expect(error).toBeFalsy();
-  })
-})
+  });
+});

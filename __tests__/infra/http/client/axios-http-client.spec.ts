@@ -18,7 +18,7 @@ const makeSut = (): SutTypes => {
   return {
     sut,
     mockedAxios
-  }
+  };
 };
 
 describe('AxiosHttpClient', () => {

@@ -12,7 +12,7 @@ export class HttpClient<T, R> implements HttpPostClient<T, R> {
   body?: T;
   response: HttpPostClient.Response<R> = {
     statusCode: HttpStatusCode.OK,
-  }
+  };
 
   async post(params: HttpPostClient.Params<T>): Promise<HttpPostClient.Response<R>> {
     this.url = params.url;

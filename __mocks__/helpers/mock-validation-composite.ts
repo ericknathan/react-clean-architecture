@@ -6,5 +6,5 @@ export class FieldValidationStub implements FieldValidation {
 
   validate(value: FieldValidation.Params): FieldValidation.Result {
     return this.error;
-  };
+  }
 }
