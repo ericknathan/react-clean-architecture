@@ -3,10 +3,10 @@ import { Router } from 'react-router-dom';
 import { createMemoryHistory } from "history";
 import { cleanup, fireEvent, render, RenderResult, waitFor } from '@testing-library/react';
 import { faker } from '@faker-js/faker/locale/pt_BR';
-import 'jest-localstorage-mock';
 
-import { Login } from '@/presentation/pages';
 import { AuthenticationStub, ValidationStub } from '@/mocks/presentation';
+import { SaveAccessTokenMock } from '@/mocks/domain';
+import { Login } from '@/presentation/pages';
 import { InvalidCredentialsError } from '@/domain/errors';
 
 const DEFAULT_LABEL_VALUE = '';
@@ -19,6 +19,7 @@ type ComparationOptions = {
 type SutTypes = {
   sut: RenderResult;
   authenticationStub: AuthenticationStub;
+  saveAccessTokenMock: SaveAccessTokenMock;
 }
 
 type SutParams = {
@@ -30,15 +31,21 @@ const makeSut = (params?: SutParams): SutTypes => {
   const validationStub = new ValidationStub();
   validationStub.errorMessage = params?.validationError || DEFAULT_LABEL_VALUE;
   const authenticationStub = new AuthenticationStub();
+  const saveAccessTokenMock = new SaveAccessTokenMock();
   const sut = render(
     <Router location={history.location} navigator={history}>
-      <Login validation={validationStub} authentication={authenticationStub} />
+      <Login
+        validation={validationStub}
+        authentication={authenticationStub}
+        saveAccessToken={saveAccessTokenMock}
+      />
     </Router>
   );
 
   return {
     sut,
-    authenticationStub
+    authenticationStub,
+    saveAccessTokenMock
   }
 }
 
@@ -68,7 +75,7 @@ const populatePasswordField = (sut: RenderResult, password = faker.internet.pass
 
 const compareFieldValue = (field: HTMLInputElement, comparationOptions: ComparationOptions): void => {
   const { comparedField, comparedValue } = comparationOptions;
-  expect(field[comparedField!!]).toBe(comparedValue);
+  expect(field[comparedField!]).toBe(comparedValue);
 }
 
 const testElementExists = (sut: RenderResult, fieldName: string): void => {
@@ -89,10 +96,6 @@ const testInputIsValid = (sut: RenderResult, fieldName: string, value: string): 
 
 describe('Login Page', () => {
   afterEach(cleanup);
-  beforeEach(() => {
-    localStorage.clear();
-    jest.clearAllMocks();
-  })
 
   it('should start with initial state', () => {
     const { sut } = makeSut();
@@ -177,10 +180,10 @@ describe('Login Page', () => {
     testButtonIsDisabled(sut, 'signin-button', true);
   });
 
-  it('should add accessToken to localStorage if Authentication succeeds', async () => {
-    const { sut, authenticationStub } = makeSut();
+  it('should call SaveAccessToken if Authentication succeeds', async () => {
+    const { sut, authenticationStub, saveAccessTokenMock } = makeSut();
     await simulateValidSubmit(sut);
-    await waitFor(() => expect(localStorage.setItem).toHaveBeenLastCalledWith('@4devs/accessToken', authenticationStub.account.accessToken));    
+    expect(saveAccessTokenMock.accessToken).toBe(authenticationStub.account.accessToken);
     expect(history.location.pathname).toBe('/');
     expect(history.index).toBe(0);
   });
