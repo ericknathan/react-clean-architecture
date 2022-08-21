@@ -15,7 +15,7 @@ type StateProps = {
   }
 }
 
-export function LoginForm({ validation, authentication }: LoginProps) {
+export function LoginForm({ validation, authentication, saveAccessToken }: LoginProps) {
   const navigate = useNavigate();
   const [formStates, setFormStates] = useState<StateProps>({
     isLoading: false,
@@ -41,7 +41,7 @@ export function LoginForm({ validation, authentication }: LoginProps) {
 
       const account = await authentication?.auth({ email: formStates.email, password: formStates.password });
       if(account) {
-        localStorage.setItem('@4devs/accessToken', account.accessToken);
+        await saveAccessToken.save(account.accessToken);
         navigate('/', { replace: true });
       }
     } catch (error) {
