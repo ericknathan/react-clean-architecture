@@ -188,6 +188,20 @@ describe('Login Page', () => {
     expect(history.index).toBe(0);
   });
 
+
+  it('should present error if SaveAccessToken fails', async () => {
+    const error = new InvalidCredentialsError();
+    const validationError = error.message;
+    const { sut, saveAccessTokenMock } = makeSut({ validationError });
+    
+    jest.spyOn(saveAccessTokenMock, 'save').mockRejectedValueOnce(error);
+
+    populateEmailField(sut, faker.internet.email(), { comparedField: 'title', comparedValue: validationError });
+    populatePasswordField(sut, faker.internet.password(), { comparedField: 'title', comparedValue: validationError });
+
+    testButtonIsDisabled(sut, 'signin-button', true);
+  });
+
   it('should go to signup page on click on register button', () => {
     const { sut } = makeSut();
     const register = sut.getByTestId('signup-button');
