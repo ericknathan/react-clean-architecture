@@ -12,4 +12,11 @@ describe('CompareFieldValidation', () => {
     const error = sut.validate(faker.internet.password());
     expect(error).toEqual(new InvalidFieldError(sut.field));
   });
+  
+  it('should return false if compare is valid', () => {
+    const valueToCompare = faker.random.word();
+    const sut = makeSut(valueToCompare);
+    const error = sut.validate(valueToCompare);
+    expect(error).toBeFalsy();
+  });
 });
