@@ -1,4 +1,4 @@
-import { Authentication } from '@/domain/usecases/authentication';
+import { Authentication } from '@/domain/usecases';
 import { faker } from '@faker-js/faker/locale/pt_BR';
 import { AccountModel } from '@/domain/models';
 
