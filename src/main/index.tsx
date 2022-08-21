@@ -9,4 +9,4 @@ ReactDOM.render(
     MakeLogin={makeLogin}
   />,
   document.getElementById('main')
-)
+);

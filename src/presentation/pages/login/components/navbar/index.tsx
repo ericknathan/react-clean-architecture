@@ -10,7 +10,7 @@ function Navbar() {
       <Logo />
       <h1>4Dev - Enquetes para programadores</h1>
     </nav>
-  )
+  );
 }
 
-export const LoginNavbar = memo(Navbar)
+export const LoginNavbar = memo(Navbar);

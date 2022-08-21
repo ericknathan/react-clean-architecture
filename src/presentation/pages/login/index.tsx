@@ -16,5 +16,5 @@ export function Login({ validation, authentication, saveAccessToken }: LoginProp
       <LoginNavbar />
       <LoginForm validation={validation} authentication={authentication} saveAccessToken={saveAccessToken} />
     </div>
-  )
+  );
 }

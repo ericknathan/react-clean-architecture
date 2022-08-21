@@ -16,5 +16,5 @@ export function Router({ MakeLogin }: RouterProps) {
         <Route path="/login" element={<MakeLogin />} />
       </Routes>
     </BrowserRouter>
-  )
+  );
 }

@@ -67,7 +67,7 @@ export function LoginForm({ validation, authentication, saveAccessToken }: Login
         email: formStates.email.trim().length > 0 ? validation.validate({ fieldName: 'email', fieldValue: formStates.email }) || '' : '',
         password: formStates.password.trim().length > 0 ? validation.validate({ fieldName: 'password', fieldValue: formStates.password }) || '' : '',
       }
-    })
+    });
   }, [formStates.email, formStates.password]);
   
   return (
@@ -108,5 +108,5 @@ export function LoginForm({ validation, authentication, saveAccessToken }: Login
         Não possui um cadastro? Criar conta
       </Link>
     </form>
-  )
+  );
 }

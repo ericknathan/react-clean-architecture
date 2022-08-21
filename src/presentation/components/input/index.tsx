@@ -15,5 +15,5 @@ export function Input({ name, error = '', ...props }: InputProps) {
         {error}
       </label>
     </div>
-  )
+  );
 }

@@ -9,4 +9,4 @@ export const makeLogin = () => (
     validation={makeLoginValidation()}
     saveAccessToken={makeLocalSaveAccessToken()}
   />
-)
+);

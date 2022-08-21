@@ -12,5 +12,5 @@ export function Button({ children, className = '', ...props }: ButtonProps) {
     <button data-testid="button" {...props} className={`${styles.button} ${className}`}>
       {children}
     </button>
-  )
+  );
 }
