@@ -1,8 +1,8 @@
 import { Authentication } from '@/domain/usecases';
-import { mockAccountModel, mockAuthentication } from '@/mocks/domain';
+import { mockAccountModel, mockAuthenticationParams } from '@/mocks/domain';
 
 export class AuthenticationStub implements Authentication {
-  params: Authentication.Params = mockAuthentication();
+  params: Authentication.Params = mockAuthenticationParams();
   account: Authentication.Result = mockAccountModel();
   callsCount = 0;
   
