@@ -128,4 +128,12 @@ describe('SignUp Page', () => {
 
     expect(addAccountStub.params).toEqual({ name, email, password, passwordConfirmation: password });
   });
+  
+  it('should call AddAccount only once', async () => {
+    const { sut, addAccountStub } = makeSut();
+    await Helper.simulateValidSubmit(sut, validSubmitFields());
+    await Helper.simulateValidSubmit(sut, validSubmitFields());
+
+    expect(addAccountStub.callsCount).toBe(1);
+  });
 });
