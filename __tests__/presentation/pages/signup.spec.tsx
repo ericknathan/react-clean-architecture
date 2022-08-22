@@ -2,6 +2,7 @@ import React from 'react';
 import { cleanup, render, RenderResult } from '@testing-library/react';
 
 import { SignUp } from '@/presentation/pages';
+import { Helper } from '@/tests/presentation/helpers';
 
 const DEFAULT_LABEL_VALUE = '';
 
@@ -19,27 +20,16 @@ const makeSut = (): SutTypes => {
   };
 };
 
-const testButtonIsDisabled = (sut: RenderResult, fieldName: string, expected = true): void => {
-  const button = sut.queryByTestId(fieldName) as HTMLButtonElement;
-  expect(button.disabled).toBe(expected);
-};
-
-const testInputIsValid = (sut: RenderResult, fieldName: string, value: string): void => {
-  const input = sut.queryByTestId(fieldName) as HTMLInputElement;
-  expect(input.required).toBeTruthy();
-  expect(input.title).toBe(value);
-};
-
 describe('SignUp Page', () => {
   afterEach(cleanup);
 
   it('should start with initial state', () => {
     const { sut } = makeSut();
 
-    testButtonIsDisabled(sut, 'signup-button');
-    testInputIsValid(sut, 'name-input', DEFAULT_LABEL_VALUE);
-    testInputIsValid(sut, 'email-input', DEFAULT_LABEL_VALUE);
-    testInputIsValid(sut, 'password-input', DEFAULT_LABEL_VALUE);
-    testInputIsValid(sut, 'password-confirmation-input', DEFAULT_LABEL_VALUE);
+    Helper.testButtonIsDisabled(sut, 'signup-button');
+    Helper.testInputIsValid(sut, 'name-input', DEFAULT_LABEL_VALUE);
+    Helper.testInputIsValid(sut, 'email-input', DEFAULT_LABEL_VALUE);
+    Helper.testInputIsValid(sut, 'password-input', DEFAULT_LABEL_VALUE);
+    Helper.testInputIsValid(sut, 'password-confirmation-input', DEFAULT_LABEL_VALUE);
   });
 });
