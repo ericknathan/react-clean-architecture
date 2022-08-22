@@ -1,10 +1,42 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
+import { SignUpProps } from '@/presentation/pages';
 import { Button, Input } from '@/presentation/components';
 
 import styles from './signup-form.module.scss';
 
-export function SignUpForm() {
+type StateProps = {
+  isLoading: boolean;
+  name: string;
+  errors: {
+    [key: string]: string;
+  }
+}
+
+export function SignUpForm({ validation }: SignUpProps) {
+  const [formStates, setFormStates] = useState<StateProps>({
+    isLoading: false,
+    name: '',
+    errors: {
+      name: '',
+    }
+  });
+
+  function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const { name, value } = event.target;
+    setFormStates({ ...formStates, [name]: value });
+  }
+
+  useEffect(() => {
+    setFormStates({
+      ...formStates,
+      errors: {
+        ...formStates.errors,
+        name: formStates.name.trim().length > 0 ? validation?.validate({ fieldName: 'name', fieldValue: formStates.name }) || '' : '',
+      }
+    });
+  }, [formStates.name]);
+  
   return (
     <form
       data-testid="form"
@@ -16,7 +48,9 @@ export function SignUpForm() {
         type="text"
         name="name"
         placeholder="Digite seu nome"
-        required />
+        required
+        onChange={handleInputChange}
+        error={formStates.errors.name} />
       <Input
         data-testid="email-input"
         type="email"
