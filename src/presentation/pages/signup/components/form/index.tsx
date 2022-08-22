@@ -9,6 +9,7 @@ type StateProps = {
   isLoading: boolean;
   name: string;
   email: string;
+  password: string;
   errors: {
     [key: string]: string;
   }
@@ -19,9 +20,11 @@ export function SignUpForm({ validation }: SignUpProps) {
     isLoading: false,
     name: '',
     email: '',
+    password: '',
     errors: {
       name: '',
       email: '',
+      password: '',
     }
   });
 
@@ -37,9 +40,10 @@ export function SignUpForm({ validation }: SignUpProps) {
         ...formStates.errors,
         name: formStates.name.trim().length > 0 ? validation?.validate({ fieldName: 'name', fieldValue: formStates.name }) || '' : '',
         email: formStates.email.trim().length > 0 ? validation?.validate({ fieldName: 'email', fieldValue: formStates.email }) || '' : '',
+        password: formStates.password.trim().length > 0 ? validation?.validate({ fieldName: 'password', fieldValue: formStates.password }) || '' : '',
       }
     });
-  }, [formStates.name, formStates.email]);
+  }, [formStates.name, formStates.email, formStates.password]);
   
   return (
     <form
@@ -68,7 +72,9 @@ export function SignUpForm({ validation }: SignUpProps) {
         type="password"
         name="password"
         placeholder="Digite sua senha"
-        required />
+        required
+        onChange={handleInputChange}
+        error={formStates.errors.password} />
       <Input
         data-testid="password-confirmation-input"
         type="password"
