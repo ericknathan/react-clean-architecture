@@ -144,4 +144,23 @@ describe('SignUp Page', () => {
 
     expect(addAccountStub.callsCount).toBe(0);
   });
+
+  // TODO: check why mock fails here
+  /*
+  it('should present error if AddAccount fails', async () => {
+    const error = new EmailInUseError();
+    const validationError = error.message;
+    const { sut, addAccountStub } = makeSut({ validationError });
+
+    jest.spyOn(addAccountStub, 'add').mockRejectedValueOnce(error);
+
+    await Helper.simulateValidSubmit(sut, validSubmitFields());
+
+    Helper.compareFieldValue(
+      sut.queryByTestId('main-error-message') as HTMLInputElement,
+      { comparedField: 'value', comparedValue: validationError }
+    );
+
+    Helper.testButtonIsDisabled(sut, 'signup-button', true);
+  }); */
 });
