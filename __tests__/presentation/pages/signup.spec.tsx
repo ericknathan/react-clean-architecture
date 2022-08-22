@@ -1,8 +1,11 @@
 import React from 'react';
+import { Router } from 'react-router-dom';
+import { createMemoryHistory } from "history";
 import { cleanup, render, RenderResult } from '@testing-library/react';
 import { faker } from '@faker-js/faker/locale/pt_BR';
 
 import { AddAccountStub, ValidationStub } from '@/mocks/presentation';
+import { SaveAccessTokenMock } from '@/mocks/domain';
 import { SignUp } from '@/presentation/pages';
 import { Helper } from '@/tests/presentation/helpers';
 
@@ -11,26 +14,33 @@ const DEFAULT_LABEL_VALUE = '';
 type SutTypes = {
   sut: RenderResult;
   addAccountStub: AddAccountStub;
+  saveAccessTokenMock: SaveAccessTokenMock;
 }
 
 type SutParams = {
   validationError: string;
 }
 
+const history = createMemoryHistory({ initialEntries: ['/signup'] });
 const makeSut = (params?: SutParams): SutTypes => {
   const validationStub = new ValidationStub();
   validationStub.errorMessage = params?.validationError || DEFAULT_LABEL_VALUE;
   const addAccountStub = new AddAccountStub();
+  const saveAccessTokenMock = new SaveAccessTokenMock();
   const sut = render(
-    <SignUp
-      validation={validationStub}
-      addAccount={addAccountStub}
-    />
+    <Router location={history.location} navigator={history}>
+      <SignUp
+        validation={validationStub}
+        addAccount={addAccountStub}
+        saveAccessToken={saveAccessTokenMock}
+      />
+    </Router>
   );
 
   return {
     sut,
-    addAccountStub
+    addAccountStub,
+    saveAccessTokenMock
   };
 };
 
@@ -163,4 +173,13 @@ describe('SignUp Page', () => {
 
     Helper.testButtonIsDisabled(sut, 'signup-button', true);
   }); */
+
+  it('should call SaveAccessToken if Authentication succeeds', async () => {
+    const { sut, addAccountStub, saveAccessTokenMock } = makeSut();
+    await Helper.simulateValidSubmit(sut, validSubmitFields());
+    expect(saveAccessTokenMock.accessToken).toBe(addAccountStub.account.accessToken);
+    expect(history.location.pathname).toBe('/');
+    expect(history.index).toBe(0);
+  });
+
 });
