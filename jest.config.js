@@ -18,4 +18,7 @@ module.exports = {
     '\\.scss$': 'identity-obj-proxy'
   },
   resetMocks: false,
+  testMatch: [
+    "!**/__tests__/**/helpers/**",
+  ]
 }
