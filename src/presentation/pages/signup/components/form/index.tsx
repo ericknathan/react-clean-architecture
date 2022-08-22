@@ -3,7 +3,6 @@ import React from 'react';
 import { Button, Input } from '@/presentation/components';
 
 import styles from './signup-form.module.scss';
-import { Link } from 'react-router-dom';
 
 export function SignUpForm() {
   return (
@@ -39,16 +38,17 @@ export function SignUpForm() {
       <Button
         data-testid="signup-button"
         className={styles.submitButton}
+        disabled
       >
         Criar conta
       </Button>
-      <Link
-        data-testid="signup-button"
-        to="/signin"
+      <a
+        data-testid="signin-button"
+        href="/signin"
         className={styles.createAccountButton}
       >
         Já possui um cadastro? Fazer login
-      </Link>
+      </a>
     </form>
   );
 }
