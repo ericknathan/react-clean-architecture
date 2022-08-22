@@ -1,16 +1,18 @@
 import React, { ButtonHTMLAttributes } from 'react';
+import { Spinner } from '../spinner';
 
 import styles from './button.module.scss';
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   children: React.ReactNode;
   className?: string;
+  isLoading?: boolean;
 }
 
-export function Button({ children, className = '', ...props }: ButtonProps) {
+export function Button({ children, className = '', isLoading = false, ...props }: ButtonProps) {
   return (
     <button data-testid="button" {...props} className={`${styles.button} ${className}`}>
-      {children}
+      {isLoading ? <Spinner /> : children} 
     </button>
   );
 }

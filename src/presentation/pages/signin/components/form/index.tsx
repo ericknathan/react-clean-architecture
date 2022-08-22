@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { Button, Input, Spinner } from '@/presentation/components';
+import { Button, Input } from '@/presentation/components';
 
 import styles from './signin-form.module.scss';
 import { SignInProps } from '../..';
@@ -97,8 +97,9 @@ export function SignInForm({ validation, authentication, saveAccessToken }: Sign
         data-testid="signin-button"
         className={styles.submitButton}
         disabled={formStates.email.trim() === '' || formStates.password.trim() === '' || formStates.errors.email !== '' || formStates.errors.password !== ''}
+        isLoading={formStates.isLoading}
       >
-        {formStates.isLoading ? <Spinner /> : 'Entrar'}
+        Entrar
       </Button>
       <Link
         data-testid="signup-button"
