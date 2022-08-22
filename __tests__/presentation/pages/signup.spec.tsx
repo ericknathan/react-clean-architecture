@@ -2,7 +2,7 @@ import React from 'react';
 import { cleanup, render, RenderResult } from '@testing-library/react';
 import { faker } from '@faker-js/faker/locale/pt_BR';
 
-import { ValidationStub } from '@/mocks/presentation';
+import { AddAccountStub, ValidationStub } from '@/mocks/presentation';
 import { SignUp } from '@/presentation/pages';
 import { Helper } from '@/tests/presentation/helpers';
 
@@ -10,6 +10,7 @@ const DEFAULT_LABEL_VALUE = '';
 
 type SutTypes = {
   sut: RenderResult;
+  addAccountStub: AddAccountStub;
 }
 
 type SutParams = {
@@ -19,14 +20,17 @@ type SutParams = {
 const makeSut = (params?: SutParams): SutTypes => {
   const validationStub = new ValidationStub();
   validationStub.errorMessage = params?.validationError || DEFAULT_LABEL_VALUE;
+  const addAccountStub = new AddAccountStub();
   const sut = render(
     <SignUp
       validation={validationStub}
+      addAccount={addAccountStub}
     />
   );
 
   return {
-    sut
+    sut,
+    addAccountStub
   };
 };
 
@@ -113,5 +117,15 @@ describe('SignUp Page', () => {
     await Helper.simulateValidSubmit(sut, validSubmitFields());
 
     Helper.testElementExists(sut, 'spinner');
+  });
+  
+  it('should call AddAccount with correct values', async () => {
+    const { sut, addAccountStub } = makeSut();
+    const name = faker.name.fullName();
+    const email = faker.internet.email();
+    const password = faker.internet.password();
+    await Helper.simulateValidSubmit(sut, validSubmitFields(name, email, password));
+
+    expect(addAccountStub.params).toEqual({ name, email, password, passwordConfirmation: password });
   });
 });
