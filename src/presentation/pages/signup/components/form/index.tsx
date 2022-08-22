@@ -8,6 +8,7 @@ import styles from './signup-form.module.scss';
 type StateProps = {
   isLoading: boolean;
   name: string;
+  email: string;
   errors: {
     [key: string]: string;
   }
@@ -17,8 +18,10 @@ export function SignUpForm({ validation }: SignUpProps) {
   const [formStates, setFormStates] = useState<StateProps>({
     isLoading: false,
     name: '',
+    email: '',
     errors: {
       name: '',
+      email: '',
     }
   });
 
@@ -33,9 +36,10 @@ export function SignUpForm({ validation }: SignUpProps) {
       errors: {
         ...formStates.errors,
         name: formStates.name.trim().length > 0 ? validation?.validate({ fieldName: 'name', fieldValue: formStates.name }) || '' : '',
+        email: formStates.email.trim().length > 0 ? validation?.validate({ fieldName: 'email', fieldValue: formStates.email }) || '' : '',
       }
     });
-  }, [formStates.name]);
+  }, [formStates.name, formStates.email]);
   
   return (
     <form
@@ -56,7 +60,9 @@ export function SignUpForm({ validation }: SignUpProps) {
         type="email"
         name="email"
         placeholder="Digite seu e-mail"
-        required />
+        required
+        onChange={handleInputChange}
+        error={formStates.errors.email} />
       <Input
         data-testid="password-input"
         type="password"
