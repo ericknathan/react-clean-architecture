@@ -8,26 +8,19 @@ type ComparationOptions = {
 
 export const simulateValidSubmit = async (sut: RenderResult, email = faker.internet.email(), password = faker.internet.password()): Promise<void> => {
   const { queryByTestId } = sut;
-  populateEmailField(sut, email);
-  populatePasswordField(sut, password);
+  populateField(sut, 'email-input', email);
+  populateField(sut, 'password-input', password);
 
   const form = queryByTestId('form') as HTMLFormElement;
   fireEvent.submit(form);
   await waitFor(() => form);
 };
 
-export const populateEmailField = (sut: RenderResult, email = faker.internet.email(), comparationOptions: ComparationOptions = {}): HTMLInputElement => {
-  const emailInput = sut.queryByTestId('email-input') as HTMLInputElement;
-  fireEvent.input(emailInput, { target: { value: email } });
-  if (comparationOptions.comparedField) compareFieldValue(emailInput, comparationOptions);
-  return emailInput;
-};
-
-export const populatePasswordField = (sut: RenderResult, password = faker.internet.password(), comparationOptions: ComparationOptions = {}): HTMLInputElement => {
-  const passwordInput = sut.queryByTestId('password-input') as HTMLInputElement;
-  fireEvent.input(passwordInput, { target: { value: password } });
-  if (comparationOptions.comparedField) compareFieldValue(passwordInput, comparationOptions);
-  return passwordInput;
+export const populateField = (sut: RenderResult, fieldName: string, value = faker.random.word(), comparationOptions: ComparationOptions = {}): HTMLInputElement => {
+  const input = sut.queryByTestId(fieldName) as HTMLInputElement;
+  fireEvent.input(input, { target: { value } });
+  if (comparationOptions.comparedField) compareFieldValue(input, comparationOptions);
+  return input;
 };
 
 export const compareFieldValue = (field: HTMLInputElement, comparationOptions: ComparationOptions): void => {

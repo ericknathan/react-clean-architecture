@@ -59,29 +59,29 @@ describe('SignIn Page', () => {
   it('should show email error if Validation fails', () => {
     const validationError = faker.random.words();
     const { sut } = makeSut({ validationError });
-    Helper.populateEmailField(sut, faker.internet.email(), { comparedField: 'title', comparedValue: validationError });
+    Helper.populateField(sut, 'email-input', faker.internet.email(), { comparedField: 'title', comparedValue: validationError });
   });
   
   it('should show password error if Validation fails', () => {
     const validationError = faker.random.words();
     const { sut } = makeSut({ validationError });
-    Helper.populatePasswordField(sut, faker.internet.password(), { comparedField: 'title', comparedValue: validationError });
+    Helper.populateField(sut, 'password-input', faker.internet.password(), { comparedField: 'title', comparedValue: validationError });
   });
 
   it('should not show input email error if Validation succeeds', () => {
     const { sut } = makeSut();
-    Helper.populateEmailField(sut, faker.internet.email(), { comparedField: 'title', comparedValue: DEFAULT_LABEL_VALUE });
+    Helper.populateField(sut, 'email-input', faker.internet.email(), { comparedField: 'title', comparedValue: DEFAULT_LABEL_VALUE });
   });
   
   it('should not show input password error if Validation succeeds', () => {
     const { sut } = makeSut();
-    Helper.populatePasswordField(sut, faker.internet.password(), { comparedField: 'title', comparedValue: DEFAULT_LABEL_VALUE });
+    Helper.populateField(sut, 'password-input', faker.internet.password(), { comparedField: 'title', comparedValue: DEFAULT_LABEL_VALUE });
   });
 
   it('should enable submit button if form is valid', () => {
     const { sut } = makeSut();
-    Helper.populateEmailField(sut);
-    Helper.populatePasswordField(sut);
+    Helper.populateField(sut, 'email-input', faker.internet.email());
+    Helper.populateField(sut, 'password-input', faker.internet.password());
 
     Helper.testButtonIsDisabled(sut, 'signin-button', false);
   });
@@ -125,8 +125,8 @@ describe('SignIn Page', () => {
     
     jest.spyOn(authenticationStub, 'auth').mockRejectedValueOnce(error);
 
-    Helper.populateEmailField(sut, faker.internet.email(), { comparedField: 'title', comparedValue: validationError });
-    Helper.populatePasswordField(sut, faker.internet.password(), { comparedField: 'title', comparedValue: validationError });
+    Helper.populateField(sut, 'email-input', faker.internet.email(), { comparedField: 'title', comparedValue: validationError });
+    Helper.populateField(sut, 'password-input', faker.internet.password(), { comparedField: 'title', comparedValue: validationError });
 
     Helper.testButtonIsDisabled(sut, 'signin-button', true);
   });
@@ -147,8 +147,8 @@ describe('SignIn Page', () => {
     
     jest.spyOn(saveAccessTokenMock, 'save').mockRejectedValueOnce(error);
 
-    Helper.populateEmailField(sut, faker.internet.email(), { comparedField: 'title', comparedValue: validationError });
-    Helper.populatePasswordField(sut, faker.internet.password(), { comparedField: 'title', comparedValue: validationError });
+    Helper.populateField(sut, 'email-input', faker.internet.email(), { comparedField: 'title', comparedValue: validationError });
+    Helper.populateField(sut, 'password-input', faker.internet.password(), { comparedField: 'title', comparedValue: validationError });
 
     Helper.testButtonIsDisabled(sut, 'signin-button', true);
   });
