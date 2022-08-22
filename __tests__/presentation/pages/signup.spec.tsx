@@ -54,4 +54,10 @@ describe('SignUp Page', () => {
     const { sut } = makeSut({ validationError });
     Helper.populateField(sut, 'email-input', faker.internet.email(), { comparedField: 'title', comparedValue: validationError });
   });
+  
+  it('should show password error if Validation fails', () => {
+    const validationError = faker.random.words();
+    const { sut } = makeSut({ validationError });
+    Helper.populateField(sut, 'password-input', faker.internet.password(), { comparedField: 'title', comparedValue: validationError });
+  });
 });
