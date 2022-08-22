@@ -136,4 +136,12 @@ describe('SignUp Page', () => {
 
     expect(addAccountStub.callsCount).toBe(1);
   });
+  
+  it('should not call AddAccount if form is invalid', async () => {
+    const validationError = faker.random.words();
+    const { sut, addAccountStub } = makeSut({ validationError });
+    await Helper.simulateValidSubmit(sut, validSubmitFields());
+
+    expect(addAccountStub.callsCount).toBe(0);
+  });
 });
