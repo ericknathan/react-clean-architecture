@@ -24,6 +24,10 @@ export function SignInForm({ validation, authentication, saveAccessToken }: Sign
     errors: {}
   });
 
+  const isFormInvalid =
+  Object.values(formStates).filter(value => typeof value === 'string' && value.trim() === '').length > 0 ||
+  Object.values(formStates.errors).filter(value => value.trim() !== '').length > 0;
+
   function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
     setFormStates({ ...formStates, [name]: value });
@@ -32,7 +36,7 @@ export function SignInForm({ validation, authentication, saveAccessToken }: Sign
   async function handleSubmitSignInForm(event: React.FormEvent<HTMLFormElement>) {
     try {
       event.preventDefault();
-      if(formStates.isLoading || Object.values(formStates.errors).filter(value => value.trim() !== '').length > 0) return;
+      if(formStates.isLoading || isFormInvalid) return;
   
       setFormStates({ ...formStates, isLoading: true });
 
@@ -96,7 +100,7 @@ export function SignInForm({ validation, authentication, saveAccessToken }: Sign
       <Button
         data-testid="signin-button"
         className={styles.submitButton}
-        disabled={formStates.email.trim() === '' || formStates.password.trim() === '' || formStates.errors.email !== '' || formStates.errors.password !== ''}
+        disabled={isFormInvalid}
         isLoading={formStates.isLoading}
       >
         Entrar

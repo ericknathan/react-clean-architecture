@@ -29,6 +29,10 @@ export function SignUpForm({ validation, addAccount, saveAccessToken }: SignUpPr
     errors: {}
   });
 
+  const isFormInvalid =
+    Object.values(formStates).filter(value => typeof value === 'string' && value.trim() === '').length > 0 ||
+    Object.values(formStates.errors).filter(value => value.trim() !== '').length > 0;
+
   function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
     setFormStates({ ...formStates, [name]: value });
@@ -37,7 +41,7 @@ export function SignUpForm({ validation, addAccount, saveAccessToken }: SignUpPr
   async function handleSubmitSignInForm(event: React.FormEvent<HTMLFormElement>) {
     try {
       event.preventDefault();
-      if(formStates.isLoading || Object.values(formStates.errors).filter(value => value.trim() !== '').length > 0) return;
+      if(formStates.isLoading || isFormInvalid) return;
   
       setFormStates({ ...formStates, isLoading: true });
 
@@ -125,10 +129,7 @@ export function SignUpForm({ validation, addAccount, saveAccessToken }: SignUpPr
       <Button
         data-testid="signup-button"
         className={styles.submitButton}
-        disabled={
-          formStates.name.trim() === '' || formStates.email.trim() === '' || formStates.password.trim() === '' || formStates.passwordConfirmation.trim() === '' ||
-          formStates.errors.name !== '' || formStates.errors.email !== '' || formStates.errors.password !== '' || formStates.errors.passwordConfirmation !== ''
-        }
+        disabled={isFormInvalid}
         isLoading={formStates.isLoading}
       >
         Criar conta
