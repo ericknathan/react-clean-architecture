@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { SignUpProps } from '@/presentation/pages';
-import { Button, Input } from '@/presentation/components';
+import { Button, ErrorMessage, Input } from '@/presentation/components';
 
 import styles from './signup-form.module.scss';
 
@@ -23,12 +23,7 @@ export function SignUpForm({ validation, addAccount }: SignUpProps) {
     email: '',
     password: '',
     passwordConfirmation: '',
-    errors: {
-      name: '',
-      email: '',
-      password: '',
-      passwordConfirmation: ''
-    }
+    errors: {}
   });
 
   function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -39,7 +34,7 @@ export function SignUpForm({ validation, addAccount }: SignUpProps) {
   async function handleSubmitSignInForm(event: React.FormEvent<HTMLFormElement>) {
     try {
       event.preventDefault();
-      if(formStates.isLoading || formStates.errors.name || formStates.errors.email || formStates.errors.password || formStates.errors.passwordConfirmation) return;
+      if(formStates.isLoading || Object.values(formStates.errors).filter(value => value.trim() !== '').length > 0) return;
   
       setFormStates({ ...formStates, isLoading: true });
 
@@ -55,9 +50,7 @@ export function SignUpForm({ validation, addAccount }: SignUpProps) {
         ...formStates,
         isLoading: true,
         errors: {
-          ...formStates.errors,
-          email: error instanceof Error ? error.message : '',
-          password: error instanceof Error ? error.message : '',
+          main: error instanceof Error ? error.message : '',
         }
       });
     } finally {
@@ -70,10 +63,11 @@ export function SignUpForm({ validation, addAccount }: SignUpProps) {
       ...formStates,
       errors: {
         ...formStates.errors,
-        name: formStates.name.trim().length > 0 ? validation?.validate({ fieldName: 'name', fieldValue: formStates.name }) || '' : '',
-        email: formStates.email.trim().length > 0 ? validation?.validate({ fieldName: 'email', fieldValue: formStates.email }) || '' : '',
-        password: formStates.password.trim().length > 0 ? validation?.validate({ fieldName: 'password', fieldValue: formStates.password }) || '' : '',
-        passwordConfirmation: formStates.passwordConfirmation.trim().length > 0 ? validation?.validate({ fieldName: 'passwordConfirmation', fieldValue: formStates.passwordConfirmation }) || '' : '',
+        main: '',
+        name: formStates.name ? validation?.validate({ fieldName: 'name', fieldValue: formStates.name }) || '' : '',
+        email: formStates.email ? validation?.validate({ fieldName: 'email', fieldValue: formStates.email }) || '' : '',
+        password: formStates.password ? validation?.validate({ fieldName: 'password', fieldValue: formStates.password }) || '' : '',
+        passwordConfirmation: formStates.passwordConfirmation ? validation?.validate({ fieldName: 'passwordConfirmation', fieldValue: formStates.passwordConfirmation }) || '' : '',
       }
     });
   }, [formStates.name, formStates.email, formStates.password, formStates.passwordConfirmation]);
@@ -117,6 +111,9 @@ export function SignUpForm({ validation, addAccount }: SignUpProps) {
         required
         onChange={handleInputChange}
         error={formStates.errors.passwordConfirmation} />
+      <ErrorMessage
+        name="main"
+        error={formStates.errors.main} />
       <Button
         data-testid="signup-button"
         className={styles.submitButton}

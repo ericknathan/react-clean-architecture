@@ -1,4 +1,5 @@
 import React, { InputHTMLAttributes } from 'react';
+import { ErrorMessage } from '../error-message';
 
 import styles from './input.module.scss';
 
@@ -11,9 +12,10 @@ export function Input({ name, error = '', ...props }: InputProps) {
   return (
     <div className={styles.inputWrapper}>
       <input title={error} {...props} name={name} autoComplete="off" className={`${styles.input} ${error.trim() !== '' ? styles.inputError : ''} ${props.className || ''}`} />
-      <label data-testid={`${name}-label`}>
-        {error}
-      </label>
+      <ErrorMessage
+        name={name}
+        error={error}
+      />
     </div>
   );
 }

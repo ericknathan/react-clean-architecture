@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { Button, Input } from '@/presentation/components';
+import { Button, Input, ErrorMessage } from '@/presentation/components';
 
 import styles from './signin-form.module.scss';
 import { SignInProps } from '../..';
@@ -21,10 +21,7 @@ export function SignInForm({ validation, authentication, saveAccessToken }: Sign
     isLoading: false,
     email: '',
     password: '',
-    errors: {
-      email: '',
-      password: '',
-    }
+    errors: {}
   });
 
   function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -35,11 +32,12 @@ export function SignInForm({ validation, authentication, saveAccessToken }: Sign
   async function handleSubmitSignInForm(event: React.FormEvent<HTMLFormElement>) {
     try {
       event.preventDefault();
-      if(formStates.isLoading || formStates.errors.email || formStates.errors.password) return;
+      if(formStates.isLoading || Object.values(formStates.errors).filter(value => value.trim() !== '').length > 0) return;
   
       setFormStates({ ...formStates, isLoading: true });
 
-      const account = await authentication?.auth({ email: formStates.email, password: formStates.password });
+      const { email, password } = formStates;
+      const account = await authentication.auth({ email, password });
       if(account) {
         await saveAccessToken.save(account.accessToken);
         navigate('/', { replace: true });
@@ -49,9 +47,7 @@ export function SignInForm({ validation, authentication, saveAccessToken }: Sign
         ...formStates,
         isLoading: true,
         errors: {
-          ...formStates.errors,
-          email: error instanceof Error ? error.message : '',
-          password: error instanceof Error ? error.message : '',
+          main: error instanceof Error ? error.message : '',
         }
       });
     } finally {
@@ -64,8 +60,9 @@ export function SignInForm({ validation, authentication, saveAccessToken }: Sign
       ...formStates,
       errors: {
         ...formStates.errors,
-        email: formStates.email.trim().length > 0 ? validation.validate({ fieldName: 'email', fieldValue: formStates.email }) || '' : '',
-        password: formStates.password.trim().length > 0 ? validation.validate({ fieldName: 'password', fieldValue: formStates.password }) || '' : '',
+        main: '',
+        email: formStates.email ? validation.validate({ fieldName: 'email', fieldValue: formStates.email }) || '' : '',
+        password: formStates.password ? validation.validate({ fieldName: 'password', fieldValue: formStates.password }) || '' : '',
       }
     });
   }, [formStates.email, formStates.password]);
@@ -93,6 +90,9 @@ export function SignInForm({ validation, authentication, saveAccessToken }: Sign
         required
         onChange={handleInputChange}
         error={formStates.errors.password} />
+      <ErrorMessage
+        name="main"
+        error={formStates.errors.main} />
       <Button
         data-testid="signin-button"
         className={styles.submitButton}
