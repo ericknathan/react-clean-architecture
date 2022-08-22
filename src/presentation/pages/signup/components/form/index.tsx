@@ -4,7 +4,7 @@ import { Button, ErrorMessage, Input } from '@/presentation/components';
 
 import styles from './signup-form.module.scss';
 import { SignUpProps } from '@/presentation/pages';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 
 type StateProps = {
@@ -133,13 +133,13 @@ export function SignUpForm({ validation, addAccount, saveAccessToken }: SignUpPr
       >
         Criar conta
       </Button>
-      <a
-        data-testid="signin-button"
-        href="/signin"
+      <Link
+        data-testid="signin-link"
+        to="/signin"
         className={styles.createAccountButton}
       >
         Já possui um cadastro? Fazer login
-      </a>
+      </Link>
     </form>
   );
 }
