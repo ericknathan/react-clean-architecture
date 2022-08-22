@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 
-import { SignUpProps } from '@/presentation/pages';
 import { Button, ErrorMessage, Input } from '@/presentation/components';
 
 import styles from './signup-form.module.scss';
+import { SignUpProps } from '@/presentation/pages';
+import { useNavigate } from 'react-router-dom';
+
 
 type StateProps = {
   isLoading: boolean;
@@ -16,7 +18,8 @@ type StateProps = {
   }
 }
 
-export function SignUpForm({ validation, addAccount }: SignUpProps) {
+export function SignUpForm({ validation, addAccount, saveAccessToken }: SignUpProps) {
+  const navigate = useNavigate();
   const [formStates, setFormStates] = useState<StateProps>({
     isLoading: false,
     name: '',
@@ -39,12 +42,17 @@ export function SignUpForm({ validation, addAccount }: SignUpProps) {
       setFormStates({ ...formStates, isLoading: true });
 
       const { name, email, password, passwordConfirmation } = formStates;
-      await addAccount?.add({
+      const account = await addAccount?.add({
         name,
         email,
         password,
         passwordConfirmation
       });
+
+      if(account) {
+        await saveAccessToken?.save(account.accessToken);
+        navigate('/', { replace: true });
+      }
     } catch (error) {
       setFormStates({
         ...formStates,
