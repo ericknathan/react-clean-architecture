@@ -8,6 +8,7 @@ import { AddAccountStub, ValidationStub } from '@/mocks/presentation';
 import { SaveAccessTokenMock } from '@/mocks/domain';
 import { SignUp } from '@/presentation/pages';
 import { Helper } from '@/tests/presentation/helpers';
+import { EmailInUseError } from '@/domain/errors';
 
 const DEFAULT_LABEL_VALUE = '';
 
@@ -182,4 +183,15 @@ describe('SignUp Page', () => {
     expect(history.index).toBe(0);
   });
 
+  it('should present error if SaveAccessToken fails', async () => {
+    const error = new EmailInUseError();
+    const validationError = error.message;
+    const { sut, saveAccessTokenMock } = makeSut({ validationError });
+
+    jest.spyOn(saveAccessTokenMock, 'save').mockRejectedValueOnce(error);
+
+    Helper.simulateValidSubmit(sut, validSubmitFields());
+    
+    Helper.testButtonIsDisabled(sut, 'signup-button', true);
+  });
 });
