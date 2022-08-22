@@ -102,7 +102,7 @@ export function SignInForm({ validation, authentication, saveAccessToken }: Sign
         Entrar
       </Button>
       <Link
-        data-testid="signup-button"
+        data-testid="signup-link"
         to="/signup"
         className={styles.createAccountButton}
       >

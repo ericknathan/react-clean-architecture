@@ -162,7 +162,7 @@ describe('SignIn Page', () => {
   
   it('should go to signup page on click on register button', () => {
     const { sut } = makeSut();
-    const register = sut.getByTestId('signup-button');
+    const register = sut.getByTestId('signup-link');
     fireEvent.click(register);
     expect(history.location.pathname).toBe('/signup');
     expect(history.index).toBe(1);
