@@ -10,6 +10,7 @@ type StateProps = {
   name: string;
   email: string;
   password: string;
+  passwordConfirmation: string;
   errors: {
     [key: string]: string;
   }
@@ -21,10 +22,12 @@ export function SignUpForm({ validation }: SignUpProps) {
     name: '',
     email: '',
     password: '',
+    passwordConfirmation: '',
     errors: {
       name: '',
       email: '',
       password: '',
+      passwordConfirmation: ''
     }
   });
 
@@ -41,9 +44,10 @@ export function SignUpForm({ validation }: SignUpProps) {
         name: formStates.name.trim().length > 0 ? validation?.validate({ fieldName: 'name', fieldValue: formStates.name }) || '' : '',
         email: formStates.email.trim().length > 0 ? validation?.validate({ fieldName: 'email', fieldValue: formStates.email }) || '' : '',
         password: formStates.password.trim().length > 0 ? validation?.validate({ fieldName: 'password', fieldValue: formStates.password }) || '' : '',
+        passwordConfirmation: formStates.passwordConfirmation.trim().length > 0 ? validation?.validate({ fieldName: 'passwordConfirmation', fieldValue: formStates.passwordConfirmation }) || '' : '',
       }
     });
-  }, [formStates.name, formStates.email, formStates.password]);
+  }, [formStates.name, formStates.email, formStates.password, formStates.passwordConfirmation]);
   
   return (
     <form
@@ -78,9 +82,11 @@ export function SignUpForm({ validation }: SignUpProps) {
       <Input
         data-testid="password-confirmation-input"
         type="password"
-        name="password-confirmation"
+        name="passwordConfirmation"
         placeholder="Digite sua confirmação de senha"
-        required />
+        required
+        onChange={handleInputChange}
+        error={formStates.errors.passwordConfirmation} />
       <Button
         data-testid="signup-button"
         className={styles.submitButton}
