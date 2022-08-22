@@ -86,4 +86,14 @@ describe('SignUp Page', () => {
     const { sut } = makeSut();
     Helper.populateField(sut, 'password-confirmation-input', faker.internet.password(), { comparedField: 'title', comparedValue: DEFAULT_LABEL_VALUE });
   });
+  
+  it('should enable submit button if form is valid', () => {
+    const { sut } = makeSut();
+    Helper.populateField(sut, 'name-input', faker.internet.email());
+    Helper.populateField(sut, 'email-input', faker.internet.email());
+    Helper.populateField(sut, 'password-input', faker.internet.password());
+    Helper.populateField(sut, 'password-confirmation-input', faker.internet.password());
+
+    Helper.testButtonIsDisabled(sut, 'signup-button', false);
+  });
 });
