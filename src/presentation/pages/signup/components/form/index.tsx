@@ -36,6 +36,27 @@ export function SignUpForm({ validation }: SignUpProps) {
     setFormStates({ ...formStates, [name]: value });
   }
 
+  async function handleSubmitSignInForm(event: React.FormEvent<HTMLFormElement>) {
+    try {
+      event.preventDefault();
+      if(formStates.isLoading || formStates.errors.email || formStates.errors.password) return;
+  
+      setFormStates({ ...formStates, isLoading: true });
+    } catch (error) {
+      setFormStates({
+        ...formStates,
+        isLoading: true,
+        errors: {
+          ...formStates.errors,
+          email: error instanceof Error ? error.message : '',
+          password: error instanceof Error ? error.message : '',
+        }
+      });
+    } finally {
+      setTimeout(() => setFormStates((previousState) => ({ ...previousState, isLoading: false })), 500);
+    }
+  }
+
   useEffect(() => {
     setFormStates({
       ...formStates,
@@ -53,6 +74,7 @@ export function SignUpForm({ validation }: SignUpProps) {
     <form
       data-testid="form"
       className={styles.form}
+      onSubmit={handleSubmitSignInForm}
     >
       <h2>Realizar Cadastro</h2>
       <Input
@@ -94,6 +116,7 @@ export function SignUpForm({ validation }: SignUpProps) {
           formStates.name.trim() === '' || formStates.email.trim() === '' || formStates.password.trim() === '' || formStates.passwordConfirmation.trim() === '' ||
           formStates.errors.name !== '' || formStates.errors.email !== '' || formStates.errors.password !== '' || formStates.errors.passwordConfirmation !== ''
         }
+        isLoading={formStates.isLoading}
       >
         Criar conta
       </Button>
