@@ -30,6 +30,17 @@ const makeSut = (params?: SutParams): SutTypes => {
   };
 };
 
+const validSubmitFields = (
+  name = faker.name.fullName(),
+  email = faker.internet.email(),
+  password = faker.internet.password()
+) => ([
+  { name: 'name-input', value: name },
+  { name: 'email-input', value: email },
+  { name: 'password-input', value: password },
+  { name: 'password-confirmation-input', value: password }
+]);
+
 describe('SignUp Page', () => {
   afterEach(cleanup);
 
@@ -95,5 +106,12 @@ describe('SignUp Page', () => {
     Helper.populateField(sut, 'password-confirmation-input', faker.internet.password());
 
     Helper.testButtonIsDisabled(sut, 'signup-button', false);
+  });
+  
+  it('should show spinner on submit', async () => {
+    const { sut } = makeSut();
+    await Helper.simulateValidSubmit(sut, validSubmitFields());
+
+    Helper.testElementExists(sut, 'spinner');
   });
 });
