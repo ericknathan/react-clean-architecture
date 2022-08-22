@@ -1,7 +1,7 @@
 import React from 'react';
 import { Router } from 'react-router-dom';
 import { createMemoryHistory } from "history";
-import { cleanup, render, RenderResult } from '@testing-library/react';
+import { cleanup, fireEvent, render, RenderResult } from '@testing-library/react';
 import { faker } from '@faker-js/faker/locale/pt_BR';
 
 import { AddAccountStub, ValidationStub } from '@/mocks/presentation';
@@ -191,7 +191,15 @@ describe('SignUp Page', () => {
     jest.spyOn(saveAccessTokenMock, 'save').mockRejectedValueOnce(error);
 
     Helper.simulateValidSubmit(sut, validSubmitFields());
-    
+
     Helper.testButtonIsDisabled(sut, 'signup-button', true);
+  });
+  
+  it('should go to signin page on click on login button', () => {
+    const { sut } = makeSut();
+    const register = sut.getByTestId('signin-link');
+    fireEvent.click(register);
+    expect(history.location.pathname).toBe('/signin');
+    expect(history.index).toBe(1);
   });
 });
