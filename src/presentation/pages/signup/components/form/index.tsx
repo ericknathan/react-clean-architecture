@@ -39,7 +39,7 @@ export function SignUpForm({ validation, addAccount }: SignUpProps) {
   async function handleSubmitSignInForm(event: React.FormEvent<HTMLFormElement>) {
     try {
       event.preventDefault();
-      if(formStates.isLoading || formStates.errors.email || formStates.errors.password) return;
+      if(formStates.isLoading || formStates.errors.name || formStates.errors.email || formStates.errors.password || formStates.errors.passwordConfirmation) return;
   
       setFormStates({ ...formStates, isLoading: true });
 
