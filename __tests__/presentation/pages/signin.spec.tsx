@@ -45,6 +45,11 @@ const makeSut = (params?: SutParams): SutTypes => {
   };
 };
 
+const validSubmitFields = (email = faker.internet.email(), password = faker.internet.password()) => ([
+  { name: 'email-input', value: email },
+  { name: 'password-input', value: password }
+]);
+
 describe('SignIn Page', () => {
   afterEach(cleanup);
 
@@ -88,7 +93,7 @@ describe('SignIn Page', () => {
 
   it('should show spinner on submit', async () => {
     const { sut } = makeSut();
-    await Helper.simulateValidSubmit(sut);
+    await Helper.simulateValidSubmit(sut, validSubmitFields());
 
     Helper.testElementExists(sut, 'spinner');
   });
@@ -97,15 +102,15 @@ describe('SignIn Page', () => {
     const { sut, authenticationStub } = makeSut();
     const email = faker.internet.email();
     const password = faker.internet.password();
-    await Helper.simulateValidSubmit(sut, email, password);
+    await Helper.simulateValidSubmit(sut, validSubmitFields(email, password));
 
     expect(authenticationStub.params).toEqual({ email, password });
   });
   
   it('should call Authentication only once', async () => {
     const { sut, authenticationStub } = makeSut();
-    await Helper.simulateValidSubmit(sut);
-    await Helper.simulateValidSubmit(sut);
+    await Helper.simulateValidSubmit(sut, validSubmitFields());
+    await Helper.simulateValidSubmit(sut, validSubmitFields());
 
     expect(authenticationStub.callsCount).toBe(1);
   });
@@ -113,7 +118,7 @@ describe('SignIn Page', () => {
   it('should not call Authentication if form is invalid', async () => {
     const validationError = faker.random.words();
     const { sut, authenticationStub } = makeSut({ validationError });
-    await Helper.simulateValidSubmit(sut);
+    await Helper.simulateValidSubmit(sut, validSubmitFields());
 
     expect(authenticationStub.callsCount).toBe(0);
   });
@@ -133,7 +138,7 @@ describe('SignIn Page', () => {
 
   it('should call SaveAccessToken if Authentication succeeds', async () => {
     const { sut, authenticationStub, saveAccessTokenMock } = makeSut();
-    await Helper.simulateValidSubmit(sut);
+    await Helper.simulateValidSubmit(sut, validSubmitFields());
     expect(saveAccessTokenMock.accessToken).toBe(authenticationStub.account.accessToken);
     expect(history.location.pathname).toBe('/');
     expect(history.index).toBe(0);

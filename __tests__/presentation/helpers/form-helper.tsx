@@ -6,10 +6,16 @@ type ComparationOptions = {
   comparedValue?: string;
 }
 
-export const simulateValidSubmit = async (sut: RenderResult, email = faker.internet.email(), password = faker.internet.password()): Promise<void> => {
+type Field = {
+  name: string;
+  value?: string;
+}
+
+export const simulateValidSubmit = async (sut: RenderResult, fields: Field[]): Promise<void> => {
   const { queryByTestId } = sut;
-  populateField(sut, 'email-input', email);
-  populateField(sut, 'password-input', password);
+  for(const field of fields) {
+    populateField(sut, field.name, field.value);
+  }
 
   const form = queryByTestId('form') as HTMLFormElement;
   fireEvent.submit(form);
