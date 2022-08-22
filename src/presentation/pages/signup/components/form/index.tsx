@@ -16,7 +16,7 @@ type StateProps = {
   }
 }
 
-export function SignUpForm({ validation }: SignUpProps) {
+export function SignUpForm({ validation, addAccount }: SignUpProps) {
   const [formStates, setFormStates] = useState<StateProps>({
     isLoading: false,
     name: '',
@@ -42,6 +42,14 @@ export function SignUpForm({ validation }: SignUpProps) {
       if(formStates.isLoading || formStates.errors.email || formStates.errors.password) return;
   
       setFormStates({ ...formStates, isLoading: true });
+
+      const { name, email, password, passwordConfirmation } = formStates;
+      await addAccount?.add({
+        name,
+        email,
+        password,
+        passwordConfirmation
+      });
     } catch (error) {
       setFormStates({
         ...formStates,
