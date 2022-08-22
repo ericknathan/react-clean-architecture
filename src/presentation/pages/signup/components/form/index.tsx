@@ -90,7 +90,10 @@ export function SignUpForm({ validation }: SignUpProps) {
       <Button
         data-testid="signup-button"
         className={styles.submitButton}
-        disabled
+        disabled={
+          formStates.name.trim() === '' || formStates.email.trim() === '' || formStates.password.trim() === '' || formStates.passwordConfirmation.trim() === '' ||
+          formStates.errors.name !== '' || formStates.errors.email !== '' || formStates.errors.password !== '' || formStates.errors.passwordConfirmation !== ''
+        }
       >
         Criar conta
       </Button>
