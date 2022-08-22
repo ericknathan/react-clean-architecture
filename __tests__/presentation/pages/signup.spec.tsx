@@ -71,4 +71,9 @@ describe('SignUp Page', () => {
     const { sut } = makeSut();
     Helper.populateField(sut, 'name-input', faker.name.fullName(), { comparedField: 'title', comparedValue: DEFAULT_LABEL_VALUE });
   });
+
+  it('should not show input email error if Validation succeeds', () => {
+    const { sut } = makeSut();
+    Helper.populateField(sut, 'email-input', faker.internet.email(), { comparedField: 'title', comparedValue: DEFAULT_LABEL_VALUE });
+  });
 });
