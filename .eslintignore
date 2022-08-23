@@ -1,4 +1,8 @@
 node_modules
 .vscode
 coverage
+public
 *.scss
+*.json
+*.config.js
+yarn.lock
