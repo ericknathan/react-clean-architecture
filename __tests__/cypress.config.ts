@@ -5,7 +5,7 @@ module.exports = defineConfig({
   e2e: {
     baseUrl: 'http://localhost:8080',
     fixturesFolder: false,
-    supportFile: false,
+    supportFile: './cypress/support/index.ts',
   },
   component: {
     devServer: {
