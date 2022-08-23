@@ -1,5 +1,7 @@
 import { faker } from '@faker-js/faker/locale/pt_BR';
 
+const baseUrl: string = Cypress.config().baseUrl;
+
 describe('SignIn E2E', () => {
   beforeEach(() => {
     cy.visit('signin');
@@ -25,5 +27,13 @@ describe('SignIn E2E', () => {
     cy.getByTestId('password-input').focus().type(faker.random.alphaNumeric(5)).should('have.attr', 'title', '');
     cy.getByTestId('signin-button').should('not.have.attr', 'disabled');
     cy.getByTestId('main-error-message').should('not.have.text');
+  });
+
+  it('should present error if invalid credentials are provided', () => {
+    cy.getByTestId('email-input').focus().type(faker.internet.email());
+    cy.getByTestId('password-input').focus().type(faker.random.alphaNumeric(5));
+    cy.getByTestId('signin-button').click().getByTestId('spinner').should('exist');
+    cy.getByTestId('main-error-message').should('have.text');
+    cy.url().should('eq', `${baseUrl}/signin`);
   });
 });
