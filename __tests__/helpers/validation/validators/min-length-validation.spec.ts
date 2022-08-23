@@ -2,6 +2,7 @@ import { faker } from '@faker-js/faker/locale/pt_BR';
 
 import { MinLengthValidation } from "@/helpers/validation/validators";
 import { InvalidFieldError } from "@/helpers/validation/errors";
+import { DICTIONARY } from 'helpers/typo/DICTIONARY';
 
 const makeSut = (field: string) => new MinLengthValidation(field, 5);
 
@@ -10,7 +11,7 @@ describe('MinLengthValidation', () => {
     const field = faker.database.column();
     const sut = makeSut(field);
     const error = sut.validate({ [field]: faker.random.alphaNumeric(sut.minLength - 1) });
-    expect(error).toEqual(new InvalidFieldError(sut.field, `O valor de ${field} deve ter no mínimo ${sut.minLength} caracteres.`));
+    expect(error).toEqual(new InvalidFieldError(sut.field, `O valor de ${DICTIONARY.FIELDS[field] || field} deve ter no mínimo ${sut.minLength} caracteres.`));
   });
 
   it('should return falsy if value length is valid', () => {
