@@ -3,6 +3,6 @@ export interface SaveAccessToken {
 }
 
 export namespace SaveAccessToken {
-  export type Param = string;
+  export type Param = string | undefined;
   export type Result = Promise<void>
 }

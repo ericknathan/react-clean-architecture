@@ -1,4 +1,5 @@
 import { SetStorage } from '@/data/protocols/cache';
+import { UnexpectedError } from '@/domain/errors';
 import { SaveAccessToken } from '@/domain/usecases';
 
 export class LocalSaveAccessToken implements SaveAccessToken {
@@ -7,6 +8,7 @@ export class LocalSaveAccessToken implements SaveAccessToken {
   ) {}
 
   async save(accessToken: SaveAccessToken.Param): SaveAccessToken.Result {
+    if(!accessToken) throw new UnexpectedError();
     await this.setStorage.set('@4devs/accessToken', accessToken);
   }
 }
