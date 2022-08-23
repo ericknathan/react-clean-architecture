@@ -3,6 +3,7 @@ module.exports = {
     '<rootDir>/src/**/*.{ts,tsx}',
     '!<rootDir>/src/main/**/*',
     '!<rootDir>/src/presentation/pages/router/**/*',
+    '!<rootDir>/src/helpers/**/*',
     '!**/*.d.ts',
     '!<rootDir>/src/**/index.ts',
   ],
@@ -19,6 +20,7 @@ module.exports = {
   },
   resetMocks: false,
   testMatch: [
+    "**/__tests__/**",
     "!**/__tests__/**/helpers/**",
   ]
 }
