@@ -4,18 +4,18 @@ import {
   Routes,
   Route,
 } from 'react-router-dom';
-import { SignUp } from '@/presentation/pages';
 
-type RouterProps = {
+type RouterFacotry = {
   makeSignIn: React.FC;
+  makeSignUp: React.FC;
 }
 
-export function Router({ makeSignIn: MakeSignIn }: RouterProps) {
+export function Router({ makeSignIn: MakeSignIn, makeSignUp: MakeSignUp }: RouterFacotry) {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/signin" element={<MakeSignIn />} />
-        <Route path="/signup" element={<SignUp />} />
+        <Route path="/signup" element={<MakeSignUp />} />
       </Routes>
     </BrowserRouter>
   );
