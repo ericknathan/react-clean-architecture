@@ -33,7 +33,16 @@ describe('SignIn E2E', () => {
     cy.getByTestId('email-input').focus().type(faker.internet.email());
     cy.getByTestId('password-input').focus().type(faker.random.alphaNumeric(5));
     cy.getByTestId('signin-button').click().getByTestId('spinner').should('exist');
-    cy.getByTestId('main-error-message').should('have.text');
+    cy.getByTestId('main-error-message').should('contains.text', 'Credenciais inválidas');
     cy.url().should('eq', `${baseUrl}/signin`);
+  });
+
+  it('should save accessToken if valid credentials are provided', () => {
+    cy.getByTestId('email-input').focus().type('mango@gmail.com');
+    cy.getByTestId('password-input').focus().type('12345');
+    cy.getByTestId('signin-button').click().getByTestId('spinner').should('exist');
+    cy.getByTestId('main-error-message').should('not.have.text');
+    cy.url().should('eq', `${baseUrl}/`);
+    cy.window().then(window => expect(window.localStorage.getItem('@4devs/accessToken')).to.be.a('string'));
   });
 });
