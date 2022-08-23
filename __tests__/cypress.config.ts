@@ -6,6 +6,7 @@ module.exports = defineConfig({
     baseUrl: 'http://localhost:8080',
     fixturesFolder: false,
     supportFile: './cypress/support/index.ts',
+    specPattern: 'cypress/integration/**/*.cy.{js,jsx,ts,tsx}'
   },
   component: {
     devServer: {

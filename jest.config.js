@@ -25,6 +25,6 @@ module.exports = {
   ],
   testPathIgnorePatterns: [
     "<rootDir>/node_modules/",
-    "<rootDir>/__tests__/e2e/cypress",
+    "<rootDir>/__tests__/integration/cypress",
   ]
 }
