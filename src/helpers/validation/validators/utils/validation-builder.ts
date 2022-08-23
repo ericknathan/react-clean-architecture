@@ -22,7 +22,7 @@ export class ValidationBuilder {
   }
 
   email(): ValidationBuilder {
-    this.validations.push(new EmailValidation());
+    this.validations.push(new EmailValidation(this.fieldName));
     return this;
   }
 
@@ -31,8 +31,8 @@ export class ValidationBuilder {
     return this;
   }
 
-  sameAs(compareValue: string): ValidationBuilder {
-    this.validations.push(new CompareFieldsValidation(this.fieldName, length));
+  sameAs(fieldToCompare: string): ValidationBuilder {
+    this.validations.push(new CompareFieldsValidation(this.fieldName, fieldToCompare));
     return this;
   }
 

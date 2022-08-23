@@ -7,7 +7,7 @@ export class MinLengthValidation implements FieldValidation {
     readonly minLength: number
   ) {}
 
-  validate(value: string): Error | null {
-    return value.length >= this.minLength ? null : new InvalidFieldError(this.field, `O valor deve ter no mínimo ${this.minLength} caracteres.`);
+  validate(input: FieldValidation.Params): FieldValidation.Result {
+    return input[this.field]?.length < this.minLength  ? new InvalidFieldError(this.field, `O valor de ${this.field} deve ter no mínimo ${this.minLength} caracteres.`) : null;
   }
 }

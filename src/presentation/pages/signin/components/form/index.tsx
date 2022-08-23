@@ -60,13 +60,15 @@ export function SignInForm({ validation, authentication, saveAccessToken }: Sign
   }
 
   useEffect(() => {
+    const { email, password } = formStates;
+    const formData = { email, password };
     setFormStates({
       ...formStates,
       errors: {
         ...formStates.errors,
         main: '',
-        email: formStates.email ? validation.validate({ fieldName: 'email', fieldValue: formStates.email }) || '' : '',
-        password: formStates.password ? validation.validate({ fieldName: 'password', fieldValue: formStates.password }) || '' : '',
+        email: formStates.email ? validation.validate({ fieldName: 'email', input: formData }) || '' : '',
+        password: formStates.password ? validation.validate({ fieldName: 'password', input: formData }) || '' : '',
       }
     });
   }, [formStates.email, formStates.password]);

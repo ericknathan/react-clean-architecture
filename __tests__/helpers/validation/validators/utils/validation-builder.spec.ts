@@ -5,36 +5,45 @@ import {
   RequiredFieldValidation,
   EmailValidation,
   MinLengthValidation,
+  CompareFieldsValidation,
 } from '@/helpers/validation/validators';
 
 describe('ValidationBuilder', () => {
   it('should return RequiredFieldValidation', () => {
-    const fieldName = faker.database.column();
-    const validations = sut.field(fieldName).required().build();
-    expect(validations).toEqual([new RequiredFieldValidation(fieldName)]);
+    const field = faker.database.column();
+    const validations = sut.field(field).required().build();
+    expect(validations).toEqual([new RequiredFieldValidation(field)]);
   });
 
   it('should return EmailValidation', () => {
-    const fieldName = faker.database.column();
-    const validations = sut.field(fieldName).email().build();
-    expect(validations).toEqual([new EmailValidation()]);
+    const field = faker.database.column();
+    const validations = sut.field(field).email().build();
+    expect(validations).toEqual([new EmailValidation(field)]);
   });
 
   it('should return MinLengthValidation', () => {
-    const fieldName = faker.database.column();
+    const field = faker.database.column();
     const minLength = 5;
-    const validations = sut.field(fieldName).min(minLength).build();
-    expect(validations).toEqual([new MinLengthValidation(fieldName, minLength)]);
+    const validations = sut.field(field).min(minLength).build();
+    expect(validations).toEqual([new MinLengthValidation(field, minLength)]);
   });
 
+  it('should return CompareFieldsValidation', () => {
+    const field = faker.database.column();
+    const fieldToCompare = faker.database.column();
+    const validations = sut.field(field).sameAs(fieldToCompare).build();
+    expect(validations).toEqual([new CompareFieldsValidation(field, fieldToCompare)]);
+  });
+
+
   it('should return a list of validations', () => {
-    const fieldName = faker.database.column();
+    const field = faker.database.column();
     const minLength = faker.datatype.number();
-    const validations = sut.field(fieldName).required().min(minLength).email().build();
+    const validations = sut.field(field).required().min(minLength).email().build();
     expect(validations).toEqual([
-      new RequiredFieldValidation(fieldName),
-      new MinLengthValidation(fieldName, minLength),
-      new EmailValidation(),
+      new RequiredFieldValidation(field),
+      new MinLengthValidation(field, minLength),
+      new EmailValidation(field),
     ]);
   });
 });

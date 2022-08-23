@@ -32,7 +32,7 @@ describe('ValidationComposite', () => {
     
     const error = sut.validate({
       fieldName,
-      fieldValue: faker.random.word(),
+      input: { [fieldName]: faker.random.word() },
     });
     expect(error).toBe(fieldValidationStubs[0].error.message);
   });
@@ -41,7 +41,7 @@ describe('ValidationComposite', () => {
     const { sut, fieldName } = makeSut();
     const error = sut.validate({
       fieldName,
-      fieldValue: faker.random.word(),
+      input: { [fieldName]: faker.random.word() },
     });
     expect(error).toBeFalsy();
   });

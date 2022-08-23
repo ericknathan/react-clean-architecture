@@ -71,15 +71,17 @@ export function SignUpForm({ validation, addAccount, saveAccessToken }: SignUpPr
   }
 
   useEffect(() => {
+    const { name, email, password, passwordConfirmation } = formStates;
+    const formData = { name, email, password, passwordConfirmation };
     setFormStates({
       ...formStates,
       errors: {
         ...formStates.errors,
         main: '',
-        name: formStates.name ? validation?.validate({ fieldName: 'name', fieldValue: formStates.name }) || '' : '',
-        email: formStates.email ? validation?.validate({ fieldName: 'email', fieldValue: formStates.email }) || '' : '',
-        password: formStates.password ? validation?.validate({ fieldName: 'password', fieldValue: formStates.password }) || '' : '',
-        passwordConfirmation: formStates.passwordConfirmation ? validation?.validate({ fieldName: 'passwordConfirmation', fieldValue: formStates.passwordConfirmation }) || '' : '',
+        name: formStates.name ? validation?.validate({ fieldName: 'name', input: formData }) || '' : '',
+        email: formStates.email ? validation?.validate({ fieldName: 'email', input: formData }) || '' : '',
+        password: formStates.password ? validation?.validate({ fieldName: 'password', input: formData }) || '' : '',
+        passwordConfirmation: formStates.passwordConfirmation ? validation?.validate({ fieldName: 'passwordConfirmation', input: formData }) || '' : '',
       }
     });
   }, [formStates.name, formStates.email, formStates.password, formStates.passwordConfirmation]);

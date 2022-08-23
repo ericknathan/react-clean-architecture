@@ -5,7 +5,9 @@ export interface Validation extends Validation.Properties {
 export namespace Validation {
   export type Params = {
     fieldName: string,
-    fieldValue: string
+    input: {
+      [key: string]: any;
+    }
   }
   export type Result = string | void;
   export type Properties = {
