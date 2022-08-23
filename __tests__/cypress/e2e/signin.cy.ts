@@ -19,4 +19,11 @@ describe('SignIn E2E', () => {
     cy.getByTestId('signin-button').should('have.attr', 'disabled');
     cy.getByTestId('main-error-message').should('not.have.text');
   });
+
+  it('should present valid state if form is valid', () => {
+    cy.getByTestId('email-input').focus().type(faker.internet.email()).should('have.attr', 'title', '');
+    cy.getByTestId('password-input').focus().type(faker.random.alphaNumeric(5)).should('have.attr', 'title', '');
+    cy.getByTestId('signin-button').should('not.have.attr', 'disabled');
+    cy.getByTestId('main-error-message').should('not.have.text');
+  });
 });
