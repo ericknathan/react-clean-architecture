@@ -21,9 +21,5 @@
       "@/mocks/*": ["../__mocks__/*"]
     },
   },
-  "include": ["src", "__tests__", "__mocks__"],
-  "exclude": [
-    "__tests__/cypress/*",
-    "__tests__/cypress.config.ts",
-  ]
+  "include": ["src", "__tests__", "__mocks__"]
 }

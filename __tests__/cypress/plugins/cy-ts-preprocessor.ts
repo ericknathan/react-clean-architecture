@@ -8,8 +8,10 @@ export default webpackPreprocessor({
     module: {
       rules: [{
         test: /\.ts$/,
-        exclude: /node_modules/,
-        loader: 'ts-loader'
+        exclude: [/node_modules/],
+        use: [{
+          loader: 'ts-loader',
+        }]
       }]
     }
   }
