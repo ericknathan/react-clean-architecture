@@ -46,6 +46,25 @@ describe('SignIn Integration', () => {
     cy.url().should('eq', `${baseUrl}/signin`);
   });
 
+  it('should present UnexpectedError on client or server errors', () => {
+    cy.intercept('POST', /login/, {
+      statusCode: faker.internet.httpStatusCode({
+        types: ['clientError', 'serverError']
+      }),
+      body: {
+        error: faker.random.words()
+      },
+      delay: 500
+    });
+
+    cy.getByTestId('email-input').focus().type(faker.internet.email());
+    cy.getByTestId('password-input').focus().type(faker.random.alphaNumeric(5));
+    cy.getByTestId('signin-button').click().getByTestId('spinner').should('exist');
+    cy.getByTestId('spinner').should('not.exist');
+    cy.getByTestId('main-error-message').should('contains.text', 'Ocorreu um erro inesperado. Tente novamente em breve.');
+    cy.url().should('eq', `${baseUrl}/signin`);
+  });
+
   it('should save accessToken if valid credentials are provided', () => {
     cy.intercept('POST', /login/, {
       statusCode: 200,
