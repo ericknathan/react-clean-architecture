@@ -5,6 +5,7 @@ import { FormHelper } from '@/tests/cypress/support/helpers';
 const simulateValidSubmit = (error?: string) => {
   FormHelper.insertText('email-input', faker.internet.email());
   FormHelper.insertText('password-input', faker.internet.password());
+  FormHelper.testDisabledButton('signin-button', 'main-error-message', false);
   FormHelper.testSubmitButton('signin-button', 'main-error-message', error);
 }
 
@@ -26,11 +27,7 @@ describe('SignIn Integration', () => {
     FormHelper.testDisabledButton('signin-button', 'main-error-message');
   });
 
-  it('should present valid state if form is valid', () => {
-    FormHelper.insertTextAndTestInputStatus('email-input', faker.internet.email(), '');
-    FormHelper.insertTextAndTestInputStatus('password-input', faker.internet.password(), '');
-    FormHelper.testDisabledButton('signin-button', 'main-error-message', false);
-  });
+  it('should present valid state if form is valid', () => simulateValidSubmit());
 
   it('should present InvalidCredentialsError on 401', () => {
     SignInHttpHelper.mockInvalidCredentialsError();
