@@ -1,3 +1,4 @@
+import { expect } from '@jest/globals';
 import { ValidationBuilder as Builder, ValidationComposite } from '@/helpers/validation/validators';
 import { makeSignUpValidation } from '@/main/factories/pages';
 

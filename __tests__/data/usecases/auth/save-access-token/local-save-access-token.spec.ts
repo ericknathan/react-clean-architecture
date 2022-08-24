@@ -1,7 +1,8 @@
+import { expect } from '@jest/globals';
 import { SetStorageMock } from '@/mocks/data';
 import { faker } from '@faker-js/faker/locale/pt_BR';
 import { LocalSaveAccessToken } from '@/data/usecases';
-import { UnexpectedError } from 'domain/errors';
+import { UnexpectedError } from '@/domain/errors';
 
 type SutTypes = {
   sut: LocalSaveAccessToken;

@@ -21,7 +21,6 @@ module.exports = {
   resetMocks: false,
   testMatch: [
     "**/__tests__/**",
-    "!**/__tests__/**/helpers/**",
   ],
   testPathIgnorePatterns: [
     "<rootDir>/node_modules/",

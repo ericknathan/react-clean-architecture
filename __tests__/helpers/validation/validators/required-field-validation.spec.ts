@@ -1,3 +1,4 @@
+import { expect } from '@jest/globals';
 import { faker } from '@faker-js/faker/locale/pt_BR';
 
 import { RequiredFieldValidation } from "@/helpers/validation/validators";

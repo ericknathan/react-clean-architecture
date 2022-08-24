@@ -1,8 +1,9 @@
+import { expect } from '@jest/globals';
 import { faker } from '@faker-js/faker/locale/pt_BR';
 
 import { MinLengthValidation } from "@/helpers/validation/validators";
 import { InvalidFieldError } from "@/helpers/validation/errors";
-import { DICTIONARY } from 'helpers/typo/DICTIONARY';
+import { DICTIONARY } from '@/helpers/typo/DICTIONARY';
 
 const makeSut = (field: string) => new MinLengthValidation(field, 5);
 

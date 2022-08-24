@@ -1,3 +1,4 @@
+import { expect } from '@jest/globals';
 import axios from 'axios';
 
 import { mockAxios, mockHttpResponse } from '@/mocks/infra';

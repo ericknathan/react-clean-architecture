@@ -1,3 +1,4 @@
+import { expect } from '@jest/globals';
 import { faker } from '@faker-js/faker/locale/pt_BR';
 
 import { CompareFieldsValidation } from "@/helpers/validation/validators";
@@ -16,7 +17,7 @@ describe('CompareFieldValidation', () => {
       [field]: faker.random.word(),
       [fieldToCompare]: faker.random.word()
     });
-    expect(error).toEqual(new InvalidFieldError(sut.field));
+    expect(error).toEqual(new InvalidFieldError(field));
   });
   
   it('should return false if compare is valid', () => {
