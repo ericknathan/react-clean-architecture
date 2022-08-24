@@ -98,4 +98,19 @@ describe('SignIn Integration', () => {
     cy.url().should('eq', `${baseUrl}/`);
     cy.window().then(window => expect(window.localStorage.getItem('@4devs/accessToken')).to.be.a('string'));
   });
+
+  it('should prevent multiple submits', () => {
+    cy.intercept('POST', /login/, {
+      statusCode: 200,
+      body: {
+        accessToken: faker.datatype.uuid()
+      },
+      delay: 500
+    }).as('request/signin');
+
+    cy.getByTestId('email-input').focus().type(faker.internet.email());
+    cy.getByTestId('password-input').focus().type(faker.internet.password());
+    cy.getByTestId('signin-button').dblclick();
+    cy.get('@request/signin.all').should('have.length', 1);
+  });
 });
