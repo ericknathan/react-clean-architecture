@@ -66,4 +66,10 @@ describe('SignUp Integration', () => {
     FormHelper.testUrl('/');
     FormHelper.testLocalStorageItem('@4devs/accessToken');
   });
+
+  it('should prevent multiple submits', () => {
+    SignUpHttpHelper.mockOk();
+    simulateValidSubmit();
+    FormHelper.testHttpCallsCount(1);
+  });
 });
