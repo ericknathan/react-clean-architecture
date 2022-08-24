@@ -53,4 +53,10 @@ describe('SignUp Integration', () => {
     simulateValidSubmit('Ocorreu um erro inesperado. Tente novamente em breve.');
     FormHelper.testUrl('/signup');
   });
+
+  it('should present UnexpectedError if invalid data is returned', () => {
+    SignUpHttpHelper.mockInvalidData();
+    simulateValidSubmit('Ocorreu um erro inesperado. Tente novamente em breve.');
+    FormHelper.testUrl('/signup');
+  });
 });
