@@ -113,4 +113,17 @@ describe('SignIn Integration', () => {
     cy.getByTestId('signin-button').dblclick();
     cy.get('@request/signin.all').should('have.length', 1);
   });
+
+  it('should not call submit if form is invalid', () => {
+    cy.intercept('POST', /login/, {
+      statusCode: 200,
+      body: {
+        accessToken: faker.datatype.uuid()
+      },
+      delay: 500
+    }).as('request/signin');
+
+    cy.getByTestId('email-input').focus().type(faker.internet.email()).type('{enter}');
+    cy.get('@request/signin.all').should('have.length', 0);
+  });
 });
