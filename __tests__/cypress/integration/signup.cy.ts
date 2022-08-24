@@ -72,4 +72,10 @@ describe('SignUp Integration', () => {
     simulateValidSubmit();
     FormHelper.testHttpCallsCount(1);
   });
+
+  it('should not call submit if form is invalid', () => {
+    SignUpHttpHelper.mockOk();
+    FormHelper.insertText('email-input', faker.internet.email()).type('{enter}');
+    FormHelper.testHttpCallsCount(0);
+  });
 });
