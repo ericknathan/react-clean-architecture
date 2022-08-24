@@ -1,6 +1,16 @@
 import { faker } from '@faker-js/faker/locale/pt_BR';
 import { Method } from 'cypress/types/net-stubbing';
 
+export const mockEmailInUseError = (url: RegExp): void => {
+  cy.intercept('POST', url, {
+    statusCode: 403,
+    body: {
+      error: faker.random.words()
+    },
+    delay: 500
+  });
+};
+
 export const mockInvalidCredentialsError = (url: RegExp): void => {
   cy.intercept('POST', url, {
     statusCode: 401,

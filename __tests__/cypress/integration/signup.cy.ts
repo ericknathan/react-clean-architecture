@@ -1,5 +1,15 @@
 import { faker } from '@faker-js/faker/locale/pt_BR';
+import { SignUpHttpHelper } from '@/tests/cypress/support/mocks';
 import { FormHelper } from '@/tests/cypress/support/helpers';
+
+const simulateValidSubmit = (error?: string) => {
+  const password = faker.internet.password();
+  FormHelper.insertTextAndTestInputStatus('name-input', faker.name.fullName(), '');
+  FormHelper.insertTextAndTestInputStatus('email-input', faker.internet.email(), '');
+  FormHelper.insertTextAndTestInputStatus('password-input', password, '');
+  FormHelper.insertTextAndTestInputStatus('password-confirmation-input', password, '');
+  FormHelper.testSubmitButton('signup-button', 'main-error-message', error);
+}
 
 describe('SignUp Integration', () => {
   beforeEach(() => {
@@ -30,5 +40,11 @@ describe('SignUp Integration', () => {
     FormHelper.insertTextAndTestInputStatus('password-input', password, '');
     FormHelper.insertTextAndTestInputStatus('password-confirmation-input', password, '');
     FormHelper.testDisabledButton('signup-button', 'main-error-message', false);
+  });
+
+  it('should present InvalidCredentialsError on 403', () => {
+    SignUpHttpHelper.mockEmailInUseError();
+    simulateValidSubmit('Esse e-mail já está em uso');
+    FormHelper.testUrl('/signup');
   });
 });
