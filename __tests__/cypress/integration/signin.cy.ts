@@ -1,6 +1,12 @@
 import { faker } from '@faker-js/faker/locale/pt_BR';
+import * as FormHelper from '../support/form-helper';
+import * as HttpHelper from './signin-mocks';
 
-const baseUrl: string = Cypress.config().baseUrl;
+const simulateValidSubmit = (error?: string) => {
+  FormHelper.insertText('email-input', faker.internet.email());
+  FormHelper.insertText('password-input', faker.internet.password());
+  FormHelper.testSubmitButton('signin-button', 'main-error-message', error);
+}
 
 describe('SignIn Integration', () => {
   beforeEach(() => {
@@ -9,121 +15,58 @@ describe('SignIn Integration', () => {
 
   it('should load with correct initial state', () => {
     cy.getByTestId('email-input').should('have.attr', 'autocomplete');
-    cy.getByTestId('email-input').should('have.attr', 'title', '');
-    cy.getByTestId('password-input').should('have.attr', 'title', '');
-    cy.getByTestId('signin-button').should('have.attr', 'disabled');
-    cy.getByTestId('main-error-message').should('not.have.text');
+    FormHelper.testInputStatus('email-input', '');
+    FormHelper.testInputStatus('password-input', '');
+    FormHelper.testDisabledButton('signin-button', 'main-error-message');
   });
 
   it('should present error state if form is invalid', () => {
-    cy.getByTestId('email-input').focus().type(faker.random.word()).should('have.attr', 'title', 'Campo e-mail inválido.');
-    cy.getByTestId('password-input').focus().type(faker.random.alphaNumeric(3)).should('have.attr', 'title', 'O valor de senha deve ter no mínimo 5 caracteres.');
-    cy.getByTestId('signin-button').should('have.attr', 'disabled');
-    cy.getByTestId('main-error-message').should('not.have.text');
+    FormHelper.insertTextAndTestInputStatus('email-input', faker.random.word(), 'Campo e-mail inválido.')
+    FormHelper.insertTextAndTestInputStatus('password-input', faker.random.alphaNumeric(3), 'O valor de senha deve ter no mínimo 5 caracteres.')
+    FormHelper.testDisabledButton('signin-button', 'main-error-message');
   });
 
   it('should present valid state if form is valid', () => {
-    cy.getByTestId('email-input').focus().type(faker.internet.email()).should('have.attr', 'title', '');
-    cy.getByTestId('password-input').focus().type(faker.random.alphaNumeric(5)).should('have.attr', 'title', '');
-    cy.getByTestId('signin-button').should('not.have.attr', 'disabled');
-    cy.getByTestId('main-error-message').should('not.have.text');
+    FormHelper.insertTextAndTestInputStatus('email-input', faker.internet.email(), '');
+    FormHelper.insertTextAndTestInputStatus('password-input', faker.internet.password(), '');
+    FormHelper.testDisabledButton('signin-button', 'main-error-message', false);
   });
 
   it('should present InvalidCredentialsError on 401', () => {
-    cy.intercept('POST', /login/, {
-      statusCode: 401,
-      body: {
-        error: faker.random.words()
-      },
-      delay: 500
-    });
-
-    cy.getByTestId('email-input').focus().type(faker.internet.email());
-    cy.getByTestId('password-input').focus().type(faker.random.alphaNumeric(5));
-    cy.getByTestId('signin-button').click().getByTestId('spinner').should('exist');
-    cy.getByTestId('spinner').should('not.exist');
-    cy.getByTestId('main-error-message').should('contains.text', 'Credenciais inválidas');
-    cy.url().should('eq', `${baseUrl}/signin`);
+    HttpHelper.mockInvalidCredentialsError();
+    simulateValidSubmit('Credenciais inválidas');
+    FormHelper.testUrl('/signin');
   });
 
   it('should present UnexpectedError on client or server errors', () => {
-    cy.intercept('POST', /login/, {
-      statusCode: faker.internet.httpStatusCode({
-        types: ['clientError', 'serverError']
-      }),
-      body: {
-        error: faker.random.words()
-      },
-      delay: 500
-    });
-
-    cy.getByTestId('email-input').focus().type(faker.internet.email());
-    cy.getByTestId('password-input').focus().type(faker.random.alphaNumeric(5));
-    cy.getByTestId('signin-button').click().getByTestId('spinner').should('exist');
-    cy.getByTestId('spinner').should('not.exist');
-    cy.getByTestId('main-error-message').should('contains.text', 'Ocorreu um erro inesperado. Tente novamente em breve.');
-    cy.url().should('eq', `${baseUrl}/signin`);
+    HttpHelper.mockUnexpectedError();
+    simulateValidSubmit('Ocorreu um erro inesperado. Tente novamente em breve.');
+    FormHelper.testUrl('/signin');
   });
 
   it('should present UnexpectedError if invalid data is returned', () => {
-    cy.intercept('POST', /login/, {
-      statusCode: 200,
-      body: {
-        invalidProperty: faker.datatype.uuid()
-      },
-      delay: 500
-    });
-
-    cy.getByTestId('email-input').focus().type(faker.internet.email());
-    cy.getByTestId('password-input').focus().type(faker.random.alphaNumeric(5)).type('{enter}');
-    // cy.getByTestId('signin-button').click().getByTestId('spinner').should('exist');
-    cy.getByTestId('spinner').should('not.exist');
-    cy.getByTestId('main-error-message').should('contains.text', 'Ocorreu um erro inesperado. Tente novamente em breve.');
-    cy.url().should('eq', `${baseUrl}/signin`);
+    HttpHelper.mockInvalidData();
+    simulateValidSubmit('Ocorreu um erro inesperado. Tente novamente em breve.');
+    FormHelper.testUrl('/signin');
   });
 
   it('should save accessToken if valid credentials are provided', () => {
-    cy.intercept('POST', /login/, {
-      statusCode: 200,
-      body: {
-        accessToken: faker.datatype.uuid()
-      },
-      delay: 500
-    });
-
-    cy.getByTestId('email-input').focus().type(faker.internet.email());
-    cy.getByTestId('password-input').focus().type(faker.internet.password());
-    cy.getByTestId('signin-button').click().getByTestId('spinner').should('exist');
-    cy.getByTestId('main-error-message').should('not.have.text');
-    cy.url().should('eq', `${baseUrl}/`);
-    cy.window().then(window => expect(window.localStorage.getItem('@4devs/accessToken')).to.be.a('string'));
+    HttpHelper.mockOk();
+    simulateValidSubmit();
+    FormHelper.testUrl('/');
+    FormHelper.testLocalStorageItem('@4devs/accessToken');
   });
 
   it('should prevent multiple submits', () => {
-    cy.intercept('POST', /login/, {
-      statusCode: 200,
-      body: {
-        accessToken: faker.datatype.uuid()
-      },
-      delay: 500
-    }).as('request/signin');
-
-    cy.getByTestId('email-input').focus().type(faker.internet.email());
-    cy.getByTestId('password-input').focus().type(faker.internet.password());
+    HttpHelper.mockOk();
+    simulateValidSubmit();
     cy.getByTestId('signin-button').dblclick();
-    cy.get('@request/signin.all').should('have.length', 1);
+    FormHelper.testHttpCallsCount(1);
   });
 
   it('should not call submit if form is invalid', () => {
-    cy.intercept('POST', /login/, {
-      statusCode: 200,
-      body: {
-        accessToken: faker.datatype.uuid()
-      },
-      delay: 500
-    }).as('request/signin');
-
-    cy.getByTestId('email-input').focus().type(faker.internet.email()).type('{enter}');
-    cy.get('@request/signin.all').should('have.length', 0);
+    HttpHelper.mockOk();
+    FormHelper.insertText('email-input', faker.internet.email()).type('{enter}');
+    FormHelper.testHttpCallsCount(0);
   });
 });
