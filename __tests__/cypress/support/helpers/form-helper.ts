@@ -10,7 +10,7 @@ export const insertTextAndTestInputStatus = (field: string, text: string, error:
 }
 
 export const testSubmitButton = (field: string, errorField?: string, error?: string) => {
-  cy.getByTestId(field).click().getByTestId('spinner').should('exist');
+  cy.getByTestId(field).dblclick().getByTestId('spinner').should('exist');
 
   if(errorField) {
     if(!error) cy.getByTestId(errorField).should('not.have.text');
@@ -35,5 +35,5 @@ export const testUrl = (path = ''): void => {
 }
 
 export const testLocalStorageItem = (key: string): void => {
-  cy.window().then(window => expect(window.localStorage.getItem(key)).to.be.true);
+  cy.window().then(window => expect(window.localStorage.getItem(key)).to.exist);
 }

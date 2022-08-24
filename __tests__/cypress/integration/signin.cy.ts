@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker/locale/pt_BR';
-import * as FormHelper from '../support/form-helper';
-import * as HttpHelper from './signin-mocks';
+import { SignInHttpHelper } from '@/tests/cypress/support/mocks';
+import { FormHelper } from '@/tests/cypress/support/helpers';
 
 const simulateValidSubmit = (error?: string) => {
   FormHelper.insertText('email-input', faker.internet.email());
@@ -33,39 +33,38 @@ describe('SignIn Integration', () => {
   });
 
   it('should present InvalidCredentialsError on 401', () => {
-    HttpHelper.mockInvalidCredentialsError();
+    SignInHttpHelper.mockInvalidCredentialsError();
     simulateValidSubmit('Credenciais inválidas');
     FormHelper.testUrl('/signin');
   });
 
   it('should present UnexpectedError on client or server errors', () => {
-    HttpHelper.mockUnexpectedError();
+    SignInHttpHelper.mockUnexpectedError();
     simulateValidSubmit('Ocorreu um erro inesperado. Tente novamente em breve.');
     FormHelper.testUrl('/signin');
   });
 
   it('should present UnexpectedError if invalid data is returned', () => {
-    HttpHelper.mockInvalidData();
+    SignInHttpHelper.mockInvalidData();
     simulateValidSubmit('Ocorreu um erro inesperado. Tente novamente em breve.');
     FormHelper.testUrl('/signin');
   });
 
   it('should save accessToken if valid credentials are provided', () => {
-    HttpHelper.mockOk();
+    SignInHttpHelper.mockOk();
     simulateValidSubmit();
     FormHelper.testUrl('/');
     FormHelper.testLocalStorageItem('@4devs/accessToken');
   });
 
   it('should prevent multiple submits', () => {
-    HttpHelper.mockOk();
+    SignInHttpHelper.mockOk();
     simulateValidSubmit();
-    cy.getByTestId('signin-button').dblclick();
     FormHelper.testHttpCallsCount(1);
   });
 
   it('should not call submit if form is invalid', () => {
-    HttpHelper.mockOk();
+    SignInHttpHelper.mockOk();
     FormHelper.insertText('email-input', faker.internet.email()).type('{enter}');
     FormHelper.testHttpCallsCount(0);
   });
