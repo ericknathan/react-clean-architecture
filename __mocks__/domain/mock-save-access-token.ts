@@ -1,9 +1,9 @@
 import { SaveAccessToken } from '@/domain/usecases';
 
 export class SaveAccessTokenMock implements SaveAccessToken {
-  accessToken!: string;
+  accessToken: SaveAccessToken.Param;
   
-  async save (accessToken: string): SaveAccessToken.Result {
+  async save (accessToken: SaveAccessToken.Param): SaveAccessToken.Result {
     this.accessToken = accessToken;
   }
 }
