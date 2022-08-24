@@ -47,4 +47,10 @@ describe('SignUp Integration', () => {
     simulateValidSubmit('Esse e-mail já está em uso');
     FormHelper.testUrl('/signup');
   });
+
+  it('should present UnexpectedError on client or server errors', () => {
+    SignUpHttpHelper.mockUnexpectedError();
+    simulateValidSubmit('Ocorreu um erro inesperado. Tente novamente em breve.');
+    FormHelper.testUrl('/signup');
+  });
 });
