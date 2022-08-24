@@ -75,8 +75,8 @@ describe('SignIn Integration', () => {
     });
 
     cy.getByTestId('email-input').focus().type(faker.internet.email());
-    cy.getByTestId('password-input').focus().type(faker.random.alphaNumeric(5));
-    cy.getByTestId('signin-button').click().getByTestId('spinner').should('exist');
+    cy.getByTestId('password-input').focus().type(faker.random.alphaNumeric(5)).type('{enter}');
+    // cy.getByTestId('signin-button').click().getByTestId('spinner').should('exist');
     cy.getByTestId('spinner').should('not.exist');
     cy.getByTestId('main-error-message').should('contains.text', 'Ocorreu um erro inesperado. Tente novamente em breve.');
     cy.url().should('eq', `${baseUrl}/signin`);
