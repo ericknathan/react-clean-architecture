@@ -29,7 +29,7 @@ describe('SignIn Integration', () => {
     cy.getByTestId('main-error-message').should('not.have.text');
   });
 
-  it('should present error if invalid credentials are provided', () => {
+  it('should present InvalidCredentialsError on 401', () => {
     cy.intercept('POST', /login/, {
       statusCode: 401,
       body: {
@@ -37,6 +37,7 @@ describe('SignIn Integration', () => {
       },
       delay: 500
     });
+
     cy.getByTestId('email-input').focus().type(faker.internet.email());
     cy.getByTestId('password-input').focus().type(faker.random.alphaNumeric(5));
     cy.getByTestId('signin-button').click().getByTestId('spinner').should('exist');
@@ -54,8 +55,8 @@ describe('SignIn Integration', () => {
       delay: 500
     });
 
-    cy.getByTestId('email-input').focus().type('mango@gmail.com');
-    cy.getByTestId('password-input').focus().type('12345');
+    cy.getByTestId('email-input').focus().type(faker.internet.email());
+    cy.getByTestId('password-input').focus().type(faker.internet.password());
     cy.getByTestId('signin-button').click().getByTestId('spinner').should('exist');
     cy.getByTestId('main-error-message').should('not.have.text');
     cy.url().should('eq', `${baseUrl}/`);
