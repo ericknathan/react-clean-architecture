@@ -59,4 +59,11 @@ describe('SignUp Integration', () => {
     simulateValidSubmit('Ocorreu um erro inesperado. Tente novamente em breve.');
     FormHelper.testUrl('/signup');
   });
+
+  it('should save accessToken if valid credentials are provided', () => {
+    SignUpHttpHelper.mockOk();
+    simulateValidSubmit();
+    FormHelper.testUrl('/');
+    FormHelper.testLocalStorageItem('@4devs/accessToken');
+  });
 });
