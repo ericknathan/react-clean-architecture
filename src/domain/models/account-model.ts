@@ -1,3 +1,5 @@
-export type AccountModel = {
-  accessToken: string;
+export namespace Account {
+  export type Model = {
+    accessToken: string;
+  }
 }
