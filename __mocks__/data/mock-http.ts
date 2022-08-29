@@ -2,12 +2,12 @@ import { faker } from '@faker-js/faker/locale/pt_BR';
 
 import { HttpPostClient, HttpStatusCode } from '@/data/protocols/http';
 
-export const mockPostRequest = (url = faker.internet.url()): HttpPostClient.Params<any> => ({
+export const mockPostRequest = (url = faker.internet.url()): HttpPostClient.Params => ({
   url,
   body: faker.datatype.json()
 });
 
-export class HttpClient<BodyType, ResponseType> implements HttpPostClient<BodyType, ResponseType> {
+export class HttpClient<BodyType = any, ResponseType = any> implements HttpPostClient<BodyType, ResponseType> {
   url?: string;
   body?: BodyType;
   response: HttpPostClient.Response<ResponseType> = {

@@ -1,8 +1,8 @@
 import { HttpPostClient } from '@/data/protocols/http';
 import axios, { AxiosError } from 'axios';
 
-export class AxiosHttpClient implements HttpPostClient<any, any> {
-  async post (params: HttpPostClient.Params<any>): Promise<HttpPostClient.Response<any>> {
+export class AxiosHttpClient implements HttpPostClient {
+  async post (params: HttpPostClient.Params): Promise<HttpPostClient.Response> {
     let httpResponse;
 
     try {
