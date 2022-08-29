@@ -3,13 +3,16 @@ import { faker } from '@faker-js/faker/locale/pt_BR';
 
 import { HttpClient } from '@/mocks/data';
 import { RemoteLoadSurveyList } from '@/data/usecases';
+import { UnexpectedError } from '@/domain/errors';
+import { HttpStatusCode } from '@/data/protocols/http';
+import { Survey } from '@/domain/models';
 
 type SutTypes = {
   sut: RemoteLoadSurveyList;
   httpGetClientSpy: HttpClient;
 }
 
-const makeSut = (url: string): SutTypes => {
+const makeSut = (url: string = faker.internet.url()): SutTypes => {
   const httpGetClientSpy = new HttpClient();
   const sut = new RemoteLoadSurveyList(url, httpGetClientSpy);
 
@@ -25,5 +28,14 @@ describe('RemoteLoadSurveyList', () => {
     const { sut, httpGetClientSpy } = makeSut(url);
     await sut.loadAll();
     expect(httpGetClientSpy.url).toBe(url)
+  });
+
+  it('should throw EmailInUseError if HttpClient returns 403', async () => {
+    const { sut, httpGetClientSpy } = makeSut();
+    httpGetClientSpy.response = {
+      statusCode: HttpStatusCode.FORBIDDEN,
+    };
+    const promise = sut.loadAll();
+    await expect(promise).rejects.toThrow(new UnexpectedError());
   });
 });
