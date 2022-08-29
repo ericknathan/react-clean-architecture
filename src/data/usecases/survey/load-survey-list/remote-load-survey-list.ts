@@ -1,8 +1,9 @@
 import { HttpStatusCode, HttpGetClient } from '@/data/protocols/http';
 import { UnexpectedError } from '@/domain/errors';
 import { Survey } from '@/domain/models';
+import { LoadSurveyList } from '@/domain/usecases';
 
-export class RemoteLoadSurveyList {
+export class RemoteLoadSurveyList implements LoadSurveyList {
   constructor(
     private readonly url: string,
     private readonly httpGetClient: HttpGetClient<any, RemoteLoadSurveyList.Result>

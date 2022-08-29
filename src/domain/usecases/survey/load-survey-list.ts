@@ -5,5 +5,5 @@ export interface LoadSurveyList {
 }
 
 export namespace LoadSurveyList {
-  export type Result = Survey.Model
+  export type Result = Survey.Model[];
 }
