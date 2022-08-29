@@ -1,4 +1,4 @@
-import { Account } from '@/domain/models/account-model';
+import { Account } from '@/domain/models';
 
 export interface AddAccount {
   add(params: AddAccount.Params): Promise<AddAccount.Result>
