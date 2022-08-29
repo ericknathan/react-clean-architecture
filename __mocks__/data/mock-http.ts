@@ -7,14 +7,14 @@ export const mockPostRequest = (url = faker.internet.url()): HttpPostClient.Para
   body: faker.datatype.json()
 });
 
-export class HttpClient<T, R> implements HttpPostClient<T, R> {
+export class HttpClient<BodyType, ResponseType> implements HttpPostClient<BodyType, ResponseType> {
   url?: string;
-  body?: T;
-  response: HttpPostClient.Response<R> = {
+  body?: BodyType;
+  response: HttpPostClient.Response<ResponseType> = {
     statusCode: HttpStatusCode.OK,
   };
 
-  async post(params: HttpPostClient.Params<T>): Promise<HttpPostClient.Response<R>> {
+  async post(params: HttpPostClient.Params<BodyType>): Promise<HttpPostClient.Response<ResponseType>> {
     this.url = params.url;
     this.body = params.body;
     return this.response;
