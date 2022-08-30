@@ -6,7 +6,7 @@ import { cleanup, fireEvent, render, RenderResult } from '@testing-library/react
 import { faker } from '@faker-js/faker/locale/pt_BR';
 
 import { AuthenticationStub, ValidationStub } from '@/mocks/presentation';
-import { SaveAccessTokenMock } from '@/mocks/domain';
+import { UpdateCurrentAccountMock } from '@/mocks/domain';
 import { SignIn } from '@/presentation/pages';
 import { InvalidCredentialsError } from '@/domain/errors';
 import { Helper } from '@/tests/presentation/helpers';
@@ -16,7 +16,7 @@ const DEFAULT_LABEL_VALUE = '';
 type SutTypes = {
   sut: RenderResult;
   authenticationStub: AuthenticationStub;
-  saveAccessTokenMock: SaveAccessTokenMock;
+  updateCurrentAccountMock: UpdateCurrentAccountMock;
 }
 
 type SutParams = {
@@ -28,13 +28,13 @@ const makeSut = (params?: SutParams): SutTypes => {
   const validationStub = new ValidationStub();
   validationStub.errorMessage = params?.validationError || DEFAULT_LABEL_VALUE;
   const authenticationStub = new AuthenticationStub();
-  const saveAccessTokenMock = new SaveAccessTokenMock();
+  const updateCurrentAccountMock = new UpdateCurrentAccountMock();
   const sut = render(
     <Router location={history.location} navigator={history}>
       <SignIn
         validation={validationStub}
         authentication={authenticationStub}
-        saveAccessToken={saveAccessTokenMock}
+        updateCurrentAccount={updateCurrentAccountMock}
       />
     </Router>
   );
@@ -42,7 +42,7 @@ const makeSut = (params?: SutParams): SutTypes => {
   return {
     sut,
     authenticationStub,
-    saveAccessTokenMock
+    updateCurrentAccountMock
   };
 };
 
@@ -140,20 +140,20 @@ describe('SignIn Page', () => {
   });
 */
 
-  it('should call SaveAccessToken if Authentication succeeds', async () => {
-    const { sut, authenticationStub, saveAccessTokenMock } = makeSut();
+  it('should call UpdateCurrentAccount if Authentication succeeds', async () => {
+    const { sut, authenticationStub, updateCurrentAccountMock } = makeSut();
     await Helper.simulateValidSubmit(sut, validSubmitFields());
-    expect(saveAccessTokenMock.accessToken).toBe(authenticationStub.account.accessToken);
+    expect(updateCurrentAccountMock.account).toBe(authenticationStub.account);
     expect(history.location.pathname).toBe('/');
     expect(history.index).toBe(0);
   });
 
-  it('should present error if SaveAccessToken fails', async () => {
+  it('should present error if UpdateCurrentAccount fails', async () => {
     const error = new InvalidCredentialsError();
     const validationError = error.message;
-    const { sut, saveAccessTokenMock } = makeSut({ validationError });
+    const { sut, updateCurrentAccountMock } = makeSut({ validationError });
 
-    jest.spyOn(saveAccessTokenMock, 'save').mockRejectedValueOnce(error);
+    jest.spyOn(updateCurrentAccountMock, 'save').mockRejectedValueOnce(error);
 
     Helper.populateField(sut, 'email-input', faker.internet.email(), { comparedField: 'title', comparedValue: validationError });
     Helper.populateField(sut, 'password-input', faker.internet.password(), { comparedField: 'title', comparedValue: validationError });

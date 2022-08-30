@@ -15,7 +15,7 @@ type StateProps = {
   }
 }
 
-export function SignInForm({ validation, authentication, saveAccessToken }: SignInProps) {
+export function SignInForm({ validation, authentication, updateCurrentAccount }: SignInProps) {
   const navigate = useNavigate();
   const [formStates, setFormStates] = useState<StateProps>({
     isLoading: false,
@@ -43,7 +43,7 @@ export function SignInForm({ validation, authentication, saveAccessToken }: Sign
       const { email, password } = formStates;
       const account = await authentication.auth({ email, password });
       if(account) {
-        await saveAccessToken.save(account.accessToken);
+        await updateCurrentAccount.save(account);
         navigate('/', { replace: true });
       }
     } catch (error) {

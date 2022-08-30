@@ -3,15 +3,15 @@ import styles from './signup.module.scss';
 import { SignUpForm } from './components';
 import { Footer, Navbar } from '@/presentation/components';
 import { Validation } from '@/presentation/protocols';
-import { AddAccount, SaveAccessToken } from '@/domain/usecases';
+import { AddAccount, UpdateCurrentAccount } from '@/domain/usecases';
 
 export type SignUpProps = {
   validation?: Validation;
   addAccount?: AddAccount
-  saveAccessToken?: SaveAccessToken;
+  updateCurrentAccount?: UpdateCurrentAccount;
 }
 
-export function SignUp({ validation, addAccount, saveAccessToken }: SignUpProps) {
+export function SignUp({ validation, addAccount, updateCurrentAccount }: SignUpProps) {
   return (
     <div className={styles.signUpWrapper}>
       <Navbar />
@@ -19,7 +19,7 @@ export function SignUp({ validation, addAccount, saveAccessToken }: SignUpProps)
         <SignUpForm
           validation={validation}
           addAccount={addAccount}
-          saveAccessToken={saveAccessToken}
+          updateCurrentAccount={updateCurrentAccount}
         />
         <Footer />
       </div>

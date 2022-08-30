@@ -3,15 +3,15 @@ import styles from './signin.module.scss';
 import { SignInForm } from './components';
 import { Footer, Navbar } from '@/presentation/components';
 import { Validation } from '@/presentation/protocols';
-import { Authentication, SaveAccessToken } from '@/domain/usecases';
+import { Authentication, UpdateCurrentAccount } from '@/domain/usecases';
 
 export type SignInProps = {
   validation: Validation;
   authentication: Authentication;
-  saveAccessToken: SaveAccessToken;
+  updateCurrentAccount: UpdateCurrentAccount;
 }
 
-export function SignIn({ validation, authentication, saveAccessToken }: SignInProps) {
+export function SignIn({ validation, authentication, updateCurrentAccount }: SignInProps) {
   return (
     <div className={styles.signInWrapper}>
       <Navbar />
@@ -19,7 +19,7 @@ export function SignIn({ validation, authentication, saveAccessToken }: SignInPr
         <SignInForm
           validation={validation}
           authentication={authentication}
-          saveAccessToken={saveAccessToken} 
+          updateCurrentAccount={updateCurrentAccount} 
         />
         <Footer />
       </div>

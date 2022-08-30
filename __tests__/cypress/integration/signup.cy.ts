@@ -60,11 +60,11 @@ describe('SignUp Integration', () => {
     FormHelper.testUrl('/signup');
   });
 
-  it('should save accessToken if valid credentials are provided', () => {
+  it('should save account if valid credentials are provided', () => {
     SignUpHttpHelper.mockOk();
     simulateValidSubmit();
     FormHelper.testUrl('/');
-    FormHelper.testLocalStorageItem('@4devs/accessToken');
+    FormHelper.testLocalStorageItem('@4devs/account');
   });
 
   it('should prevent multiple submits', () => {
