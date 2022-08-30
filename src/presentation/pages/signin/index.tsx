@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './signin.module.scss';
-import { SignInNavbar, SignInForm } from './components';
+import { SignInForm } from './components';
+import { Navbar } from '@/presentation/components';
 import { Validation } from '@/presentation/protocols';
 import { Authentication, SaveAccessToken } from '@/domain/usecases';
 
@@ -13,7 +14,7 @@ export type SignInProps = {
 export function SignIn({ validation, authentication, saveAccessToken }: SignInProps) {
   return (
     <div className={styles.signInWrapper}>
-      <SignInNavbar />
+      <Navbar />
       <SignInForm validation={validation} authentication={authentication} saveAccessToken={saveAccessToken} />
     </div>
   );

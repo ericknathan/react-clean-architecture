@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 import styles from './footer.module.scss';
 
-export function Footer({ ...props }) {
+export function FooterComponent({ ...props }) {
   return (
     <footer className={styles.footerWrapper} {...props}>
       <div className={styles.footerContent}>
@@ -17,3 +17,5 @@ export function Footer({ ...props }) {
     </footer>
   );
 }
+
+export const Footer = memo(FooterComponent);

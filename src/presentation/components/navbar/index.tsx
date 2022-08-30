@@ -2,15 +2,15 @@ import React, { memo } from 'react';
 
 import { Logo } from '@/presentation/components';
 
-import styles from './signin-navbar.module.scss';
+import styles from './navbar.module.scss';
 
-function Navbar() {
+function NavbarComponent() {
   return (
-    <nav className={styles.navbar}>
+    <nav className={styles.navbarWrapper}>
       <Logo />
       <h1>4Dev - Enquetes para programadores</h1>
     </nav>
   );
 }
 
-export const SignInNavbar = memo(Navbar);
+export const Navbar = memo(NavbarComponent);
