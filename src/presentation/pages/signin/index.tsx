@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './signin.module.scss';
 import { SignInForm } from './components';
-import { Navbar } from '@/presentation/components';
+import { Footer, Navbar } from '@/presentation/components';
 import { Validation } from '@/presentation/protocols';
 import { Authentication, SaveAccessToken } from '@/domain/usecases';
 
@@ -15,7 +15,14 @@ export function SignIn({ validation, authentication, saveAccessToken }: SignInPr
   return (
     <div className={styles.signInWrapper}>
       <Navbar />
-      <SignInForm validation={validation} authentication={authentication} saveAccessToken={saveAccessToken} />
+      <div className={styles.formWrapper}>
+        <SignInForm
+          validation={validation}
+          authentication={authentication}
+          saveAccessToken={saveAccessToken} 
+        />
+        <Footer />
+      </div>
     </div>
   );
 }

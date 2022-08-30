@@ -11,6 +11,7 @@
 
   background-color: $primary;
   color: $white;
+  opacity: 90%;
 
   .footerContent {
     display: flex;
@@ -19,6 +20,7 @@
 
     width: 80%;
     max-width: 1200px;
+    text-align: center;
 
     a {
       color: $white;

@@ -19,4 +19,12 @@
   }
 
   @media (max-width: 1023px) { flex: 1; }
+  @media (max-width: 720px) {
+    flex-direction: row;
+    padding: 24px;
+
+    img {
+      height: 48px;
+    }
+  }
 }

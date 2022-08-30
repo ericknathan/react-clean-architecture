@@ -12,7 +12,7 @@ export function SurveyList() {
           <li className={styles.questionWrapper}>
             <div className={styles.questionData}>
               <time>
-                <span>Em: </span>
+                <span>Em </span>
                 18/03/2022
               </time>
               <h3>O que você usa para desenvolver aplicativos?</h3>

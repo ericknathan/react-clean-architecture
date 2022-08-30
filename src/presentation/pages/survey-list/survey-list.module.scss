@@ -104,3 +104,17 @@
     }
   }
 }
+
+@media only screen and (max-width: 800px) {
+  .surveyListWrapper {
+    .contentWrapper {
+
+      .surveyList {
+        .questionWrapper {
+          flex-basis: 100%;
+          min-width: auto;
+        }
+      }
+    }
+  }
+}
