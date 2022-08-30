@@ -1,0 +1,32 @@
+@import "@/presentation/styles/colors.scss";
+
+.footerWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: auto;
+
+  width: 100%;
+  height: 56px;
+
+  background-color: $primary;
+  color: $white;
+
+  .footerContent {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 80%;
+    max-width: 1200px;
+
+    a {
+      color: $white;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}

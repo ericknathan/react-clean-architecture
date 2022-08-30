@@ -4,6 +4,7 @@ import {
   Routes,
   Route,
 } from 'react-router-dom';
+import { SurveyList } from '@/presentation/pages';
 
 type RouterFacotry = {
   makeSignIn: React.FC;
@@ -16,6 +17,7 @@ export function Router({ makeSignIn: MakeSignIn, makeSignUp: MakeSignUp }: Route
       <Routes>
         <Route path="/signin" element={<MakeSignIn />} />
         <Route path="/signup" element={<MakeSignUp />} />
+        <Route path="/" element={<SurveyList />} />
       </Routes>
     </BrowserRouter>
   );
