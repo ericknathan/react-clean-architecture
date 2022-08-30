@@ -1,3 +1,4 @@
+import { expect } from '@jest/globals';
 import { fireEvent, RenderResult, waitFor } from '@testing-library/react';
 import { faker } from '@faker-js/faker/locale/pt_BR';
 
