@@ -1,11 +1,12 @@
 import { useApiContext } from '@/presentation/hooks';
 import React from 'react';
-import { Navigate, RouteProps } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
 
-export function PrivateRoute({ children }: RouteProps) {
+export function PrivateRoute(): JSX.Element {
   const { getCurrentAccount } = useApiContext();
+  const token = getCurrentAccount!()?.accessToken;
 
-  return getCurrentAccount!()?.accessToken
-  ? children as JSX.Element
-  : <Navigate to="/signin" replace />;
+  if(!token) return <Navigate to="/signin" replace />;
+
+  return <Outlet />;
 }

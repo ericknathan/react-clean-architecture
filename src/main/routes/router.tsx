@@ -9,7 +9,7 @@ import {
   makeSignUp as MakeSignUp
 } from '@/main/factories/pages';
 import { AppProvider } from '@/presentation/contexts';
-import { SurveyList } from '@/presentation/pages';
+import { PrivateRoute, SurveyList } from '@/presentation/pages';
 
 export function Router() {
   return (
@@ -18,7 +18,9 @@ export function Router() {
         <Routes>
           <Route path="/signin" element={<MakeSignIn />} />
           <Route path="/signup" element={<MakeSignUp />} />
-          <Route path="/" element={<SurveyList />} />
+          <Route element={<PrivateRoute />}>
+            <Route path="/" element={<SurveyList />} />
+          </Route>
         </Routes>
       </BrowserRouter>
     </AppProvider>
