@@ -55,7 +55,7 @@ export function SignUpForm({ validation, addAccount }: SignUpProps) {
       });
 
       if(account) {
-        setCurrentAccount(account);
+        setCurrentAccount!(account);
         navigate('/', { replace: true });
       }
     } catch (error) {
