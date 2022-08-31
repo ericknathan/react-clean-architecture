@@ -1,9 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Footer, Header } from '@/presentation/components';
 import { SurveyItem } from '@/presentation/pages/survey-list/components';
+import { LoadSurveyList } from '@/domain/usecases';
 import styles from './survey-list.module.scss';
 
-export function SurveyList() {
+type SurveyListProps = {
+  loadSurveyList: LoadSurveyList
+}
+
+export function SurveyList({ loadSurveyList }: SurveyListProps) {
+  useEffect(() => {
+    (async function () {
+      loadSurveyList.loadAll();
+    })();
+  }, []);
+
   return (
     <div className={styles.surveyListWrapper}>
       <Header />
