@@ -19,15 +19,15 @@ const makeSut = (url: string = faker.internet.url()): SutTypes => {
   return {
     sut,
     httpGetClientSpy
-  }
-}
+  };
+};
 
 describe('RemoteLoadSurveyList', () => {
   it('should call HttpGetClient with correct URL', async () => {
     const url = faker.internet.url();
     const { sut, httpGetClientSpy } = makeSut(url);
     await sut.loadAll();
-    expect(httpGetClientSpy.url).toBe(url)
+    expect(httpGetClientSpy.url).toBe(url);
   });
 
   it('should throw EmailInUseError if HttpClient returns 403', async () => {

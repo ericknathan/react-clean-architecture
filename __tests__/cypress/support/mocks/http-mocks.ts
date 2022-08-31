@@ -39,4 +39,4 @@ export const mockOk = (url: RegExp, method: Method, response: any): void => {
     body: response,
     delay: 500
   }).as('request');
-}
+};

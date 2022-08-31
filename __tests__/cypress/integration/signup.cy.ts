@@ -9,7 +9,7 @@ const simulateValidSubmit = (error?: string) => {
   FormHelper.insertTextAndTestInputStatus('password-input', password, '');
   FormHelper.insertTextAndTestInputStatus('password-confirmation-input', password, '');
   FormHelper.testSubmitButton('signup-button', 'main-error-message', error);
-}
+};
 
 describe('SignUp Integration', () => {
   beforeEach(() => {
@@ -26,10 +26,10 @@ describe('SignUp Integration', () => {
   });
 
   it('should present error state if form is invalid', () => {
-    FormHelper.insertTextAndTestInputStatus('name-input', faker.random.alphaNumeric(2), 'O valor de nome deve ter no mínimo 3 caracteres.')
-    FormHelper.insertTextAndTestInputStatus('email-input', faker.random.word(), 'Campo e-mail inválido.')
-    FormHelper.insertTextAndTestInputStatus('password-input', faker.random.alphaNumeric(3), 'O valor de senha deve ter no mínimo 5 caracteres.')
-    FormHelper.insertTextAndTestInputStatus('password-confirmation-input', faker.random.alphaNumeric(4), 'Campo confirmação de senha inválido.')
+    FormHelper.insertTextAndTestInputStatus('name-input', faker.random.alphaNumeric(2), 'O valor de nome deve ter no mínimo 3 caracteres.');
+    FormHelper.insertTextAndTestInputStatus('email-input', faker.random.word(), 'Campo e-mail inválido.');
+    FormHelper.insertTextAndTestInputStatus('password-input', faker.random.alphaNumeric(3), 'O valor de senha deve ter no mínimo 5 caracteres.');
+    FormHelper.insertTextAndTestInputStatus('password-confirmation-input', faker.random.alphaNumeric(4), 'Campo confirmação de senha inválido.');
     FormHelper.testDisabledButton('signup-button', 'main-error-message');
   });
 

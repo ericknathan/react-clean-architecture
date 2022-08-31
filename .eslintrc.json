@@ -19,13 +19,9 @@
     "react",
     "cypress"
   ],
-  "overrides": [
-    {
-      "parserOptions": {
-        "project": ["./tsconfig-eslint.json"]
-      }
-    }
-  ],
+  "parserOptions": {
+    "project": ["./tsconfig-eslint.json"]
+  },
   "rules": {
     "@typescript-eslint/consistent-type-definitions": "off",
     "@typescript-eslint/strict-boolean-expressions": "off",

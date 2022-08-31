@@ -4,7 +4,7 @@ export class FieldValidationStub implements FieldValidation {
   error: FieldValidation.Result = null;
   constructor (readonly field: string) {}
 
-  validate(value: FieldValidation.Params): FieldValidation.Result {
+  validate(): FieldValidation.Result {
     return this.error;
   }
 }

@@ -14,7 +14,7 @@ export function AppProvider({ children }: AppProviderProps) {
     }}>
       {children}
     </ApiContext.Provider>
-  )
+  );
 }
 
 export * from './api-context';

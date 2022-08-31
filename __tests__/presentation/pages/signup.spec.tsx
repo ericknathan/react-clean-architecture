@@ -5,12 +5,11 @@ import { createMemoryHistory } from "history";
 import { cleanup, fireEvent, render, RenderResult } from '@testing-library/react';
 import { faker } from '@faker-js/faker/locale/pt_BR';
 
-import { ApiContext } from '@/presentation/contexts'
+import { ApiContext } from '@/presentation/contexts';
 import { AddAccountStub, ValidationStub } from '@/mocks/presentation';
 import { SignUp } from '@/presentation/pages';
 import { Helper } from '@/tests/presentation/helpers';
 import { Account } from '@/domain/models';
-import { EmailInUseError } from '@/domain/errors';
 
 const DEFAULT_LABEL_VALUE = '';
 

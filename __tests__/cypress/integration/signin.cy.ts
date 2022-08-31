@@ -7,7 +7,7 @@ const simulateValidSubmit = (error?: string) => {
   FormHelper.insertText('password-input', faker.internet.password());
   FormHelper.testDisabledButton('signin-button', 'main-error-message', false);
   FormHelper.testSubmitButton('signin-button', 'main-error-message', error);
-}
+};
 
 describe('SignIn Integration', () => {
   beforeEach(() => {
@@ -22,8 +22,8 @@ describe('SignIn Integration', () => {
   });
 
   it('should present error state if form is invalid', () => {
-    FormHelper.insertTextAndTestInputStatus('email-input', faker.random.word(), 'Campo e-mail inválido.')
-    FormHelper.insertTextAndTestInputStatus('password-input', faker.random.alphaNumeric(3), 'O valor de senha deve ter no mínimo 5 caracteres.')
+    FormHelper.insertTextAndTestInputStatus('email-input', faker.random.word(), 'Campo e-mail inválido.');
+    FormHelper.insertTextAndTestInputStatus('password-input', faker.random.alphaNumeric(3), 'O valor de senha deve ter no mínimo 5 caracteres.');
     FormHelper.testDisabledButton('signin-button', 'main-error-message');
   });
 

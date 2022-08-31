@@ -5,7 +5,7 @@ import { createMemoryHistory } from "history";
 import { cleanup, fireEvent, render, RenderResult } from '@testing-library/react';
 import { faker } from '@faker-js/faker/locale/pt_BR';
 
-import { ApiContext } from '@/presentation/contexts'
+import { ApiContext } from '@/presentation/contexts';
 import { AuthenticationStub, ValidationStub } from '@/mocks/presentation';
 import { SignIn } from '@/presentation/pages';
 import { Helper } from '@/tests/presentation/helpers';
