@@ -4,14 +4,13 @@ import {
   Routes,
   Route,
 } from 'react-router-dom';
+import {
+  makeSignIn as MakeSignIn,
+  makeSignUp as MakeSignUp
+} from '@/main/factories/pages';
 import { SurveyList } from '@/presentation/pages';
 
-type RouterFacotry = {
-  makeSignIn: React.FC;
-  makeSignUp: React.FC;
-}
-
-export function Router({ makeSignIn: MakeSignIn, makeSignUp: MakeSignUp }: RouterFacotry) {
+export function Router() {
   return (
     <BrowserRouter>
       <Routes>
