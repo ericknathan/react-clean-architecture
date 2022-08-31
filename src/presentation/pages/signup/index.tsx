@@ -3,15 +3,14 @@ import styles from './signup.module.scss';
 import { SignUpForm } from './components';
 import { Footer, Navbar } from '@/presentation/components';
 import { Validation } from '@/presentation/protocols';
-import { AddAccount, UpdateCurrentAccount } from '@/domain/usecases';
+import { AddAccount } from '@/domain/usecases';
 
 export type SignUpProps = {
   validation?: Validation;
   addAccount?: AddAccount
-  updateCurrentAccount?: UpdateCurrentAccount;
 }
 
-export function SignUp({ validation, addAccount, updateCurrentAccount }: SignUpProps) {
+export function SignUp({ validation, addAccount }: SignUpProps) {
   return (
     <div className={styles.signUpWrapper}>
       <Navbar />
@@ -19,7 +18,6 @@ export function SignUp({ validation, addAccount, updateCurrentAccount }: SignUpP
         <SignUpForm
           validation={validation}
           addAccount={addAccount}
-          updateCurrentAccount={updateCurrentAccount}
         />
         <Footer />
       </div>

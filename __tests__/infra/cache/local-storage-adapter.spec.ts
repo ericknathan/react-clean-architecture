@@ -3,6 +3,7 @@ import { faker } from '@faker-js/faker/locale/pt_BR';
 import 'jest-localstorage-mock';
 
 import { LocalStorageAdapter } from '@/infra/cache';
+import { Account } from '@/domain/models';
 
 const makeSut = () => new LocalStorageAdapter();
 
@@ -15,9 +16,12 @@ describe('LocalStorageAdapter', () => {
   it('should call localStorage with correct values', () => {
     const sut = makeSut();
     const key = faker.database.column();
-    const value = faker.random.word();
+    const account: Account.Model = {
+      accessToken: faker.datatype.uuid(),
+      name: faker.name.firstName()
+    };
 
-    sut.set(key, value);
-    expect(localStorage.setItem).toHaveBeenLastCalledWith(key, value);
+    sut.set(key, account);
+    expect(localStorage.setItem).toHaveBeenLastCalledWith(key, JSON.stringify(account));
   });
 });

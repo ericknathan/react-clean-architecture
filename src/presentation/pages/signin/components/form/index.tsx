@@ -5,6 +5,7 @@ import { Button, Input, ErrorMessage } from '@/presentation/components';
 import styles from './signin-form.module.scss';
 import { SignInProps } from '../..';
 import { Link, useNavigate } from 'react-router-dom';
+import { useApiContext } from '@/presentation/hooks';
 
 type StateProps = {
   isLoading: boolean;
@@ -15,7 +16,8 @@ type StateProps = {
   }
 }
 
-export function SignInForm({ validation, authentication, updateCurrentAccount }: SignInProps) {
+export function SignInForm({ validation, authentication }: SignInProps) {
+  const { setCurrentAccount } = useApiContext();
   const navigate = useNavigate();
   const [formStates, setFormStates] = useState<StateProps>({
     isLoading: false,
@@ -43,7 +45,7 @@ export function SignInForm({ validation, authentication, updateCurrentAccount }:
       const { email, password } = formStates;
       const account = await authentication.auth({ email, password });
       if(account) {
-        await updateCurrentAccount.save(account);
+        setCurrentAccount(account);
         navigate('/', { replace: true });
       }
     } catch (error) {

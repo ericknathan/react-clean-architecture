@@ -1,5 +1,5 @@
-export interface SetStorage<ValueType = any> {
-  set: (key: string, value: ValueType) => SetStorage.Result;
+export interface SetStorage {
+  set: (key: string, value: object) => SetStorage.Result;
 }
 
 export namespace SetStorage {

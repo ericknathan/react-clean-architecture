@@ -1,10 +1,10 @@
 import { SetStorage } from '@/data/protocols/cache';
 
-export class SetStorageMock<ValueType = any> implements SetStorage {
+export class SetStorageMock implements SetStorage {
   key!: string;
-  value!: ValueType;
+  value!: object;
 
-  set(key: string, value: ValueType): SetStorage.Result {
+  set(key: string, value: object): SetStorage.Result {
     this.key = key;
     this.value = value;
   }

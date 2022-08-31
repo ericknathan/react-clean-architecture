@@ -5,10 +5,11 @@ import { createMemoryHistory } from "history";
 import { cleanup, fireEvent, render, RenderResult } from '@testing-library/react';
 import { faker } from '@faker-js/faker/locale/pt_BR';
 
+import { ApiContext } from '@/presentation/contexts'
 import { AddAccountStub, ValidationStub } from '@/mocks/presentation';
-import { UpdateCurrentAccountMock } from '@/mocks/domain';
 import { SignUp } from '@/presentation/pages';
 import { Helper } from '@/tests/presentation/helpers';
+import { Account } from '@/domain/models';
 import { EmailInUseError } from '@/domain/errors';
 
 const DEFAULT_LABEL_VALUE = '';
@@ -16,7 +17,7 @@ const DEFAULT_LABEL_VALUE = '';
 type SutTypes = {
   sut: RenderResult;
   addAccountStub: AddAccountStub;
-  updateCurrentAccountMock: UpdateCurrentAccountMock;
+  setCurrentAccountMock: (account: Account.Model) => void;
 }
 
 type SutParams = {
@@ -28,21 +29,24 @@ const makeSut = (params?: SutParams): SutTypes => {
   const validationStub = new ValidationStub();
   validationStub.errorMessage = params?.validationError || DEFAULT_LABEL_VALUE;
   const addAccountStub = new AddAccountStub();
-  const updateCurrentAccountMock = new UpdateCurrentAccountMock();
+  const setCurrentAccountMock = jest.fn();
   const sut = render(
-    <Router location={history.location} navigator={history}>
-      <SignUp
-        validation={validationStub}
-        addAccount={addAccountStub}
-        updateCurrentAccount={updateCurrentAccountMock}
-      />
-    </Router>
+    <ApiContext.Provider value={{
+      setCurrentAccount: setCurrentAccountMock
+    }}>
+      <Router location={history.location} navigator={history}>
+        <SignUp
+          validation={validationStub}
+          addAccount={addAccountStub}
+        />
+      </Router>
+    </ApiContext.Provider>
   );
 
   return {
     sut,
     addAccountStub,
-    updateCurrentAccountMock
+    setCurrentAccountMock
   };
 };
 
@@ -176,24 +180,12 @@ describe('SignUp Page', () => {
     Helper.testButtonIsDisabled(sut, 'signup-button', true);
   }); */
 
-  it('should call UpdateCurrentAccount if Authentication succeeds', async () => {
-    const { sut, addAccountStub, updateCurrentAccountMock } = makeSut();
+  it('should call SetCurrentAccount if Authentication succeeds', async () => {
+    const { sut, addAccountStub, setCurrentAccountMock } = makeSut();
     await Helper.simulateValidSubmit(sut, validSubmitFields());
-    expect(updateCurrentAccountMock.account).toBe(addAccountStub.account);
+    expect(setCurrentAccountMock).toHaveBeenCalledWith(addAccountStub.account);
     expect(history.location.pathname).toBe('/');
     expect(history.index).toBe(0);
-  });
-
-  it('should present error if UpdateCurrentAccount fails', async () => {
-    const error = new EmailInUseError();
-    const validationError = error.message;
-    const { sut, updateCurrentAccountMock } = makeSut({ validationError });
-
-    jest.spyOn(updateCurrentAccountMock, 'save').mockRejectedValueOnce(error);
-
-    Helper.simulateValidSubmit(sut, validSubmitFields());
-
-    Helper.testButtonIsDisabled(sut, 'signup-button', true);
   });
   
   it('should go to signin page on click on login button', () => {
