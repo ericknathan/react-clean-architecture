@@ -9,6 +9,6 @@ export function setCurrentAccountAdapter(account: Account.Model): void {
   makeLocalStorageAdapter().set('@4devs/account', account);
 }
 
-export function getCurrentAccountAdapter(): void {
+export function getCurrentAccountAdapter(): Account.Model | null {
   return makeLocalStorageAdapter().get('@4devs/account');
 }
