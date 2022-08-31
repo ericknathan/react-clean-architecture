@@ -3,5 +3,5 @@ export interface SetStorage<ValueType = any> {
 }
 
 export namespace SetStorage {
-  export type Result = Promise<void>;
+  export type Result = void | Error;
 }

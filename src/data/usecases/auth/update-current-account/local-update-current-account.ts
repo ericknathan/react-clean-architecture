@@ -9,6 +9,6 @@ export class LocalUpdateCurrentAccount implements UpdateCurrentAccount {
 
   async save(account: UpdateCurrentAccount.Params): UpdateCurrentAccount.Result {
     if(!account?.name || !account?.accessToken) throw new UnexpectedError();
-    await this.setStorage.set('@4devs/account', JSON.stringify(account));
+    this.setStorage.set('@4devs/account', JSON.stringify(account));
   }
 }
