@@ -7,6 +7,8 @@ import { UnexpectedError } from '@/domain/errors';
 jest.mock('@/infra/cache/local-storage-adapter');
 
 describe('CurrentAccountAdapter', () => {
+  beforeEach(() => jest.clearAllMocks());
+  
   it('should call LocalStorageAdapter with correct values', () => {
     const account = mockAccountModel();
     const setSpy = jest.spyOn(LocalStorageAdapter.prototype, 'set');
