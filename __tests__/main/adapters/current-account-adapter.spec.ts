@@ -15,8 +15,10 @@ describe('CurrentAccountAdapter', () => {
   });
 
   it('should throw UnexpectedError', () => {
+    const setSpy = jest.spyOn(LocalStorageAdapter.prototype, 'set');
     expect(() => {
       setCurrentAccountAdapter(undefined!);
     }).toThrow(new UnexpectedError());
+    expect(setSpy).toHaveBeenCalledTimes(0);
   });
 });

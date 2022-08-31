@@ -10,7 +10,7 @@ type AppProviderProps = {
 export function AppProvider({ children }: AppProviderProps) {
   return (
     <ApiContext.Provider value={{
-      setCurrentAccount: setCurrentAccountAdapter
+      setCurrentAccount: setCurrentAccountAdapter,
     }}>
       {children}
     </ApiContext.Provider>
