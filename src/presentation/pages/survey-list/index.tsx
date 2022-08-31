@@ -9,7 +9,7 @@ export function SurveyList() {
       <Header />
       <div className={styles.contentWrapper}>
         <h2>Enquetes</h2>
-        <ul className={styles.surveyList}>
+        <ul className={styles.surveyList} data-testid="survey-list">
           <SurveyItem.Card />
           <SurveyItem.Skeleton />
         </ul>
