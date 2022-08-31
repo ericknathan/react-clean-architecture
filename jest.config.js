@@ -25,5 +25,6 @@ module.exports = {
   testPathIgnorePatterns: [
     "<rootDir>/node_modules/",
     "<rootDir>/__tests__/cypress",
+    "<rootDir>/__tests__/presentation/helpers",
   ]
 }
