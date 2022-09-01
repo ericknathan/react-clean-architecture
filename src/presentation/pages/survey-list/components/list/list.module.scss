@@ -1,0 +1,8 @@
+@import "@/presentation/styles/colors.scss";
+
+.surveyList {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}

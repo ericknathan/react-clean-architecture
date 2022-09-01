@@ -1,17 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Footer, Header } from '@/presentation/components';
-import { SurveyItem } from '@/presentation/pages/survey-list/components';
+import {  Footer, Header } from '@/presentation/components';
+import { SurveyError, SurveyListItems } from '@/presentation/pages/survey-list/components';
+import { SurveyContext, SurveyListState } from '@/presentation/pages/survey-list/context';
 import { LoadSurveyList } from '@/domain/usecases';
 import styles from './survey-list.module.scss';
-import { Survey } from '@/domain/models';
 
 type SurveyListProps = {
   loadSurveyList: LoadSurveyList
-}
-
-type SurveyListState = {
-  surveys: Survey.Model[]
-  error: string
 }
 
 export function SurveyList({ loadSurveyList }: SurveyListProps) {
@@ -21,9 +16,12 @@ export function SurveyList({ loadSurveyList }: SurveyListProps) {
   });
   useEffect(() => {
     (async function () {
-      loadSurveyList.loadAll()
-        .then(surveys => setSurveyListStates({ ...surveyListStates, surveys }))
-        .catch(error => setSurveyListStates({ ...surveyListStates, error: error.message }));
+      try {
+        const surveys = await loadSurveyList.loadAll();
+        setSurveyListStates({ ...surveyListStates, surveys });
+      } catch (error) {
+        setSurveyListStates({ ...surveyListStates, error: (error as Error).message });
+      }
     })();
   }, []);
 
@@ -32,20 +30,9 @@ export function SurveyList({ loadSurveyList }: SurveyListProps) {
       <Header />
       <div className={styles.contentWrapper}>
         <h2>Enquetes</h2>
-        {
-          surveyListStates.error ?
-            <div>
-              <span data-testid="survey-list-error">{surveyListStates.error}</span>
-              <button>Recarregar</button>
-            </div> :
-            <ul className={styles.surveyList} data-testid="survey-list">
-              {
-                surveyListStates.surveys.length ?
-                  surveyListStates.surveys.map((survey) => <SurveyItem.Card key={survey.id} survey={survey} />) :
-                  <SurveyItem.Skeleton />
-              }
-            </ul>
-        }
+        <SurveyContext.Provider value={{ surveyListStates, setSurveyListStates }}>
+          {surveyListStates.error ? <SurveyError /> : <SurveyListItems />}
+        </SurveyContext.Provider>
       </div>
       <Footer />
     </div>

@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './survey-item.module.scss';
+import styles from './item.module.scss';
 import { Survey } from '@/domain/models';
 import { formatDate } from '@/helpers';
 
