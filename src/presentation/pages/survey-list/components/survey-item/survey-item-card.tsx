@@ -1,23 +1,32 @@
 import React from 'react';
 import styles from './survey-item.module.scss';
+import { Survey } from '@/domain/models';
+import { formatDate } from '@/helpers';
+import { SurveyItem } from '.';
 
-export function SurveyItemCard() {
+type SurveyItemCardProps = {
+  survey?: Survey.Model | null;
+}
+
+export function SurveyItemCard({ survey }: SurveyItemCardProps) {
+  if(!survey) return <SurveyItem.Skeleton />;
+
+  const didAnswerClassName = survey.didAnswer ? styles.answeredStatusSuccess : '';
+  
   return (
     <li className={styles.questionWrapper}>
-      <div className={styles.questionData}>
-        <time>
+      <div data-testid='question-data' className={[styles.questionData, didAnswerClassName].join(' ')}>
+        <time data-testid='date'>
           <span>Em </span>
-          18/03/2022
+          {formatDate(survey.date)}
         </time>
-        <h3>O que você usa para desenvolver aplicativos?</h3>
-        <ul className={styles.questionAnswers}>
-          <li>Flutter</li>
-          <li>Nativo</li>
-          <li>Ionic</li>
-          <li>Native Script</li>
-          <li>Phonegap</li>
-          <li>Titanium</li>
-          <li>Xamarin</li>
+        <h3 data-testid='question'>{survey.question}</h3>
+        <ul data-testid='answers' className={styles.questionAnswers}>
+          {survey.answers.map(({ answer }) => (
+            <li key={answer}>
+              <span>{answer}</span>
+            </li>
+          ))}
         </ul>
       </div>
       <footer>
