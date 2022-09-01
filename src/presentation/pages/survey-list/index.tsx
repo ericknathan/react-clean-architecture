@@ -9,11 +9,21 @@ type SurveyListProps = {
   loadSurveyList: LoadSurveyList
 }
 
+type SurveyListState = {
+  surveys: Survey.Model[]
+  error: string
+}
+
 export function SurveyList({ loadSurveyList }: SurveyListProps) {
-  const [surveyList, setSurveyList] = useState<Survey.Model[]>([]);
+  const [surveyListStates, setSurveyListStates] = useState<SurveyListState>({
+    surveys: [],
+    error: ''
+  });
   useEffect(() => {
     (async function () {
-      loadSurveyList.loadAll().then(surveyList => setSurveyList(surveyList));
+      loadSurveyList.loadAll()
+        .then(surveys => setSurveyListStates({ ...surveyListStates, surveys }))
+        .catch(error => setSurveyListStates({ ...surveyListStates, error: error.message }));
     })();
   }, []);
 
@@ -22,15 +32,20 @@ export function SurveyList({ loadSurveyList }: SurveyListProps) {
       <Header />
       <div className={styles.contentWrapper}>
         <h2>Enquetes</h2>
-        <ul className={styles.surveyList} data-testid="survey-list">
-          {
-            surveyList.length ?
-              surveyList.map((survey) => (
-                <SurveyItem.Card key={survey.id} survey={survey} />
-              )) :
-              <SurveyItem.Skeleton />
-          }
-        </ul>
+        {
+          surveyListStates.error ?
+            <div>
+              <span data-testid="survey-list-error">{surveyListStates.error}</span>
+              <button>Recarregar</button>
+            </div> :
+            <ul className={styles.surveyList} data-testid="survey-list">
+              {
+                surveyListStates.surveys.length ?
+                  surveyListStates.surveys.map((survey) => <SurveyItem.Card key={survey.id} survey={survey} />) :
+                  <SurveyItem.Skeleton />
+              }
+            </ul>
+        }
       </div>
       <Footer />
     </div>
