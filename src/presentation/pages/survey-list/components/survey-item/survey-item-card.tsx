@@ -2,19 +2,16 @@ import React from 'react';
 import styles from './survey-item.module.scss';
 import { Survey } from '@/domain/models';
 import { formatDate } from '@/helpers';
-import { SurveyItem } from '.';
 
 type SurveyItemCardProps = {
-  survey?: Survey.Model | null;
+  survey: Survey.Model;
 }
 
-export function SurveyItemCard({ survey }: SurveyItemCardProps) {
-  if(!survey) return <SurveyItem.Skeleton />;
-
+export function SurveyItemCard({ survey, ...props }: SurveyItemCardProps) {
   const didAnswerClassName = survey.didAnswer ? styles.answeredStatusSuccess : '';
   
   return (
-    <li className={styles.questionWrapper}>
+    <li className={styles.questionWrapper} {...props}>
       <div data-testid='question-data' className={[styles.questionData, didAnswerClassName].join(' ')}>
         <time data-testid='date'>
           <span>Em </span>

@@ -69,9 +69,10 @@
   }
 
   .questionData {
-    border-radius: 8px 0;
     padding: 24px;
-
+    height: 100%;
+    
+    border-radius: 8px 0;
     border-left: 8px solid $error;
     &.answeredStatusSuccess {
       border-left: 8px solid $success;
@@ -98,11 +99,12 @@
       gap: 8px;
 
       margin-top: 12px;
-      list-style: inside;
+      list-style: initial;
 
       li {
-        flex-basis: 48%;
+        flex-basis: 45%;
         font-size: 16px;
+        margin-left: 12px;
       }
     }
   }
