@@ -4,6 +4,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { SurveyList } from '@/presentation/pages';
 import { LoadSurveyList } from '@/domain/usecases';
 import { mockSurveyListModel } from '@/mocks/domain';
+import { UnexpectedError } from '@/domain/errors';
 
 class LoadSurveyListSpy implements LoadSurveyList {
   callsCount = 0;
@@ -34,7 +35,7 @@ describe('SurveyList Page', () => {
 
     const surveyList = screen.getByTestId('survey-list');
     expect(surveyList.querySelectorAll('li:empty').length).toBe(4);
-    await waitFor(() => surveyList);
+      await waitFor(() => surveyList);
   });
 
   it('should call LoadSurveyList', async () => {
@@ -50,5 +51,16 @@ describe('SurveyList Page', () => {
     setTimeout(() =>
       expect(surveyList.querySelectorAll('li.questionWrapper:not(:empty)').length).toBe(loadSurveyListSpy.surveys.length)
     , 1000);
+  });
+  
+  it('should present error on LoadSurveyList failure', async () => {
+    const error = new UnexpectedError();
+    const { loadSurveyListSpy } = makeSut();
+    jest.spyOn(loadSurveyListSpy, 'loadAll').mockRejectedValueOnce(error);
+    await waitFor(() => screen.getByRole('heading'));
+    setTimeout(() => {
+      expect(screen.getByTestId('survey-list')).toBeFalsy();
+      expect(screen.getByTestId('survey-list-error').textContent).toBe(error.message);
+    }, 1000);
   });
 });
