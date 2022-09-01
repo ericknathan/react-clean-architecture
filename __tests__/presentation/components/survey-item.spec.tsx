@@ -4,11 +4,20 @@ import { SurveyItem } from '@/presentation/pages/survey-list/components';
 import { render, screen } from '@testing-library/react';
 import { mockSurveyModel } from '@/mocks/domain';
 import { formatDate } from '@/helpers';
+import { Survey } from '@/domain/models';
+
+type SutTypes = {
+  survey: Survey.Model;
+}
+
+const makeSut = (survey = mockSurveyModel()): SutTypes => {
+  render(<SurveyItem.Card survey={survey} />);
+  return { survey };
+};
 
 describe('SurveyItem Component', () => {
   it('should render with correct values', () => {
-    const survey = mockSurveyModel();
-    render(<SurveyItem.Card survey={survey} />);
+    const { survey } = makeSut();
 
     const questionWrapperClass = screen.getByTestId('question-data').className;
     if(survey.didAnswer) expect(questionWrapperClass).toContain('answeredStatusSuccess');
