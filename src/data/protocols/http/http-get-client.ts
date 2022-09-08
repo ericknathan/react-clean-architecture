@@ -8,6 +8,7 @@ export namespace HttpGetClient {
   export type Params<BodyType = any> = {
     url: string;
     body?: BodyType;
+    headers?: any;
   }
   export type Response<ResponseType = any> = HttpResponse<ResponseType>;
 }
