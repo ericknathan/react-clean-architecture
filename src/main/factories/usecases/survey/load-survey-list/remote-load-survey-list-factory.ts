@@ -1,5 +1,6 @@
+import { makeApiUrl } from '@/main/factories/http';
+import { makeAuthorizeHttpGetClientDecorator } from '@/main/factories/decorators';
 import { RemoteLoadSurveyList } from '@/data/usecases';
-import { makeApiUrl, makeHttpClient } from '@/main/factories/http';
 import { LoadSurveyList } from '@/domain/usecases';
 
-export const makeRemoteLoadSurveyList = (): LoadSurveyList => new RemoteLoadSurveyList(makeApiUrl('/surveys'), makeHttpClient());
+export const makeRemoteLoadSurveyList = (): LoadSurveyList => new RemoteLoadSurveyList(makeApiUrl('/surveys'), makeAuthorizeHttpGetClientDecorator());
