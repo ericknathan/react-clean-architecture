@@ -1,5 +1,5 @@
-import { mockAccountModel } from '@/../__mocks__/domain';
 import { expect } from '@jest/globals';
+import { mockAccountModel } from '@/mocks/domain';
 import { LocalStorageAdapter } from '@/infra/cache';
 import { setCurrentAccountAdapter, getCurrentAccountAdapter } from '@/main/adapters';
 

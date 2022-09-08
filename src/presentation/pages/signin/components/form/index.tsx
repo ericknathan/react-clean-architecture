@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Input, ErrorMessage } from '@/presentation/components';
 
 import styles from './signin-form.module.scss';
-import { SignInProps } from '../..';
+import { SignInProps } from '@/presentation/pages/signin';
 import { Link, useNavigate } from 'react-router-dom';
 import { useApiContext } from '@/presentation/hooks';
 

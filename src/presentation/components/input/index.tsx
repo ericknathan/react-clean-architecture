@@ -1,5 +1,5 @@
 import React, { InputHTMLAttributes } from 'react';
-import { ErrorMessage } from '../error-message';
+import { ErrorMessage } from '@/presentation/components';
 
 import styles from './input.module.scss';
 

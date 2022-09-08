@@ -5,8 +5,8 @@ import { Router } from 'react-router-dom';
 import { createMemoryHistory, MemoryHistory } from "history";
 import { PrivateRoute } from '@/presentation/pages';
 import { ApiContext } from '@/presentation/contexts';
-import { mockAccountModel } from '@/../__mocks__/domain';
-import { Account } from 'domain/models';
+import { mockAccountModel } from '@/mocks/domain';
+import { Account } from '@/domain/models';
 
 type SutTypes = {
   history: MemoryHistory;

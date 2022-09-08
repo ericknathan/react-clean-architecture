@@ -3,7 +3,7 @@ import { faker } from '@faker-js/faker/locale/pt_BR';
 import { GetStorageSpy, HttpClient, mockGetRequest } from "@/mocks/data";
 import { AuthorizeHttpGetClientDecorator } from "@/main/decorators";
 import { HttpGetClient } from 'data/protocols/http';
-import { mockAccountModel } from '@/../__mocks__/domain';
+import { mockAccountModel } from '@/mocks/domain';
 
 type SutTypes = {
   sut: AuthorizeHttpGetClientDecorator;

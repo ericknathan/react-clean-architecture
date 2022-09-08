@@ -7,7 +7,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { Header } from '@/presentation/components';
 import { ApiContext } from '@/presentation/contexts';
 import { Account } from '@/domain/models';
-import { mockAccountModel } from '@/../__mocks__/domain';
+import { mockAccountModel } from '@/mocks/domain';
 
 type SutTypes = {
   setCurrentAccountMock: (account: Account.Model) => void;

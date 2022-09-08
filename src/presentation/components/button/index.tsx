@@ -1,5 +1,5 @@
 import React, { ButtonHTMLAttributes } from 'react';
-import { Spinner } from '../spinner';
+import { Spinner } from '@/presentation/components';
 
 import styles from './button.module.scss';
 
