@@ -30,7 +30,8 @@ const makeSut = (params?: SutParams): SutTypes => {
   const setCurrentAccountMock = jest.fn();
   render(
     <ApiContext.Provider value={{
-      setCurrentAccount: setCurrentAccountMock
+      setCurrentAccount: setCurrentAccountMock,
+      getCurrentAccount: jest.fn()
     }}>
       <Router location={history.location} navigator={history}>
         <SignUp

@@ -15,7 +15,10 @@ type SutTypes = {
 const makeSut = (account: Account.Model | null = mockAccountModel()): SutTypes => {
   const history = createMemoryHistory({ initialEntries: ['/'] });
   render(
-    <ApiContext.Provider value={{ getCurrentAccount: () => account }}>
+    <ApiContext.Provider value={{
+      getCurrentAccount: () => account,
+      setCurrentAccount: jest.fn()
+    }}>
       <Router location={history.location} navigator={history}>
         <PrivateRoute />
       </Router>

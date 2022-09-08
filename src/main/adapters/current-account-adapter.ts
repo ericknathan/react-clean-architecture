@@ -1,7 +1,7 @@
 import { Account } from "@/domain/models";
 import { makeLocalStorageAdapter } from "@/main/factories/cache";
 
-export function setCurrentAccountAdapter(account: Account.Model): void {
+export function setCurrentAccountAdapter(account: Account.Model | null): void {
   makeLocalStorageAdapter().set('@4devs/account', account);
 }
 
