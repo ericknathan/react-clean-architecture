@@ -1,20 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import {  Footer, Header } from '@/presentation/components';
+import { useErrorHandler } from '@/presentation/hooks';
+import { Footer, Header } from '@/presentation/components';
 import { SurveyError, SurveyListItems } from '@/presentation/pages/survey-list/components';
 import { SurveyContext, SurveyListState } from '@/presentation/pages/survey-list/context';
 import { LoadSurveyList } from '@/domain/usecases';
 import styles from './survey-list.module.scss';
-import { AccessDeniedError } from '@/domain/errors';
-import { useNavigate } from 'react-router-dom';
-import { useApiContext } from '@/presentation/hooks';
 
 type SurveyListProps = {
   loadSurveyList: LoadSurveyList
 }
 
 export function SurveyList({ loadSurveyList }: SurveyListProps) {
-  const navigate = useNavigate();
-  const { setCurrentAccount } = useApiContext();
+  const handleError = useErrorHandler((error: Error) => {
+    setSurveyListStates({ ...surveyListStates, error: error.message });
+  });
 
   const [surveyListStates, setSurveyListStates] = useState<SurveyListState>({
     surveys: [],
@@ -27,11 +26,8 @@ export function SurveyList({ loadSurveyList }: SurveyListProps) {
       try {
         const surveys = await loadSurveyList.loadAll();
         setSurveyListStates({ ...surveyListStates, surveys });
-      } catch (error) {
-        if(error instanceof AccessDeniedError) {
-          setCurrentAccount(null);
-          navigate('/signin', { replace: true });
-        } else setSurveyListStates({ ...surveyListStates, error: (error as Error).message });
+      } catch (error: any) {
+        handleError(error);
       }
     })();
   }, [surveyListStates.reload]);
