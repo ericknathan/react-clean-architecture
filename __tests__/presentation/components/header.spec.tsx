@@ -6,9 +6,14 @@ import { fireEvent, render, screen } from '@testing-library/react';
 
 import { Header } from '@/presentation/components';
 import { ApiContext } from '@/presentation/contexts';
+import { Account } from '@/domain/models';
+
+type SutTypes = {
+  setCurrentAccountMock: (account: Account.Model) => void;
+}
 
 const history = createMemoryHistory({ initialEntries: ['/'] });
-const makeSut = () => {
+const makeSut = (): SutTypes => {
   const setCurrentAccountMock = jest.fn();
   render(
     <ApiContext.Provider value={{ setCurrentAccount: setCurrentAccountMock }}>
