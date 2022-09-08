@@ -12,8 +12,10 @@ type SurveyListProps = {
 export function SurveyList({ loadSurveyList }: SurveyListProps) {
   const [surveyListStates, setSurveyListStates] = useState<SurveyListState>({
     surveys: [],
-    error: ''
+    error: '',
+    reload: false,
   });
+
   useEffect(() => {
     (async function () {
       try {
@@ -23,7 +25,7 @@ export function SurveyList({ loadSurveyList }: SurveyListProps) {
         setSurveyListStates({ ...surveyListStates, error: (error as Error).message });
       }
     })();
-  }, []);
+  }, [surveyListStates.reload]);
 
   return (
     <div className={styles.surveyListWrapper}>

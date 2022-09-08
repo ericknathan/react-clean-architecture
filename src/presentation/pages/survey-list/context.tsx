@@ -2,8 +2,9 @@ import { createContext, useContext } from 'react';
 import { Survey } from '@/domain/models';
 
 export type SurveyListState = {
-  surveys: Survey.Model[] | []
-  error: string
+  surveys: Survey.Model[] | [];
+  error: string;
+  reload?: boolean;
 }
 
 type SurveyListContext = {
