@@ -16,6 +16,7 @@ export class AuthorizeHttpGetClientDecorator implements HttpGetClient {
         })
       });
     }
-    return this.httpGetClient.get(params);
+    const httpResponse = this.httpGetClient.get(params);
+    return httpResponse;
   }
 }
