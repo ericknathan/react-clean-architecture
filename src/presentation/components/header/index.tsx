@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 
 export function HeaderComponent({ ...props }) {
   const navigate = useNavigate();
-  const { setCurrentAccount } = useApiContext();
+  const { setCurrentAccount, getCurrentAccount } = useApiContext();
 
   const handleLogout = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>): void => {
     event.preventDefault();
@@ -20,7 +20,7 @@ export function HeaderComponent({ ...props }) {
       <div className={styles.headerContent}>
         <Logo />
         <div className={styles.logoutWrapper}>
-          <span>Erick</span>
+          <span data-testid="header-username">{getCurrentAccount()?.name}</span>
           <a data-testid="header-logout-button" href="#" onClick={handleLogout}>Sair</a>
         </div>
       </div>
