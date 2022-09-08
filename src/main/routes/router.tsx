@@ -6,10 +6,11 @@ import {
 } from 'react-router-dom';
 import {
   makeSignIn as MakeSignIn,
-  makeSignUp as MakeSignUp
+  makeSignUp as MakeSignUp,
+  makeSurveyList as MakeSurveyList,
 } from '@/main/factories/pages';
 import { AppProvider } from '@/presentation/contexts';
-import { PrivateRoute, SurveyList } from '@/presentation/pages';
+import { PrivateRoute } from '@/presentation/pages';
 
 export function Router() {
   return (
@@ -19,7 +20,7 @@ export function Router() {
           <Route path="/signin" element={<MakeSignIn />} />
           <Route path="/signup" element={<MakeSignUp />} />
           <Route element={<PrivateRoute />}>
-            <Route path="/" element={<SurveyList />} />
+            <Route path="/" element={<MakeSurveyList />} />
           </Route>
         </Routes>
       </BrowserRouter>
