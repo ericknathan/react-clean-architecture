@@ -1,6 +1,6 @@
 import React from 'react';
 import { expect } from '@jest/globals';
-import { render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { SurveyList } from '@/presentation/pages';
 import { LoadSurveyList } from '@/domain/usecases';
 import { mockSurveyListModel } from '@/mocks/domain';
@@ -61,6 +61,18 @@ describe('SurveyList Page', () => {
     setTimeout(() => {
       expect(screen.getByTestId('survey-list')).toBeFalsy();
       expect(screen.getByTestId('survey-list-error').textContent).toBe(error.message);
+    }, 1000);
+  });
+  
+  it('should call LoadSurveyList on reload', async () => {
+    const { loadSurveyListSpy } = makeSut();
+    jest.spyOn(loadSurveyListSpy, 'loadAll').mockRejectedValueOnce(new UnexpectedError());
+    await waitFor(() => screen.getByRole('heading'));
+    setTimeout(async () => {
+      expect(screen.getByTestId('survey-list')).toBeFalsy();
+      fireEvent.click(screen.getByTestId('survey-list-reload-button'));
+      expect(loadSurveyListSpy.callsCount).toBe(1);
+      await waitFor(() => screen.getByRole('heading'));
     }, 1000);
   });
 });
