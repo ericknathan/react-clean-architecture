@@ -12,4 +12,9 @@ describe('SurveyList Integration', () => {
     SurveyListHttpHelper.mockUnexpectedError();
     cy.getByTestId('survey-list-error').should('contain.text', 'Ocorreu um erro inesperado. Tente novamente em breve.');
   });
+
+  it('should logout on AccessDeniedError', () => {
+    SurveyListHttpHelper.mockAccessDeniedError();
+    Helpers.testUrl('/signin');
+  });
 });
