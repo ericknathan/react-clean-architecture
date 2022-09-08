@@ -17,6 +17,7 @@ export class HttpClient<BodyType = any, ResponseType = any> implements
   HttpPostClient<BodyType, ResponseType>,
   HttpGetClient<BodyType, ResponseType> {
   url?: string;
+  headers?: any;
   body?: BodyType;
   response: HttpPostClient.Response<ResponseType> = {
     statusCode: HttpStatusCode.OK,
@@ -31,6 +32,7 @@ export class HttpClient<BodyType = any, ResponseType = any> implements
   async get(params: HttpGetClient.Params<BodyType>): Promise<HttpGetClient.Response<ResponseType>> {
     this.url = params.url;
     this.body = params.body;
+    this.headers = params.headers;
     return this.response;
   }
 }
