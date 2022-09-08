@@ -1,18 +1,16 @@
 import React, { memo } from 'react';
-import { useApiContext } from '@/presentation/hooks';
+import { useApiContext, useLogout } from '@/presentation/hooks';
 import { Logo } from '@/presentation/components/logo';
 
 import styles from './header.module.scss';
-import { useNavigate } from 'react-router-dom';
 
 export function HeaderComponent({ ...props }) {
-  const navigate = useNavigate();
-  const { setCurrentAccount, getCurrentAccount } = useApiContext();
+  const handleLogout = useLogout();
+  const { getCurrentAccount } = useApiContext();
 
-  const handleLogout = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>): void => {
+  const handleButtonClick = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>): void => {
     event.preventDefault();
-    setCurrentAccount(null);
-    navigate('/signin', { replace: true });
+    handleLogout();
   };
 
   return (
@@ -21,7 +19,7 @@ export function HeaderComponent({ ...props }) {
         <Logo />
         <div className={styles.logoutWrapper}>
           <span data-testid="header-username">{getCurrentAccount()?.name}</span>
-          <a data-testid="header-logout-button" href="#" onClick={handleLogout}>Sair</a>
+          <a data-testid="header-logout-button" href="#" onClick={handleButtonClick}>Sair</a>
         </div>
       </div>
     </header>
