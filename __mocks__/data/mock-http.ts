@@ -9,7 +9,8 @@ export const mockPostRequest = (url = faker.internet.url()): HttpPostClient.Para
 
 export const mockGetRequest = (url = faker.internet.url()): HttpGetClient.Params => ({
   url,
-  body: faker.datatype.json()
+  body: faker.datatype.json(),
+  headers: faker.datatype.json()
 });
 
 export class HttpClient<BodyType = any, ResponseType = any> implements
