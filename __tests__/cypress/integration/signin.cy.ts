@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker/locale/pt_BR';
 import { SignInHttpHelper } from '@/tests/cypress/support/mocks';
-import { FormHelper } from '@/tests/cypress/support/helpers';
+import { FormHelper, Helpers } from '@/tests/cypress/support/helpers';
 
 const simulateValidSubmit = (error?: string) => {
   FormHelper.insertText('email-input', faker.internet.email());
@@ -32,37 +32,31 @@ describe('SignIn Integration', () => {
   it('should present InvalidCredentialsError on 401', () => {
     SignInHttpHelper.mockInvalidCredentialsError();
     simulateValidSubmit('Credenciais inválidas');
-    FormHelper.testUrl('/signin');
+    Helpers.testUrl('/signin');
   });
 
   it('should present UnexpectedError on client or server errors', () => {
     SignInHttpHelper.mockUnexpectedError();
     simulateValidSubmit('Ocorreu um erro inesperado. Tente novamente em breve.');
-    FormHelper.testUrl('/signin');
-  });
-
-  it('should present UnexpectedError if invalid data is returned', () => {
-    SignInHttpHelper.mockInvalidData();
-    simulateValidSubmit('Ocorreu um erro inesperado. Tente novamente em breve.');
-    FormHelper.testUrl('/signin');
+    Helpers.testUrl('/signin');
   });
 
   it('should save account if valid credentials are provided', () => {
     SignInHttpHelper.mockOk();
     simulateValidSubmit();
-    FormHelper.testUrl('/');
-    FormHelper.testLocalStorageItem('@4devs/account');
+    Helpers.testUrl('/');
+    Helpers.testLocalStorageItem('@4devs/account');
   });
 
   it('should prevent multiple submits', () => {
     SignInHttpHelper.mockOk();
     simulateValidSubmit();
-    FormHelper.testHttpCallsCount(1);
+    Helpers.testHttpCallsCount(1);
   });
 
   it('should not call submit if form is invalid', () => {
     SignInHttpHelper.mockOk();
     FormHelper.insertText('email-input', faker.internet.email()).type('{enter}');
-    FormHelper.testHttpCallsCount(0);
+    Helpers.testHttpCallsCount(0);
   });
 });

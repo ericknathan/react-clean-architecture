@@ -1,5 +1,3 @@
-const baseUrl = Cypress.config().baseUrl;
-
 export const insertText = (field: string, text: string) => cy.getByTestId(field).type(text);
 
 export const testInputStatus = (field: string, error: string) => cy.getByTestId(field).should('have.attr', 'title', error);
@@ -24,16 +22,4 @@ export const testDisabledButton = (field: string, errorField?: string, disabled 
   console.log({ button: `${disabled ? 'not.' : ''}have.attr` });
   cy.getByTestId(field).should(`${disabled ? '' : 'not.'}have.attr`, 'disabled');
   if(errorField) cy.getByTestId(errorField).should('not.have.text');
-};
-
-export const testHttpCallsCount = (count: number): void => {
-  cy.get('@request.all').should('have.length', count);
-};
-
-export const testUrl = (path = ''): void => {
-  cy.url().should('eq', `${baseUrl}${path}`);
-};
-
-export const testLocalStorageItem = (key: string): void => {
-  cy.window().then(window => expect(window.localStorage.getItem(key)).to.exist);
 };

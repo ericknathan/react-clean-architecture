@@ -1,9 +1,9 @@
 import { faker } from '@faker-js/faker/locale/pt_BR';
 import { Method } from 'cypress/types/net-stubbing';
 
-export const mockEmailInUseError = (url: RegExp): void => {
+export const mockUnauthorizedError = (url: RegExp): void => {
   cy.intercept('POST', url, {
-    statusCode: 403,
+    statusCode: 401,
     body: {
       error: faker.random.words()
     },
@@ -11,9 +11,9 @@ export const mockEmailInUseError = (url: RegExp): void => {
   });
 };
 
-export const mockInvalidCredentialsError = (url: RegExp): void => {
-  cy.intercept('POST', url, {
-    statusCode: 401,
+export const mockForbiddenError = (url: RegExp, method: Method): void => {
+  cy.intercept(method, url, {
+    statusCode: 403,
     body: {
       error: faker.random.words()
     },
