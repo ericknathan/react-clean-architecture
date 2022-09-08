@@ -17,4 +17,10 @@ describe('SurveyList Integration', () => {
     SurveyListHttpHelper.mockAccessDeniedError();
     Helpers.testUrl('/signin');
   });
+
+  it('should present correct username', () => {
+    SurveyListHttpHelper.mockUnexpectedError();
+    const { name } = Helpers.getLocalStorageItem('@4devs/account');
+    cy.getByTestId('header-username').should('contain.text', name);
+  });
 });
