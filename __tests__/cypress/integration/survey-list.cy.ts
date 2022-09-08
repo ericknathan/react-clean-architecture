@@ -23,4 +23,11 @@ describe('SurveyList Integration', () => {
     const { name } = Helpers.getLocalStorageItem('@4devs/account');
     cy.getByTestId('header-username').should('contain.text', name);
   });
+
+  it('should logout on logout link click', () => {
+    SurveyListHttpHelper.mockUnexpectedError();
+    cy.visit('');
+    cy.getByTestId('header-logout-button').click();
+    Helpers.testUrl('/signin');
+  });
 });
