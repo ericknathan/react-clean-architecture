@@ -1,6 +1,13 @@
 import { faker } from '@faker-js/faker/locale/pt_BR';
-import { SignUpHttpHelper } from '@/tests/cypress/support/mocks';
-import { FormHelper, Helpers } from '@/tests/cypress/support/helpers';
+import { FormHelper, Helpers } from '@/tests/cypress/utils/helpers';
+import { HttpHelper } from '@/tests/cypress/utils/mocks';
+
+const path = /signup/;
+const mockEmailInUseError = (): void => HttpHelper.mockForbiddenError(path, 'POST');
+const mockUnexpectedError = (): void => HttpHelper.mockUnexpectedError(path, 'POST');
+const mockSuccess = (): void => {
+  cy.fixture('account').then(account => HttpHelper.mockOk(path, 'POST', account));
+};
 
 const simulateValidSubmit = (error?: string) => {
   const password = faker.internet.password();
@@ -43,32 +50,32 @@ describe('SignUp Integration', () => {
   });
 
   it('should present InvalidCredentialsError on 403', () => {
-    SignUpHttpHelper.mockEmailInUseError();
+    mockEmailInUseError();
     simulateValidSubmit('Esse e-mail já está em uso');
     Helpers.testUrl('/signup');
   });
 
   it('should present UnexpectedError on client or server errors', () => {
-    SignUpHttpHelper.mockUnexpectedError();
+    mockUnexpectedError();
     simulateValidSubmit('Ocorreu um erro inesperado. Tente novamente em breve.');
     Helpers.testUrl('/signup');
   });
 
   it('should save account if valid credentials are provided', () => {
-    SignUpHttpHelper.mockOk();
+    mockSuccess();
     simulateValidSubmit();
     Helpers.testUrl('/');
     Helpers.testLocalStorageItem('@4devs/account');
   });
 
   it('should prevent multiple submits', () => {
-    SignUpHttpHelper.mockOk();
+    mockSuccess();
     simulateValidSubmit();
     Helpers.testHttpCallsCount(1);
   });
 
   it('should not call submit if form is invalid', () => {
-    SignUpHttpHelper.mockOk();
+    mockSuccess();
     FormHelper.insertText('email-input', faker.internet.email()).type('{enter}');
     Helpers.testHttpCallsCount(0);
   });

@@ -1,6 +1,0 @@
-import { faker } from '@faker-js/faker/locale/pt_BR';
-import { HttpHelper } from '@/tests/cypress/support/mocks';
-
-export const mockInvalidCredentialsError = (): void => HttpHelper.mockUnauthorizedError(/login/);
-export const mockUnexpectedError = (): void => HttpHelper.mockUnexpectedError(/login/, 'POST');
-export const mockOk = (): void => HttpHelper.mockOk(/login/, 'POST', { accessToken: faker.datatype.uuid(), name: faker.name.firstName() });

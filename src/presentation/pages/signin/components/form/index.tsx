@@ -45,6 +45,7 @@ export function SignInForm({ validation, authentication }: SignInProps) {
       const { email, password } = formStates;
       const account = await authentication.auth({ email, password });
       if(account) {
+        console.log({ account });
         setCurrentAccount!(account);
         navigate('/', { replace: true });
       }

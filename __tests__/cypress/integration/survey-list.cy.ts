@@ -1,31 +1,36 @@
-import { faker } from '@faker-js/faker/locale/pt_BR';
-import { SurveyListHttpHelper } from '@/tests/cypress/support/mocks';
-import { Helpers } from '@/tests/cypress/support/helpers';
+import { Helpers } from '@/tests/cypress/utils/helpers';
+import { HttpHelper } from '@/tests/cypress/utils/mocks';
+
+const path = /surveys/;
+const mockUnexpectedError = (): void => HttpHelper.mockUnexpectedError(path, 'GET');
+const mockAccessDeniedError = (): void => HttpHelper.mockForbiddenError(path, 'GET');
 
 describe('SurveyList Integration', () => {
   beforeEach(() => {
-    Helpers.setLocalStorageItem('@4devs/account', { accessToken: faker.datatype.uuid(), name: faker.name.firstName() });
-    cy.visit('');
+    cy.fixture('account').then(account => {
+      Helpers.setLocalStorageItem('@4devs/account', account);
+      cy.visit('');
+    });
   });
 
   it('should present error on UnexpectedError', () => {
-    SurveyListHttpHelper.mockUnexpectedError();
+    mockUnexpectedError();
     cy.getByTestId('survey-list-error').should('contain.text', 'Ocorreu um erro inesperado. Tente novamente em breve.');
   });
 
   it('should logout on AccessDeniedError', () => {
-    SurveyListHttpHelper.mockAccessDeniedError();
+    mockAccessDeniedError();
     Helpers.testUrl('/signin');
   });
 
   it('should present correct username', () => {
-    SurveyListHttpHelper.mockUnexpectedError();
+    mockUnexpectedError();
     const { name } = Helpers.getLocalStorageItem('@4devs/account');
     cy.getByTestId('header-username').should('contain.text', name);
   });
 
   it('should logout on logout link click', () => {
-    SurveyListHttpHelper.mockUnexpectedError();
+    mockUnexpectedError();
     cy.visit('');
     cy.getByTestId('header-logout-button').click();
     Helpers.testUrl('/signin');

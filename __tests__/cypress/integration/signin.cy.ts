@@ -1,6 +1,13 @@
 import { faker } from '@faker-js/faker/locale/pt_BR';
-import { SignInHttpHelper } from '@/tests/cypress/support/mocks';
-import { FormHelper, Helpers } from '@/tests/cypress/support/helpers';
+import { FormHelper, Helpers } from '@/tests/cypress/utils/helpers';
+import { HttpHelper } from '@/tests/cypress/utils/mocks';
+
+const path = /login/;
+const mockInvalidCredentialsError = (): void => HttpHelper.mockUnauthorizedError(path);
+const mockUnexpectedError = (): void => HttpHelper.mockUnexpectedError(path, 'POST');
+const mockSuccess = (): void => {
+  cy.fixture('account').then(account => HttpHelper.mockOk(path, 'POST', account));
+};
 
 const simulateValidSubmit = (error?: string) => {
   FormHelper.insertText('email-input', faker.internet.email());
@@ -30,32 +37,32 @@ describe('SignIn Integration', () => {
   it('should present valid state if form is valid', () => simulateValidSubmit());
 
   it('should present InvalidCredentialsError on 401', () => {
-    SignInHttpHelper.mockInvalidCredentialsError();
+    mockInvalidCredentialsError();
     simulateValidSubmit('Credenciais inválidas');
     Helpers.testUrl('/signin');
   });
 
   it('should present UnexpectedError on client or server errors', () => {
-    SignInHttpHelper.mockUnexpectedError();
+    mockUnexpectedError();
     simulateValidSubmit('Ocorreu um erro inesperado. Tente novamente em breve.');
     Helpers.testUrl('/signin');
   });
 
   it('should save account if valid credentials are provided', () => {
-    SignInHttpHelper.mockOk();
+    mockSuccess();
     simulateValidSubmit();
     Helpers.testUrl('/');
     Helpers.testLocalStorageItem('@4devs/account');
   });
 
   it('should prevent multiple submits', () => {
-    SignInHttpHelper.mockOk();
+    mockSuccess();
     simulateValidSubmit();
     Helpers.testHttpCallsCount(1);
   });
 
   it('should not call submit if form is invalid', () => {
-    SignInHttpHelper.mockOk();
+    mockSuccess();
     FormHelper.insertText('email-input', faker.internet.email()).type('{enter}');
     Helpers.testHttpCallsCount(0);
   });
