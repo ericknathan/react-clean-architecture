@@ -21,6 +21,14 @@ describe('SurveyList Integration', () => {
     cy.getByTestId('survey-list-error').should('contain.text', 'Ocorreu um erro inesperado. Tente novamente em breve.');
   });
 
+  it('should reload on button click', () => {
+    mockUnexpectedError();
+    cy.getByTestId('survey-list-error').should('contain.text', 'Ocorreu um erro inesperado. Tente novamente em breve.');
+    mockSuccess();
+    cy.getByTestId('survey-list-reload-button').click();
+    cy.get('li:not(#answer-item):not(:empty)').should('have.length', 2);
+  });
+
   it('should logout on AccessDeniedError', () => {
     mockAccessDeniedError();
     Helpers.testUrl('/signin');
