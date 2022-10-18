@@ -6,8 +6,8 @@ import { Validation } from '@/presentation/protocols';
 import { AddAccount } from '@/domain/usecases';
 
 export type SignUpProps = {
-  validation?: Validation;
-  addAccount?: AddAccount
+  validation: Validation;
+  addAccount: AddAccount
 }
 
 export function SignUp({ validation, addAccount }: SignUpProps) {

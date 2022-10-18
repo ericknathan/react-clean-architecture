@@ -7,6 +7,8 @@ import { SignUpProps } from '@/presentation/pages';
 import { Link, useNavigate } from 'react-router-dom';
 import { useApiContext } from '@/presentation/hooks';
 
+type FormFields = 'name' | 'email' | 'password' | 'passwordConfirmation';
+
 type StateProps = {
   isLoading: boolean;
   name: string;
@@ -14,7 +16,7 @@ type StateProps = {
   password: string;
   passwordConfirmation: string;
   errors: {
-    [key: string]: string;
+    [key in FormFields | 'main']?: string;
   }
 }
 
@@ -71,22 +73,24 @@ export function SignUpForm({ validation, addAccount }: SignUpProps) {
     }
   }
 
-  useEffect(() => {
+  useEffect(() => validate('name'), [formStates.name]);
+  useEffect(() => validate('email'), [formStates.email]);
+  useEffect(() => validate('password'), [formStates.password]);
+  useEffect(() => validate('passwordConfirmation'), [formStates.passwordConfirmation]);
+
+  const validate = (fieldName: FormFields): void => {
     const { name, email, password, passwordConfirmation } = formStates;
     const formData = { name, email, password, passwordConfirmation };
-    setFormStates({
-      ...formStates,
+    setFormStates(previousState => ({
+      ...previousState,
       errors: {
-        ...formStates.errors,
+        ...previousState.errors,
         main: '',
-        name: formStates.name ? validation?.validate({ fieldName: 'name', input: formData }) || '' : '',
-        email: formStates.email ? validation?.validate({ fieldName: 'email', input: formData }) || '' : '',
-        password: formStates.password ? validation?.validate({ fieldName: 'password', input: formData }) || '' : '',
-        passwordConfirmation: formStates.passwordConfirmation ? validation?.validate({ fieldName: 'passwordConfirmation', input: formData }) || '' : '',
+        [fieldName]: previousState[fieldName] ? validation?.validate({ fieldName, input: formData }) || '' : '',
       }
-    });
-  }, [formStates.name, formStates.email, formStates.password, formStates.passwordConfirmation]);
-  
+    }));
+  };
+
   return (
     <form
       data-testid="form"

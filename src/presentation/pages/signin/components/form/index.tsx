@@ -7,12 +7,14 @@ import { SignInProps } from '@/presentation/pages/signin';
 import { Link, useNavigate } from 'react-router-dom';
 import { useApiContext } from '@/presentation/hooks';
 
+type FormFields = 'email' | 'password';
+
 type StateProps = {
   isLoading: boolean;
   email: string;
   password: string;
   errors: {
-    [key: string]: string;
+    [key in FormFields | 'main']?: string;
   }
 }
 
@@ -62,19 +64,21 @@ export function SignInForm({ validation, authentication }: SignInProps) {
     }
   }
 
-  useEffect(() => {
+  useEffect(() => validate('email'), [formStates.email]);
+  useEffect(() => validate('password'), [formStates.password]);
+
+  const validate = (fieldName: FormFields): void => {
     const { email, password } = formStates;
     const formData = { email, password };
-    setFormStates({
-      ...formStates,
+    setFormStates(previousState => ({
+      ...previousState,
       errors: {
-        ...formStates.errors,
+        ...previousState.errors,
         main: '',
-        email: formStates.email ? validation.validate({ fieldName: 'email', input: formData }) || '' : '',
-        password: formStates.password ? validation.validate({ fieldName: 'password', input: formData }) || '' : '',
+        [fieldName]: previousState[fieldName] ? validation.validate({ fieldName, input: formData }) || '' : '',
       }
-    });
-  }, [formStates.email, formStates.password]);
+    }));
+  };
   
   return (
     <form

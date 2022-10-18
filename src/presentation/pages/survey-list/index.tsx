@@ -25,7 +25,7 @@ export function SurveyList({ loadSurveyList }: SurveyListProps) {
     (async function () {
       try {
         const surveys = await loadSurveyList.loadAll();
-        setSurveyListStates({ ...surveyListStates, surveys });
+        setSurveyListStates(previousState => ({ ...previousState, surveys }));
       } catch (error: any) {
         handleError(error);
       }
