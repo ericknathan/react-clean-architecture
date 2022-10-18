@@ -15,12 +15,12 @@ export function SurveyItemCard({ survey, ...props }: SurveyItemCardProps) {
       <div data-testid='question-data' className={[styles.questionData, didAnswerClassName].join(' ')}>
         <time data-testid='date'>
           <span>Em </span>
-          {formatDate(survey.date)}
+          {formatDate(new Date(survey.date))}
         </time>
         <h3 data-testid='question'>{survey.question}</h3>
         <ul data-testid='answers' className={styles.questionAnswers}>
-          {survey.answers.map(({ answer }) => (
-            <li key={answer}>
+          {survey?.answers?.map(({ answer }) => (
+            <li id="answer-item" key={answer}>
               <span>{answer}</span>
             </li>
           ))}
