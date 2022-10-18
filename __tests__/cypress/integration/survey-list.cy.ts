@@ -4,6 +4,9 @@ import { HttpHelper } from '@/tests/cypress/utils/mocks';
 const path = /surveys/;
 const mockUnexpectedError = (): void => HttpHelper.mockUnexpectedError(path, 'GET');
 const mockAccessDeniedError = (): void => HttpHelper.mockForbiddenError(path, 'GET');
+const mockSuccess = (): void => {
+  cy.fixture('survey-list').then(surveyList => HttpHelper.mockOk(path, 'GET', surveyList));
+};
 
 describe('SurveyList Integration', () => {
   beforeEach(() => {
@@ -34,5 +37,25 @@ describe('SurveyList Integration', () => {
     cy.visit('');
     cy.getByTestId('header-logout-button').click();
     Helpers.testUrl('/signin');
+  });
+
+  it('should present survey items', () => {
+    mockSuccess();
+    cy.visit('');
+
+    cy.get('li:not(#answer-item):empty').should('have.length', 4);
+    cy.get('li:not(#answer-item):not(:empty)').should('have.length', 2);
+
+    cy.get('li:not(#answer-item):nth-child(1)').then(li => {
+      assert.equal(li.find('[data-testid="date"]').text(), 'Em 3 de fevereiro de 2022');
+      assert.equal(li.find('[data-testid="question"]').text(), 'Question 1');
+      assert.equal(li.find('[data-testid="question-data"]').css('border-left-color'), 'rgb(35, 157, 51)');
+    });
+
+    cy.get('li:not(#answer-item):nth-child(2)').then(li => {
+      assert.equal(li.find('[data-testid="date"]').text(), 'Em 4 de fevereiro de 2022');
+      assert.equal(li.find('[data-testid="question"]').text(), 'Question 2');
+      assert.equal(li.find('[data-testid="question-data"]').css('border-left-color'), 'rgb(157, 35, 35)');
+    });
   });
 });
