@@ -27,7 +27,7 @@ module.exports = merge(common, {
   },
   plugins: [
     new EnvironmentPlugin({
-      API_URL: 'http://fordevs.herokuapp.com/api'
+      API_URL: 'https://fordevs.herokuapp.com/api'
     }),
     new HtmlWebpackPlugin({
       template: './template.prod.html'
