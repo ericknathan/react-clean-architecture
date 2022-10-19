@@ -1,5 +1,5 @@
 import { defineConfig } from "cypress";
-import webpackConfig from '../webpack.config';
+import webpackConfig from '../webpack.common';
 
 module.exports = defineConfig({
   e2e: {

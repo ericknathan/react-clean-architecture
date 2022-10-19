@@ -2,7 +2,9 @@ node_modules
 .vscode
 coverage
 public
+dist
 *.scss
 *.json
 *.config.js
 yarn.lock
+webpack.*.js
