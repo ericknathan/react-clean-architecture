@@ -1,6 +1,7 @@
 const { EnvironmentPlugin } = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
 const common = require('./webpack.common');
 const { merge } = require('webpack-merge');
 
@@ -30,7 +31,8 @@ module.exports = merge(common, {
       API_URL: 'https://fordevs.herokuapp.com/api'
     }),
     new HtmlWebpackPlugin({
-      template: './template.prod.html'
+      template: './template.prod.html',
+      favicon: './public/favicon.png',
     }),
     new MiniCssExtractPlugin({
       filename: 'main-bundle-[fullhash].css'
