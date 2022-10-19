@@ -19,7 +19,6 @@ export const testSubmitButton = (field: string, errorField?: string, error?: str
 };
 
 export const testDisabledButton = (field: string, errorField?: string, disabled = true) => {
-  console.log({ button: `${disabled ? 'not.' : ''}have.attr` });
   cy.getByTestId(field).should(`${disabled ? '' : 'not.'}have.attr`, 'disabled');
   if(errorField) cy.getByTestId(errorField).should('not.have.text');
 };
